@@ -25,8 +25,16 @@ export default function Checkout({ onClose, onSuccess }: CheckoutProps) {
 
     setIsSubmitting(true)
     try {
+      console.log('=== СОЗДАНИЕ ЗАКАЗА ===')
+      console.log('User:', user)
+      console.log('User ID:', user?.id)
+      console.log('Items:', items)
+      console.log('Form data:', formData)
+
       // Создаем заказ с ID пользователя если есть, иначе как гостевой
-      await createOrder(items, formData, user?.id)
+      const order = await createOrder(items, formData, user?.id)
+      console.log('Заказ успешно создан:', order)
+
       clearCart()
       onSuccess()
       onClose()
@@ -108,7 +116,7 @@ export default function Checkout({ onClose, onSuccess }: CheckoutProps) {
               <h3>Детали проекта</h3>
               
               <div className="form-group">
-                <label htmlFor="description">Описание сайта *</label>
+                <label htmlFor="description">Описан��е сайта *</label>
                 <textarea
                   id="description"
                   value={formData.description}
