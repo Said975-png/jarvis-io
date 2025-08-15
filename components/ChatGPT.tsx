@@ -81,7 +81,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Извлечение тегов из текста
   const extractTags = (text: string): string[] => {
     const commonTags = [
-      'веб-разработка', 'дизайн', 'программирование', 'ai', 'тех��ологии',
+      'веб-разработка', 'дизайн', 'пр��граммирование', 'ai', 'тех��ологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
       'html', 'api', 'база д��нных', 'сеть', 'б��зо��асность', 'ui', 'ux'
     ]
@@ -121,7 +121,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       // Обычный чат-запрос
       const apiMessages = conversationHistory
-        .filter(msg => !msg.text.includes('Привет! Я ДЖАРВИС, ваш AI-помощник!'))
+        .filter(msg => !msg.text.includes('Привет! Я ДЖАРВИС, ваш AI-помощн��к!'))
         .map(msg => ({
           role: msg.isUser ? 'user' : 'assistant' as const,
           content: msg.text
@@ -302,7 +302,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const response = await generateJarvisResponse(userMessage, messages)
 
-      // Удаляем блок thinking перед показом ответа
+      // Уда��яем блок thinking перед показом ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
       // Небольшая пауза перед показом ответа
@@ -382,7 +382,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       const errorMessage: Message = {
         id: Date.now().toString(),
-        text: '��ши��ка при загрузке файла. Попробуйте позже. 😔',
+        text: '��ши��ка при загрузке ��айла. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
@@ -462,8 +462,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                 >
                   {message.isThinking ? (
                     <div>
-                      <div className="thinking-title">Thinking</div>
-                      {message.text.replace('Thinking\n\n', '')}
+                      <div className="thinking-title">🤔 Думаю...</div>
+                      <div className="thinking-content">
+                        {message.text.replace('Thinking...\n\n', '')}
+                        <span className="thinking-cursor">|</span>
+                      </div>
                     </div>
                   ) : (
                     message.text
