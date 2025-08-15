@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест голоса JARVIS</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .test-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: background 0.2s;
+        }
+        .test-btn:hover {
+            background: #0056b3;
+        }
+        .voice-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border-left: 4px solid #007bff;
+        }
+        .voices-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 Тест голоса JARVIS</h1>
+        
+        <div class="voice-info">
+            <h3>Текущий голос:</h3>
+            <div id="currentVoice">Загрузка...</div>
+        </div>
+
+        <button class="test-btn" onclick="testMaleVoice()">🎯 Тест обновленного голоса</button>
+        <button class="test-btn" onclick="testJarvisPhrase()">🤖 Тест фразы JARVIS</button>
+        <button class="test-btn" onclick="testNaturalSettings()">🎵 Тест естественных настроек</button>
+        <button class="test-btn" onclick="showAllVoices()">📋 Показать все голоса</button>
+        <button class="test-btn" onclick="testDefaultVoice()">⚠️ Тест дефолтного голоса</button>
+
+        <div id="voicesList" class="voices-list" style="display: none;"></div>
+
+        <div class="voice-info">
+            <h3>🎯 Что тестируем:</h3>
+            <p>✅ Мужской голос (не женский)</p>
+            <p>✅ Русский язык без акцента</p>
+            <p>✅ Низкий тон (pitch = 0.8)</p>
+            <p>✅ Нормальная скорость (rate = 0.85)</p>
+        </div>
+    </div>
+
+    <script>
+        // Функция получения лучшего мужского голоса (обновленная версия как в JARVIS)
+        function getBestMaleVoice() {
+            const voices = speechSynthesis.getVoices();
+            let selectedVoice = null;
+
+            console.log('🔍 Поиск голосов. Всего доступно:', voices.length);
+
+            // Логируем все русские голоса для отладки
+            const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'));
+            console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`));
+
+            // ПРИОРИТЕТ 1: Специфичные мужские голоса
+            const maleVoiceNames = [
+                'Microsoft Pavel',
+                'Pavel',
+                'Yuri',
+                'Maxim',
+                'Dmitri',
+                'Aleksandr',
+                'Google русский мужской',
+                'Russian Male'
+            ];
+
+            for (const maleName of maleVoiceNames) {
+                selectedVoice = russianVoices.find(v =>
+                    v.name.toLowerCase().includes(maleName.toLowerCase())
+                );
+                if (selectedVoice) {
+                    console.log('✅ Найден мужской голос:', selectedVoice.name);
+                    break;
+                }
+            }
+
+            // ПРИОРИТЕТ 2: Качественные голоса (предпочитаем локальные)
+            if (!selectedVoice) {
+                const qualityVoices = [
+                    'Google русский',
+                    'Microsoft Irina - Russian (Russia)', // Хотя женский, но качественный
+                    'Russian (Russia)',
+                    'ru-RU'
+                ];
+
+                for (const quality of qualityVoices) {
+                    selectedVoice = russianVoices.find(v =>
+                        v.name.includes(quality) && v.localService
+                    );
+                    if (selectedVoice) {
+                        console.log('✅ Найден качественный локальный голос:', selectedVoice.name);
+                        break;
+                    }
+                }
+            }
+
+            // ПРИОРИТЕТ 3: Любой русский голос
+            if (!selectedVoice) {
+                selectedVoice = russianVoices.find(v => v.localService) || russianVoices[0];
+                if (selectedVoice) {
+                    console.log('⚠️ Используем резервный голос:', selectedVoice.name);
+                }
+            }
+
+            return selectedVoice;
+        }
+
+        function speakWithSettings(text, voice = null, customSettings = {}) {
+            speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            if (voice) {
+                utterance.voice = voice;
+            }
+            
+            // Настройки как в JARVIS (обновленные для естественности)
+            utterance.lang = customSettings.lang || 'ru-RU';
+            utterance.rate = customSettings.rate || 1.0;   // Нормальная скорость
+            utterance.pitch = customSettings.pitch || 0.95; // Близко к естественному
+            utterance.volume = customSettings.volume || 0.8; // Комфортная громкость
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        function testMaleVoice() {
+            const bestVoice = getBestMaleVoice();
+            const text = "Привет! Я ДЖАРВИС. Это мой обновленный мужской голос. Звучу ли я естественно и без роботского акцента?";
+
+            if (bestVoice) {
+                document.getElementById('currentVoice').innerHTML = `
+                    <strong>${bestVoice.name}</strong><br>
+                    Язык: ${bestVoice.lang}<br>
+                    Локальный: ${bestVoice.localService ? 'Да' : 'Нет'}<br>
+                    <span style="color: ${bestVoice.name.toLowerCase().includes('pavel') || bestVoice.name.toLowerCase().includes('yuri') || bestVoice.name.toLowerCase().includes('male') ? 'green' : 'orange'}">
+                        ${bestVoice.name.toLowerCase().includes('pavel') || bestVoice.name.toLowerCase().includes('yuri') || bestVoice.name.toLowerCase().includes('male') ? '✅ Мужской' : '⚠️ Возможно женский'}
+                    </span>
+                `;
+                speakWithSettings(text, bestVoice);
+            } else {
+                document.getElementById('currentVoice').innerHTML = '<span style="color: red;">❌ Русский голос не найден</span>';
+                speakWithSettings(text);
+            }
+        }
+
+        function testJarvisPhrase() {
+            const bestVoice = getBestMaleVoice();
+            const text = "Добро пожаловать! Я ДЖАРВИС - ваш персональный умный помощник. Мой голос должен звучать мужественно и профессионально.";
+            speakWithSettings(text, bestVoice);
+        }
+
+        function testNaturalSettings() {
+            const bestVoice = getBestMaleVoice();
+            const text = "Это тест с новыми естественными настройками. Скорость нормальная, тон близкий к естественному.";
+            // Используем новые настройки как в JARVIS
+            speakWithSettings(text, bestVoice, {
+                pitch: 0.95,  // Близко к естественному
+                rate: 1.0,    // Нормальная ��корость
+                volume: 0.8   // Комфортная громкость
+            });
+        }
+
+        function testDefaultVoice() {
+            const text = "Это обычный дефолтный голос системы для сравнения. Он должен сильно отличаться от настроенного ДЖАРВИС.";
+            speakWithSettings(text, null, { pitch: 1.0, rate: 1.0 });
+        }
+
+        function showAllVoices() {
+            const voices = speechSynthesis.getVoices();
+            const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'));
+            
+            const list = document.getElementById('voicesList');
+            list.style.display = list.style.display === 'none' ? 'block' : 'none';
+            
+            if (list.style.display === 'block') {
+                list.innerHTML = `
+                    <h4>Доступные русские голоса (${russianVoices.length}):</h4>
+                    ${russianVoices.map(voice => `
+                        <div style="margin: 5px 0; padding: 5px; background: white; border-radius: 3px;">
+                            <strong>${voice.name}</strong> - ${voice.lang} 
+                            ${voice.localService ? '(Локальный)' : '(Онлайн)'}
+                            <button onclick="speakWithSettings('Тест голоса ${voice.name}', speechSynthesis.getVoices().find(v => v.name === '${voice.name}'))" style="margin-left: 10px; padding: 2px 8px; font-size: 10px;">Тест</button>
+                        </div>
+                    `).join('')}
+                `;
+            }
+        }
+
+        // Форсированная загрузка голосов
+        function forceLoadVoices() {
+            const utterance = new SpeechSynthesisUtterance('');
+            speechSynthesis.speak(utterance);
+            speechSynthesis.cancel();
+        }
+
+        // Инициализация при загрузке
+        window.addEventListener('load', () => {
+            // Загружаем голоса
+            const loadVoices = () => {
+                setTimeout(testMaleVoice, 500);
+            };
+
+            if (speechSynthesis.getVoices().length > 0) {
+                loadVoices();
+            } else {
+                // Форсируем загрузку
+                forceLoadVoices();
+                setTimeout(loadVoices, 200);
+                speechSynthesis.onvoiceschanged = loadVoices;
+            }
+
+            // Дополнительная попытка через секунду
+            setTimeout(() => {
+                if (speechSynthesis.getVoices().length === 0) {
+                    forceLoadVoices();
+                    setTimeout(loadVoices, 300);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

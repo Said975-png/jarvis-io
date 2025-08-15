@@ -23,11 +23,104 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [isTyping, setIsTyping] = useState(false)
   const [isUploadingFile, setIsUploadingFile] = useState(false)
   const [interactionIds, setInteractionIds] = useState<{[messageId: string]: string}>({})
+
+  // Голосовые функции
+  const [isListening, setIsListening] = useState(false)
+  const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('text') // 'text' = только текст, 'voice' = текст + голос
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
+  const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
+
+  // ElevenLabs ключи (8 ключей с разных аккаунтов для ротации)
+  const [elevenLabsKeys] = useState([
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 3
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 4
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 5
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 6
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // К��юч 7
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 8
+  ])
+
   const fileInputRef = useRef<HTMLInputElement>(null)
   
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const sessionId = useRef(`session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`)
+
+  // Инициализация голосов��х API
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Speech Recognition API
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+      if (SpeechRecognition) {
+        const recognitionInstance = new SpeechRecognition()
+        recognitionInstance.continuous = false
+        recognitionInstance.interimResults = false
+        recognitionInstance.lang = 'ru-RU'
+
+        recognitionInstance.onresult = (event: any) => {
+          const transcript = event.results[0][0].transcript
+          setInputText(transcript)
+          setIsListening(false)
+        }
+
+        recognitionInstance.onerror = (event: any) => {
+          console.error('Speech recognition error:', event.error)
+          setIsListening(false)
+        }
+
+        recognitionInstance.onend = () => {
+          setIsListening(false)
+        }
+
+        setRecognition(recognitionInstance)
+      }
+
+      // Speech Synthesis API
+      if (window.speechSynthesis) {
+        setSpeechSynthesis(window.speechSynthesis)
+
+        // Форсируем загрузку голосов (работает в большинстве браузеров)
+        const forceLoadVoices = () => {
+          // Создаем пустое высказывание чтобы акт��вировать голоса
+          const utterance = new SpeechSynthesisUtterance('')
+          window.speechSynthesis.speak(utterance)
+          window.speechSynthesis.cancel()
+        }
+
+        // Инициализируем голоса (некоторые браузеры загружают их асинхронно)
+        const loadVoices = () => {
+          const voices = window.speechSynthesis.getVoices()
+          const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
+          console.log('🎤 Русские голоса загружены:', russianVoices.length)
+          russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
+        }
+
+        // Попытка 1: загрузка сразу
+        if (window.speechSynthesis.getVoices().length > 0) {
+          loadVoices()
+        } else {
+          // Попытка 2: форсируем загрузку
+          forceLoadVoices()
+          setTimeout(loadVoices, 100)
+        }
+
+        // Попытка 3: подписываемся на событие загрузки голосов
+        window.speechSynthesis.onvoiceschanged = () => {
+          loadVoices()
+        }
+
+        // Попытка 4: допол��ительная загрузка через секунду
+        setTimeout(() => {
+          if (window.speechSynthesis.getVoices().length === 0) {
+            forceLoadVoices()
+            setTimeout(loadVoices, 200)
+          }
+        }, 1000)
+      }
+    }
+  }, [])
 
   // Функция для сохранения взаимодействия в базе знаний
   const saveInteractionToLearning = async (userMessage: string, botResponse: string, userMessageId: string) => {
@@ -61,7 +154,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (response.ok) {
         const data = await response.json()
         if (data.success) {
-          // Сохраняем ID взаимодействия для связи с сообщением
+          // Сохраняем ID вз��имодействия для связи с сообщением
           setInteractionIds(prev => ({
             ...prev,
             [userMessageId]: data.data.interactionId
@@ -81,13 +174,362 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Извлечение тегов из текста
   const extractTags = (text: string): string[] => {
     const commonTags = [
-      'веб-разработка', 'дизайн', 'программирование', 'ai', 'тех��ологии',
+      'веб-разработка', 'дизайн', 'программирование', 'ai', 'технологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
-      'html', 'api', 'база д��нных', 'сеть', 'б��зо��асность', 'ui', 'ux'
+      'html', 'api', 'база данных', 'сеть', 'безопасность', 'ui', 'ux'
     ]
 
     const lowerText = text.toLowerCase()
     return commonTags.filter(tag => lowerText.includes(tag))
+  }
+
+  // Функция для запуска голосового ввода
+  const startListening = () => {
+    if (recognition && !isListening) {
+      setIsListening(true)
+      recognition.start()
+    }
+  }
+
+  // Функция для остановки голосового ввода
+  const stopListening = () => {
+    if (recognition && isListening) {
+      recognition.stop()
+      setIsListening(false)
+    }
+  }
+
+  // Функция для получения лучшего мужского голо��а
+  const getBestMaleVoice = () => {
+    const voices = speechSynthesis.getVoices()
+    let selectedVoice = null
+
+    console.log('🔍 Поиск голосов. Всего доступно:', voices.length)
+
+    // Логируем все русские голоса для отладки
+    const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
+    console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
+
+    // ПРИОРИТЕТ 1: Самые качественные муж��кие голоса (менее роботичные)
+    const premiumMaleVoices = [
+      'Google русский (Россия)', // Самый качественный если есть
+      'Microsoft Pavel - Russian (Russia)', // MS Neural голос
+      'Google русский',
+      'Pavel (Enhanced)', // Если есть улучшенная версия
+      'Yuri (Natural)', // Естественный вариант
+      'Microsoft Pavel',
+      'Pavel',
+      'Yuri'
+    ]
+
+    for (const premiumVoice of premiumMaleVoices) {
+      selectedVoice = russianVoices.find(v =>
+        v.name.toLowerCase().includes(premiumVoice.toLowerCase())
+      )
+      if (selectedVoice) {
+        console.log('✅ Найден качественный голос:', selectedVoice.name)
+        break
+      }
+    }
+
+    // ПРИОРИТЕТ 2: Качественные голоса (предпочитаем локальные)
+    if (!selectedVoice) {
+      const qualityVoices = [
+        'Google русский',
+        'Microsoft Irina - Russian (Russia)', // Хотя женский, но качест��енный
+        'Russian (Russia)',
+        'ru-RU'
+      ]
+
+      for (const quality of qualityVoices) {
+        selectedVoice = russianVoices.find(v =>
+          v.name.includes(quality) && v.localService
+        )
+        if (selectedVoice) {
+          console.log('✅ Найден качественный локальный голос:', selectedVoice.name)
+          break
+        }
+      }
+    }
+
+    // ПРИОРИТЕТ 3: Любой русский голос
+    if (!selectedVoice) {
+      selectedVoice = russianVoices.find(v => v.localService) || russianVoices[0]
+      if (selectedVoice) {
+        console.log('⚠️ Используем резервный голос:', selectedVoice.name)
+      }
+    }
+
+    return selectedVoice
+  }
+
+  // Функция получения доступного ElevenLabs ключа (система ротации как у OpenRouter)
+  const getNextAvailableElevenLabsKey = () => {
+    // Ищем активные ключи с доступным лимитом
+    const availableKeys = elevenLabsKeys.filter(k =>
+      k.isActive && k.key.length > 0 && k.usage < k.limit && k.errorCount < 3
+    )
+
+    if (availableKeys.length > 0) {
+      console.log(`🔑 Доступно ElevenLabs ключей: ${availableKeys.length}`)
+      return availableKeys[0].key
+    }
+
+    // Если все ключи исчерпали лимит, сбрасываем счетчики (новый месяц)
+    const keysWithLimitReached = elevenLabsKeys.filter(k => k.usage >= k.limit)
+    if (keysWithLimitReached.length > 0) {
+      console.log('🔄 Сброс лимитов ElevenLabs ключей (новый месяц)')
+      keysWithLimitReached.forEach(k => {
+        k.usage = 0
+        k.errorCount = 0
+        k.isActive = true
+      })
+
+      const resetKey = elevenLabsKeys.find(k => k.key.length > 0)
+      return resetKey ? resetKey.key : null
+    }
+
+    return null
+  }
+
+  // Отметить ключ как проблемный
+  const markElevenLabsKeyAsProblematic = (apiKey: string, error: string) => {
+    const keyInfo = elevenLabsKeys.find(k => k.key === apiKey)
+    if (keyInfo) {
+      keyInfo.errorCount++
+      if (keyInfo.errorCount >= 3) {
+        keyInfo.isActive = false
+        console.log(`❌ ElevenLabs ключ отключен после 3 ошибок: ${apiKey.substring(0, 8)}...`)
+      }
+      console.log(`⚠️ ElevenLabs ошибка (${keyInfo.errorCount}/3): ${error}`)
+    }
+  }
+
+  // Увеличить счетчик использования ключа
+  const updateElevenLabsUsage = (apiKey: string, charactersUsed: number) => {
+    const keyInfo = elevenLabsKeys.find(k => k.key === apiKey)
+    if (keyInfo) {
+      keyInfo.usage += charactersUsed
+      console.log(`📊 ElevenLabs использование: ${keyInfo.usage}/${keyInfo.limit} символов`)
+
+      if (keyInfo.usage >= keyInfo.limit) {
+        keyInfo.isActive = false
+        console.log(`🚫 ElevenLabs ключ исчерпал лимит: ${apiKey.substring(0, 8)}...`)
+      }
+    }
+  }
+
+  // Функция для ElevenLabs TTS (премиум качество)
+  const speakWithElevenLabs = async (text: string): Promise<boolean> => {
+    const apiKey = getNextAvailableElevenLabsKey()
+
+    if (!apiKey) {
+      console.log('❌ Нет доступных ElevenLabs ключей, fallback на браузерный TTS')
+      return false
+    }
+
+    try {
+      console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
+
+      // Используем качественный мужской голос ElevenLabs
+      const voiceId = 'pNInz6obpgDQGcFmaJgB' // Adam (мужской голос)
+
+      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'audio/mpeg',
+          'Content-Type': 'application/json',
+          'xi-api-key': apiKey
+        },
+        body: JSON.stringify({
+          text: text,
+          model_id: 'eleven_monolingual_v1',
+          voice_settings: {
+            stability: 0.75,
+            similarity_boost: 0.75,
+            style: 0.0,
+            use_speaker_boost: true
+          }
+        })
+      })
+
+      if (response.ok) {
+        const audioBlob = await response.blob()
+        const audioUrl = URL.createObjectURL(audioBlob)
+        const audio = new Audio(audioUrl)
+
+        audio.onended = () => {
+          URL.revokeObjectURL(audioUrl)
+          console.log('✅ ElevenLabs TTS завершен')
+        }
+
+        audio.onerror = () => {
+          console.error('❌ Ошибка воспроизведения ElevenLabs аудио')
+          URL.revokeObjectURL(audioUrl)
+        }
+
+        await audio.play()
+
+        // Обновляем счетчик использования
+        updateElevenLabsUsage(apiKey, text.length)
+
+        console.log('🎵 ElevenLabs TTS успешно воспроизведен')
+        return true
+
+      } else {
+        let errorMessage = 'Unknown error'
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.detail?.message || errorData.message || `HTTP ${response.status}`
+        } catch {
+          errorMessage = `HTTP ${response.status}`
+        }
+
+        markElevenLabsKeyAsProblematic(apiKey, errorMessage)
+
+        if (response.status === 401) {
+          console.log('🔑 Неверный ключ ElevenLabs, пробуем следующий...')
+        } else if (response.status === 429) {
+          console.log('⏰ Лимит ElevenLabs превышен, пробуем следующий ключ...')
+        }
+
+        return false
+      }
+
+    } catch (error) {
+      console.error('💥 ElevenLabs ошибка сети:', error)
+      markElevenLabsKeyAsProblematic(apiKey, error instanceof Error ? error.message : 'Network error')
+      return false
+    }
+  }
+
+  // Функция для озвучивания текста (теперь с ElevenLabs + fallback)
+  const speakText = async (text: string) => {
+    if (voiceMode !== 'voice') return
+
+    // Останавливаем предыдущее воспроизведение
+    if (speechSynthesis) {
+      speechSynthesis.cancel()
+    }
+
+    // Очищаем ��екст
+    const cleanText = text
+      .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
+      .replace(/[•·]/g, '')
+      .replace(/\n+/g, '. ')
+      .trim()
+
+    if (!cleanText) return
+
+    console.log('🎵 === НАЧИНАЕМ ОЗВУЧИВАНИЕ ===')
+    console.log(`📝 Текст: ${cleanText.substring(0, 50)}...`)
+
+    // ЭТАП 1: Пробуем ElevenLabs (премиум качество)
+    try {
+      console.log('🔥 ЭТАП 1: ELEVENLABS TTS')
+      const elevenLabsSuccess = await speakWithElevenLabs(cleanText)
+
+      if (elevenLabsSuccess) {
+        console.log('✅ === SUCCESS VIA ELEVENLABS ===')
+        return
+      }
+    } catch (error) {
+      console.error('💥 ElevenLabs критическая ошибка:', error)
+    }
+
+    // ЭТАП 2: Fallback на браузерный TTS
+    console.log('📱 ЭТАП 2: BROWSER TTS FALLBACK')
+
+    if (speechSynthesis) {
+      // Останавливаем предыдущее воспроизведение
+      speechSynthesis.cancel()
+
+      // Ждем немного, чтоб�� cancel успел отработать
+      setTimeout(() => {
+        // Очищаем текст от эмодз�� и специальных символов для лучшего произношения
+        const cleanText = text
+          .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
+          .replace(/[��·]/g, '')
+          .replace(/\n+/g, '. ') // Заменяем переносы на паузы
+          .trim()
+
+        if (cleanText) {
+          const utterance = new SpeechSynthesisUtterance(cleanText)
+
+          // Получаем лучший голос
+          const selectedVoice = getBestMaleVoice()
+
+          if (selectedVoice) {
+            utterance.voice = selectedVoice
+            console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
+          }
+
+          // Настройки для более естественного звучания (менее роботично)
+          utterance.lang = 'ru-RU'
+          utterance.rate = 1.0   // Нормальная скорость (не замедленная)
+          utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
+          utterance.volume = 0.8 // Комфортная громкость
+
+          // Добавляем обр��ботчики событий
+          utterance.onstart = () => {
+            console.log('🎵 Начало ��звучивания')
+          }
+
+          utterance.onend = () => {
+            console.log('✅ Озвучивание завершено')
+          }
+
+          utterance.onerror = (event) => {
+            console.error('❌ Ошибка озвучивания:', event.error)
+          }
+
+          speechSynthesis.speak(utterance)
+        }
+      }, 100)
+    }
+  }
+
+  // Переключение режима ��олоса
+  const toggleVoiceMode = () => {
+    const newMode = voiceMode === 'text' ? 'voice' : 'text'
+    setVoiceMode(newMode)
+
+    // Тестируем голос при включении
+    if (newMode === 'voice') {
+      setTimeout(() => {
+        const voices = speechSynthesis.getVoices()
+        const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
+
+        if (russianVoices.length === 0) {
+          speakText('Внимание! Русские голоса не найдены. Качество речи может быть низким.')
+        } else {
+          speakText('Голосовой режим включен. Если голос звучит роботично, это ограничение браузера.')
+        }
+      }, 300)
+    }
+  }
+
+  // Функция для установки ключей ElevenLabs
+  const setElevenLabsKeys = (keys: string[]) => {
+    keys.forEach((key, index) => {
+      if (index < elevenLabsKeys.length && key.trim()) {
+        elevenLabsKeys[index].key = key.trim()
+        elevenLabsKeys[index].isActive = true
+        elevenLabsKeys[index].usage = 0
+        elevenLabsKeys[index].errorCount = 0
+      }
+    })
+
+    const validKeys = elevenLabsKeys.filter(k => k.key.length > 0)
+    console.log(`🔑 Установлено ElevenLabs ключей: ${validKeys.length}`)
+    console.log('🎤 ElevenLabs TTS активирован!')
+  }
+
+  // Функция для тестирования голоса
+  const testVoice = () => {
+    console.log('🧪 Тестирование голоса JARVIS...')
+    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
+    speakText(testPhrase)
   }
 
   const scrollToBottom = () => {
@@ -160,7 +602,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return 'Извините, произошл�� ошибка. Попр��буйте переформулировать вопро��. 🤔'
       }
 
-      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
+      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то др��гое! 🤷‍♂️'
 
     } catch (error) {
       console.error('Error generating response:', error)
@@ -168,7 +610,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Эффект печатания для thinking
+  // Эффект печ��тания для thinking
   const typeText = async (text: string, speed: number = 30) => {
     return new Promise<void>((resolve) => {
       let i = 0
@@ -191,14 +633,14 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       const words = lowerMessage.split(' ')
 
       // Анализируем тип вопроса
-      const isQuestion = message.includes('?') || words.some(w => ['как', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
+      const isQuestion = message.includes('?') || words.some(w => ['��ак', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
       const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
 
       if (isGreeting) {
         return [
-          'Пользователь поздоровался',
+          'Пользовател�� поздоровался',
           'Отвечу дружелюбно и предложу помощь'
         ]
       }
@@ -223,13 +665,13 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Анализирую суть вопроса',
           'Структурирую ответ для максимальной пользы',
-          'Добавлю примеры и практические советы'
+          'Добавлю п��имеры и практические советы'
         ]
       }
 
       // Для остальных случаев
       return [
-        'Обрабатываю запрос',
+        'Обрабатыва�� запрос',
         'Формирую наиболее полезный ответ'
       ]
     }
@@ -270,7 +712,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           : msg
       ))
 
-      // Короткая пауза между мыслями
+      // Короткая пауза ме��ду мыслями
       if (i < thinkingSteps.length - 1) {
         await new Promise(resolve => setTimeout(resolve, 300))
       }
@@ -317,7 +759,12 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       setMessages(prev => [...prev, botMessage])
 
-      // Сох��аняем ��заимодействие для обучения
+      // Озвучиваем ответ бота если включен голосовой режим
+      if (voiceMode === 'voice') {
+        setTimeout(() => speakText(response), 500) // Небольшая задержка для плавности
+      }
+
+      // Сохраняем взаимодействие для обучения
       await saveInteractionToLearning(userMessage, response, userMessageId)
 
     } catch (error) {
@@ -399,7 +846,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консу��ьтант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -428,6 +875,59 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             </div>
           </div>
           <div className="header-actions">
+            <button
+              className={`voice-mode-btn ${voiceMode === 'voice' ? 'active' : ''}`}
+              onClick={toggleVoiceMode}
+              title={`Голосовой режим: ${voiceMode === 'voice' ? 'ВКЛ' : 'ВЫКЛ'}`}
+            >
+              {voiceMode === 'voice' ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="m19 10-2 2-2-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M5 10v2a7 7 0 0 0 14 0v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M5 10v2a7 7 0 0 0 14 0v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="m17 14 2-2-2-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )}
+            </button>
+            {voiceMode === 'voice' && (
+              <>
+                <button
+                  className="test-voice-btn"
+                  onClick={testVoice}
+                  title="Тест голоса"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <polygon points="11 5,6 9,2 9,2 15,6 15,11 19,11 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <button
+                  className="setup-elevenlabs-btn"
+                  onClick={() => {
+                    const keys = prompt('Введите ElevenLabs ключи через запятую:')
+                    if (keys) {
+                      setElevenLabsKeys(keys.split(','))
+                    }
+                  }}
+                  title="Настроить ElevenLabs ключи"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 15l-3-3h6l-3 3z" fill="currentColor"/>
+                    <path d="M17 8V7a5 5 0 0 0-10 0v1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                </button>
+              </>
+            )}
             <button className="clear-chat-btn" onClick={clearChat} title="Очистить чат">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -521,7 +1021,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Напишите сообщение..."
+              placeholder="Напи��ите сообщение..."
               className="jarvis-message-input"
               rows={1}
               disabled={isTyping}
@@ -549,6 +1049,33 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   </svg>
                 )}
               </button>
+
+              {recognition && (
+                <button
+                  className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
+                  onClick={isListening ? stopListening : startListening}
+                  disabled={isTyping}
+                  title={isListening ? "Остановить запись" : "Голосовой ввод"}
+                >
+                  {isListening ? (
+                    <div className="mic-recording">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" fill="currentColor"/>
+                        <path d="M5 10v2a7 7 0 0 0 14 0v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M5 10v2a7 7 0 0 0 14 0v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                      <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                  )}
+                </button>
+              )}
 
               <button
                 className={`jarvis-send-btn ${!inputText.trim() || isTyping ? 'disabled' : ''}`}
@@ -655,6 +1182,9 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           gap: 8px;
         }
 
+        .voice-mode-btn,
+        .test-voice-btn,
+        .setup-elevenlabs-btn,
         .clear-chat-btn,
         .close-btn {
           background: none;
@@ -669,21 +1199,80 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           justify-content: center;
         }
 
+        .voice-mode-btn:hover,
+        .test-voice-btn:hover,
+        .setup-elevenlabs-btn:hover,
         .clear-chat-btn:hover,
         .close-btn:hover {
           background: #f0f0f0;
           color: #000000;
         }
 
+        .voice-mode-btn.active {
+          background: #10b981;
+          color: #ffffff;
+        }
+
+        .voice-mode-btn.active:hover {
+          background: #059669;
+        }
+
+        .test-voice-btn {
+          color: #3b82f6;
+        }
+
+        .test-voice-btn:hover {
+          background: #dbeafe;
+          color: #1d4ed8;
+        }
+
+        .setup-elevenlabs-btn {
+          color: #f59e0b;
+        }
+
+        .setup-elevenlabs-btn:hover {
+          background: #fef3c7;
+          color: #d97706;
+        }
+
+        .dark-theme .voice-mode-btn,
+        .dark-theme .test-voice-btn,
+        .dark-theme .setup-elevenlabs-btn,
         .dark-theme .clear-chat-btn,
         .dark-theme .close-btn {
           color: #cccccc;
         }
 
+        .dark-theme .voice-mode-btn:hover,
+        .dark-theme .test-voice-btn:hover,
+        .dark-theme .setup-elevenlabs-btn:hover,
         .dark-theme .clear-chat-btn:hover,
         .dark-theme .close-btn:hover {
           background: #404040;
           color: #ffffff;
+        }
+
+        .dark-theme .voice-mode-btn.active {
+          background: #10b981;
+          color: #ffffff;
+        }
+
+        .dark-theme .test-voice-btn {
+          color: #60a5fa;
+        }
+
+        .dark-theme .test-voice-btn:hover {
+          background: #1e3a8a;
+          color: #93c5fd;
+        }
+
+        .dark-theme .setup-elevenlabs-btn {
+          color: #fbbf24;
+        }
+
+        .dark-theme .setup-elevenlabs-btn:hover {
+          background: #451a03;
+          color: #fed7aa;
         }
 
         .jarvis-chat-messages {
@@ -867,7 +1456,8 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           gap: 8px;
         }
 
-        .jarvis-attachment-btn {
+        .jarvis-attachment-btn,
+        .jarvis-mic-btn {
           background: none;
           border: none;
           color: #666666;
@@ -882,7 +1472,8 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           height: 36px;
         }
 
-        .jarvis-attachment-btn:hover {
+        .jarvis-attachment-btn:hover,
+        .jarvis-mic-btn:hover {
           background: #f0f0f0;
           color: #007bff;
         }
@@ -892,12 +1483,56 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           cursor: not-allowed;
         }
 
-        .dark-theme .jarvis-attachment-btn {
+        .jarvis-mic-btn.listening {
+          background: #ef4444;
+          color: #ffffff;
+          animation: pulse 2s infinite;
+        }
+
+        .jarvis-mic-btn.listening:hover {
+          background: #dc2626;
+        }
+
+        @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+          100% { transform: scale(1); }
+        }
+
+        .mic-recording {
+          position: relative;
+        }
+
+        .mic-recording::after {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+          border: 2px solid #ef4444;
+          border-radius: 50%;
+          animation: recordingRing 1.5s infinite;
+        }
+
+        @keyframes recordingRing {
+          0% { transform: scale(1); opacity: 1; }
+          100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .dark-theme .jarvis-attachment-btn,
+        .dark-theme .jarvis-mic-btn {
           color: #cccccc;
         }
 
-        .dark-theme .jarvis-attachment-btn:hover {
+        .dark-theme .jarvis-attachment-btn:hover,
+        .dark-theme .jarvis-mic-btn:hover {
           background: #555555;
+          color: #ffffff;
+        }
+
+        .dark-theme .jarvis-mic-btn.listening {
+          background: #ef4444;
           color: #ffffff;
         }
 
