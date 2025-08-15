@@ -4,6 +4,7 @@ export interface Message {
   isUser: boolean
   timestamp: Date
   isThinking?: boolean
+  isThinkingHeader?: boolean
 }
 
 export interface ChatSession {
