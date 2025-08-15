@@ -348,7 +348,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         <div className="jarvis-chat-messages">
           {messages.map((message) => (
-            <div key={message.id} className={`message ${message.isUser ? 'user-message' : 'bot-message'}`}>
+            <div key={message.id} className={`message ${message.isUser ? 'user-message' : 'bot-message'} ${message.isThinking ? 'thinking-message' : ''}`}>
               {!message.isUser && (
                 <div className="message-avatar">
                   <img
@@ -361,20 +361,23 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               )}
               <div className="message-content">
                 <div
-                  className="message-text"
+                  className={`message-text ${message.isThinking ? 'thinking-text' : ''}`}
                   style={{ whiteSpace: 'pre-wrap' }}
                 >
+                  {message.isThinking && <span className="thinking-icon">🧠</span>}
                   {message.text}
                 </div>
-                <div className="message-time">
-                  {message.timestamp.toLocaleTimeString('ru-RU', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                  })}
-                </div>
+                {!message.isThinking && (
+                  <div className="message-time">
+                    {message.timestamp.toLocaleTimeString('ru-RU', {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </div>
+                )}
               </div>
-              {!message.isUser && interactionIds[message.id] && (
-                <MessageFeedback 
+              {!message.isUser && !message.isThinking && interactionIds[message.id] && (
+                <MessageFeedback
                   interactionId={interactionIds[message.id]}
                   messageId={message.id}
                 />
