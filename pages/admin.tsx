@@ -446,7 +446,7 @@ export default function AdminPanel() {
                       Статус: {getStatusText(selectedOrder.status)}
                     </p>
                     <p className="updated-date">
-                      О��новлено: {new Date(selectedOrder.updatedAt).toLocaleString('ru-RU')}
+                      Обновлено: {new Date(selectedOrder.updatedAt).toLocaleString('ru-RU')}
                     </p>
                   </div>
                 )}
@@ -609,14 +609,27 @@ export default function AdminPanel() {
         .order-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
+          align-items: flex-start;
           margin-bottom: 12px;
+        }
+
+        .order-ids {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
         }
 
         .order-id {
           font-family: monospace;
           font-weight: 600;
           color: #000000;
+        }
+
+        .user-id {
+          font-family: monospace;
+          font-size: 11px;
+          color: #666666;
+          font-weight: 500;
         }
 
         .order-status {
