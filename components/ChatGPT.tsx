@@ -82,7 +82,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
           console.log('🎤 Русские голоса загружены:', russianVoices.length)
-          russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
+          russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Лок��льный]' : '[Онлайн]'}`))
         }
 
         // Попытка 1: загрузка сразу
@@ -210,12 +210,12 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       'Yuri'
     ]
 
-    for (const maleName of maleVoiceNames) {
+    for (const premiumVoice of premiumMaleVoices) {
       selectedVoice = russianVoices.find(v =>
-        v.name.toLowerCase().includes(maleName.toLowerCase())
+        v.name.toLowerCase().includes(premiumVoice.toLowerCase())
       )
       if (selectedVoice) {
-        console.log('✅ Найден мужской голос:', selectedVoice.name)
+        console.log('✅ Найден качественный голос:', selectedVoice.name)
         break
       }
     }
@@ -438,7 +438,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isPricing) {
         return [
           'Запрос о ценах и тарифах',
-          'Проанализирую потребности пользов��теля',
+          'Проанализирую потребности пользователя',
           'Подбер�� оптимальный тарифный план'
         ]
       }
@@ -636,7 +636,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПо��огу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -668,7 +668,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             <button
               className={`voice-mode-btn ${voiceMode === 'voice' ? 'active' : ''}`}
               onClick={toggleVoiceMode}
-              title={`Голосов��й режим: ${voiceMode === 'voice' ? 'ВКЛ' : 'ВЫКЛ'}`}
+              title={`Голосовой режим: ${voiceMode === 'voice' ? 'ВКЛ' : 'ВЫКЛ'}`}
             >
               {voiceMode === 'voice' ? (
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -794,7 +794,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Напи����те сообщение..."
+              placeholder="Напи��ите сообщение..."
               className="jarvis-message-input"
               rows={1}
               disabled={isTyping}
