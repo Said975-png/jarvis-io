@@ -30,7 +30,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
 
-  // ElevenLabs ключи (8 ключей с разных аккаунтов для ротации)
+  // ElevenLabs ключи (8 ключей с разных аккаунт��в для ротации)
   const [elevenLabsKeys] = useState([
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
@@ -122,7 +122,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }, [])
 
-  // Функция для сохранения взаимодействия �� базе знаний
+  // Функция для сохранения взаимодействия в базе знаний
   const saveInteractionToLearning = async (userMessage: string, botResponse: string, userMessageId: string) => {
     try {
       console.log('=== SAVING INTERACTION TO LEARNING ===')
@@ -154,7 +154,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (response.ok) {
         const data = await response.json()
         if (data.success) {
-          // Сохраняем ID вз��имодействия для связи с сообщением
+          // Сохран��ем ID вз��имодействия для связи с сообщением
           setInteractionIds(prev => ({
             ...prev,
             [userMessageId]: data.data.interactionId
@@ -252,7 +252,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     }
 
-    // ПРИОРИТЕТ 3: Любой русский голос
+    // ПРИ��РИТЕТ 3: Любой русский голос
     if (!selectedVoice) {
       selectedVoice = russianVoices.find(v => v.localService) || russianVoices[0]
       if (selectedVoice) {
@@ -403,7 +403,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для ��звучивания текста (теперь с ElevenLabs + fallback)
+  // Функция для озвучивания текста (теперь с ElevenLabs + fallback)
   const speakText = async (text: string) => {
     if (voiceMode !== 'voice') return
 
@@ -509,10 +509,26 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
+  // Функция для установки ключей ElevenLabs
+  const setElevenLabsKeys = (keys: string[]) => {
+    keys.forEach((key, index) => {
+      if (index < elevenLabsKeys.length && key.trim()) {
+        elevenLabsKeys[index].key = key.trim()
+        elevenLabsKeys[index].isActive = true
+        elevenLabsKeys[index].usage = 0
+        elevenLabsKeys[index].errorCount = 0
+      }
+    })
+
+    const validKeys = elevenLabsKeys.filter(k => k.key.length > 0)
+    console.log(`🔑 Установлено ElevenLabs ключей: ${validKeys.length}`)
+    console.log('🎤 ElevenLabs TTS активирован!')
+  }
+
   // Функция для тестирования голоса
   const testVoice = () => {
     console.log('🧪 Тестирование голоса JARVIS...')
-    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового мужского голоса. Звучу ли я естественно и без акцента?'
+    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
     speakText(testPhrase)
   }
 
@@ -632,7 +648,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isPricing) {
         return [
           'Запрос о ценах и тарифах',
-          'П��оанализирую потребности пользователя',
+          'Проанализирую потребности пользователя',
           'Подбер�� оптимальный тарифный план'
         ]
       }
@@ -813,7 +829,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       const errorMessage: Message = {
         id: Date.now().toString(),
-        text: '��ши��ка при загрузке файла. Попробуйте позже. 😔',
+        text: '��ши��ка при ��агрузке файла. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
