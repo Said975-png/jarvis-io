@@ -77,7 +77,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           window.speechSynthesis.cancel()
         }
 
-        // Инициализируем голоса (некотор��е браузеры загружают их асинхронно)
+        // Инициализируем голоса (некоторые браузеры загружают их асинхронно)
         const loadVoices = () => {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
@@ -198,16 +198,16 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
     console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
 
-    // ПРИОРИТЕТ 1: Специфичные мужские голоса
-    const maleVoiceNames = [
+    // ПРИОРИТЕТ 1: Самые качественные мужские голоса (менее роботичные)
+    const premiumMaleVoices = [
+      'Google русский (Россия)', // Самый качественный если есть
+      'Microsoft Pavel - Russian (Russia)', // MS Neural голос
+      'Google русский',
+      'Pavel (Enhanced)', // Если есть улучшенная версия
+      'Yuri (Natural)', // Естественный вариант
       'Microsoft Pavel',
       'Pavel',
-      'Yuri',
-      'Maxim',
-      'Dmitri',
-      'Aleksandr',
-      'Google русский мужской',
-      'Russian Male'
+      'Yuri'
     ]
 
     for (const maleName of maleVoiceNames) {
@@ -277,7 +277,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
           }
 
-          // Настройки для бол��е естественного звучания (менее роботично)
+          // Настройки для более естественного звучания (менее роботично)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скорость (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
@@ -423,7 +423,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       const words = lowerMessage.split(' ')
 
       // Анализируем тип вопроса
-      const isQuestion = message.includes('?') || words.some(w => ['как', 'что', 'где', 'когда', 'по��ему', 'зачем', 'кто'].includes(w))
+      const isQuestion = message.includes('?') || words.some(w => ['как', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
       const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
@@ -438,7 +438,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isPricing) {
         return [
           'Запрос о ценах и тарифах',
-          'Проанализирую потребности пользователя',
+          'Проанализирую потребности пользов��теля',
           'Подбер�� оптимальный тарифный план'
         ]
       }
@@ -607,7 +607,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и �� пос��араюсь помочь! 📝`,
+        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
@@ -636,7 +636,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПо��огу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -668,7 +668,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             <button
               className={`voice-mode-btn ${voiceMode === 'voice' ? 'active' : ''}`}
               onClick={toggleVoiceMode}
-              title={`Голосовой режим: ${voiceMode === 'voice' ? 'ВКЛ' : 'ВЫКЛ'}`}
+              title={`Голосов��й режим: ${voiceMode === 'voice' ? 'ВКЛ' : 'ВЫКЛ'}`}
             >
               {voiceMode === 'voice' ? (
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -794,7 +794,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Напи��ите сообщение..."
+              placeholder="Напи����те сообщение..."
               className="jarvis-message-input"
               rows={1}
               disabled={isTyping}
