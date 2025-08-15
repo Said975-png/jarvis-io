@@ -30,7 +30,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
 
-  // ElevenLabs ключи (8 ключей с разн��х аккаунтов для ротации)
+  // ElevenLabs ключи (8 ключей с разных аккаунтов для ротации)
   const [elevenLabsKeys] = useState([
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
@@ -464,7 +464,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
           }
 
-          // Настройки для бо��ее естественного звучания (менее роботично)
+          // Настройки для более естественного звучания (менее роботично)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скорость (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
@@ -528,7 +528,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Функция для тестирования голоса
   const testVoice = () => {
     console.log('🧪 Тестирование голоса JARVIS...')
-    const testPhrase = '��ривет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
+    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
     speakText(testPhrase)
   }
 
@@ -747,7 +747,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Удаляем блок thinking перед показом ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
-      // Небольшая пауза перед показом отве��а
+      // Небольшая пауза перед показом ответа
       await new Promise(resolve => setTimeout(resolve, 300))
 
       const botMessage: Message = {
@@ -1224,6 +1224,15 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         .test-voice-btn:hover {
           background: #dbeafe;
           color: #1d4ed8;
+        }
+
+        .setup-elevenlabs-btn {
+          color: #f59e0b;
+        }
+
+        .setup-elevenlabs-btn:hover {
+          background: #fef3c7;
+          color: #d97706;
         }
 
         .dark-theme .voice-mode-btn,
