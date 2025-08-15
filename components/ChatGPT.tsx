@@ -262,7 +262,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     setIsUploadingFile(true)
 
     try {
-      // Просто добавляем сообщение о загруженном файле
+      // Просто добавляем сообщение о загр��женном файле
       const fileMessage: Message = {
         id: Date.now().toString(),
         text: `📎 Файл загружен: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`,
@@ -864,6 +864,50 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .dark-theme .jarvis-send-btn.disabled {
           background: #555555;
+        }
+
+        /* Стили для сообщений мышления */
+        .thinking-message {
+          opacity: 0.8;
+        }
+
+        .thinking-text {
+          background: linear-gradient(90deg, #f0f8ff, #e6f3ff, #f0f8ff) !important;
+          background-size: 200% 100% !important;
+          animation: thinkingGlow 2s ease-in-out infinite !important;
+          border: 1px solid #007bff !important;
+          color: #0056b3 !important;
+          font-style: italic;
+        }
+
+        .dark-theme .thinking-text {
+          background: linear-gradient(90deg, #1a2a3a, #2a3a4a, #1a2a3a) !important;
+          background-size: 200% 100% !important;
+          border: 1px solid #0056b3 !important;
+          color: #4dabf7 !important;
+        }
+
+        .thinking-icon {
+          margin-right: 8px;
+          animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes thinkingGlow {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-3px);
+          }
         }
 
       `}</style>
