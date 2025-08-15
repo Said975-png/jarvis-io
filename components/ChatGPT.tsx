@@ -212,7 +212,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     // ПРИОРИТЕТ 1: Самые качественные муж��кие голоса (менее роботичные)
     const premiumMaleVoices = [
-      'Google русский (Россия)', // Самый качественный если есть
+      'Google русский (Россия)', // Самый к��чественный если есть
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
       'Google русский',
       'Pavel (Enhanced)', // Если есть улучшенная версия
@@ -278,7 +278,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     // Если все ключи исчерпали лимит, сбрасываем счетчики (новый месяц)
     const keysWithLimitReached = elevenLabsKeys.filter(k => k.usage >= k.limit)
     if (keysWithLimitReached.length > 0) {
-      console.log('🔄 Сброс лимитов ElevenLabs ключей (новый месяц)')
+      console.log('🔄 Сброс лимитов ElevenLabs ключей (н��вый месяц)')
       keysWithLimitReached.forEach(k => {
         k.usage = 0
         k.errorCount = 0
@@ -602,7 +602,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return 'Извините, произошл�� ошибка. Попр��буйте переформулировать вопро��. 🤔'
       }
 
-      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то др��гое! 🤷‍♂️'
+      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте ��просить что-то др��гое! 🤷‍♂️'
 
     } catch (error) {
       console.error('Error generating response:', error)
@@ -663,7 +663,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isQuestion) {
         return [
-          'Анализирую суть вопроса',
+          'Анализи��ую суть вопроса',
           'Структурирую ответ для максимальной пользы',
           'Добавлю п��имеры и практические советы'
         ]
@@ -1237,6 +1237,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .dark-theme .voice-mode-btn,
         .dark-theme .test-voice-btn,
+        .dark-theme .setup-elevenlabs-btn,
         .dark-theme .clear-chat-btn,
         .dark-theme .close-btn {
           color: #cccccc;
