@@ -175,7 +175,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (lowerMessage.includes('привет') || lowerMessage.includes('hello')) {
         return [
           'Пользователь поздоровался. Нужно ответить дружелюбно и спросить, чем могу помочь.',
-          'Это пр��стое приветствие, отвечу коротко и тепло.'
+          'Это простое приветствие, отвечу коротко и тепло.'
         ]
       }
 
@@ -289,14 +289,17 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error in handleSendMessage:', error)
-      
+
+      // Удаляем блок thinking при ошибке
+      setMessages(prev => prev.filter(msg => !msg.isThinking))
+
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: 'Извините, произошла ошибка. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
-      
+
       setMessages(prev => [...prev, errorMessage])
     } finally {
       setIsTyping(false)
@@ -386,7 +389,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               />
             </div>
             <div className="header-text">
-              <h3>ДЖАРВИС</h3>
+              <h3>��ЖАРВИС</h3>
               <span className="status">AI Помощник Онлайн</span>
             </div>
           </div>
