@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услу��и, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }
@@ -129,7 +129,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     } catch (error) {
       console.error('Error saving interaction for learning:', error)
       // Не блокируем пользовательский ��нтерфейс при ошибках сохранения
-      // Это не к��итично для работы чата
+      // Это не к��итично дл�� работы чата
     }
   }
 
@@ -338,7 +338,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при г��нерации ответа. Проверьте подключение к интернету и ��опробуйте снова. 🌐'
+      return 'Произошла ошибка при г��нерации ответа. Проверьт�� подключение к интернету и ��опробуйте снова. 🌐'
     }
   }
 
@@ -367,7 +367,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Анализируем тип вопроса
       const isQuestion = message.includes('?') || words.some(w => ['как', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
-      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
+      const isPricing = words.some(w => ['цена', 'стои��ость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
 
       if (isGreeting) {
@@ -491,7 +491,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       setMessages(prev => [...prev, botMessage])
 
-      // Озвучиваем ответ бота если включен голосовой режим
+      // Озвучиваем ответ бота если включен го��осовой режим
       if (voiceMode === 'voice') {
         setTimeout(() => speakText(response), 500) // Небольшая задержка для плавности
       }
@@ -610,7 +610,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             <button
               className={`voice-mode-btn ${voiceMode === 'voice' ? 'active' : ''}`}
               onClick={toggleVoiceMode}
-              title={`Голосовой р��жим: ${voiceMode === 'voice' ? 'ВКЛ' : 'ВЫКЛ'}`}
+              title={`Голосовой режим: ${voiceMode === 'voice' ? 'ВКЛ' : 'ВЫКЛ'}`}
             >
               {voiceMode === 'voice' ? (
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -736,7 +736,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Напи��ите соо��щение..."
+              placeholder="Напи��ите сообщение..."
               className="jarvis-message-input"
               rows={1}
               disabled={isTyping}
@@ -898,6 +898,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         .voice-mode-btn,
+        .test-voice-btn,
         .clear-chat-btn,
         .close-btn {
           background: none;
