@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useCart } from '../contexts/CartContext'
 import { useOrders, OrderFormData } from '../contexts/OrderContext'
 import { useAuth } from '../contexts/AuthContext'
@@ -116,7 +116,7 @@ export default function Checkout({ onClose, onSuccess }: CheckoutProps) {
               <h3>Детали проекта</h3>
               
               <div className="form-group">
-                <label htmlFor="description">Описан��е сайта *</label>
+                <label htmlFor="description">Описание сайта *</label>
                 <textarea
                   id="description"
                   value={formData.description}
