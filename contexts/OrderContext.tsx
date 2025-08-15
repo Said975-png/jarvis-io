@@ -65,14 +65,22 @@ export function OrderProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const createOrder = async (items: CartItem[], formData: OrderFormData, userId?: string): Promise<Order> => {
+    console.log('=== OrderContext: createOrder ===')
+    console.log('Received userId:', userId)
+    console.log('Items:', items)
+    console.log('FormData:', formData)
+
     const totalPrice = items.reduce((total, item) => {
       const price = parseFloat(item.price.replace(/\D/g, '')) || 0
       return total + (price * item.quantity)
     }, 0)
 
+    const finalUserId = userId || 'guest'
+    console.log('Final userId будет:', finalUserId)
+
     const newOrder: Order = {
       id: `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      userId: userId || 'guest',
+      userId: finalUserId,
       items,
       formData,
       totalPrice,
@@ -80,6 +88,8 @@ export function OrderProvider({ children }: { children: ReactNode }) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     }
+
+    console.log('Создаваемый заказ:', newOrder)
 
     try {
       // Отправляем заказ в API

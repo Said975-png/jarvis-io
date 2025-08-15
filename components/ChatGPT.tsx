@@ -13,11 +13,12 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите поговорить?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }
   ])
+  const [currentThinkingText, setCurrentThinkingText] = useState('')
   const [inputText, setInputText] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [isUploadingFile, setIsUploadingFile] = useState(false)
@@ -163,61 +164,83 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при генерации ответа. Проверьте подключение к интернету и ��опробуйте снова. 🌐'
+      return 'Произошла ошибка при г��нерации ответа. Проверьте подключение к интернету и ��опробуйте снова. 🌐'
     }
   }
 
+  // Эффект печатания для thinking
+  const typeText = async (text: string, speed: number = 30) => {
+    return new Promise<void>((resolve) => {
+      let i = 0
+      const timer = setInterval(() => {
+        if (i < text.length) {
+          setCurrentThinkingText(prev => prev + text.charAt(i))
+          i++
+        } else {
+          clearInterval(timer)
+          resolve()
+        }
+      }, speed)
+    })
+  }
+
   const showThinkingProcess = async (userMessage: string) => {
-    // Генерируем реалистичные мысли на основе вопроса пользователя
+    // Более умная генерация мыслей на основе анализа вопроса
     const generateThinking = (message: string) => {
       const lowerMessage = message.toLowerCase()
+      const words = lowerMessage.split(' ')
 
-      if (lowerMessage.includes('привет') || lowerMessage.includes('hello')) {
+      // Анализируем тип вопроса
+      const isQuestion = message.includes('?') || words.some(w => ['как', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
+      const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
+      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
+      const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
+
+      if (isGreeting) {
         return [
-          'Пользователь поздоровался. Нужно ответить дружелюбно и спросить, чем могу помочь.',
-          'Это простое приветствие, отвечу коротко и тепло.'
+          'Пользователь поздоровался',
+          'Отвечу дружелюбно и предложу помощь'
         ]
       }
 
-      if (lowerMessage.includes('сайт') || lowerMessage.includes('веб')) {
+      if (isPricing) {
         return [
-          'Вопрос о веб-разработке. Проанализирую, что именно нужно пользователю.',
-          'Нужно предложить конкретные решения и уточнить технические требования.',
-          'Расскажу о наших возможностях в веб-разработке и тарифах.'
+          'Запрос о ценах и тарифах',
+          'Проанализирую потребности пользователя',
+          'Подбер�� оптимальный тарифный план'
         ]
       }
 
-      if (lowerMessage.includes('цена') || lowerMessage.includes('стоимость') || lowerMessage.includes('тариф')) {
+      if (isTechnical) {
         return [
-          'Пользователь интересуется ценами. Проверю наши актуальные тарифы.',
-          'Нужно объяснить различия между планами Basic, Pro и Max.',
-          'Подберу оптимальный план исходя из потребностей пользователя.'
+          'Технический вопрос - анализирую детали',
+          'Подготовлю практические решения',
+          'Учту лучшие практики разработки'
         ]
       }
 
-      if (lowerMessage.includes('как') || lowerMessage.includes('что') || lowerMessage.includes('?')) {
+      if (isQuestion) {
         return [
-          'Это вопрос требует детального анализа. Разберу по частям.',
-          'Нужно дать исчерпывающий ответ с примерами и объяснениями.',
-          'Подумаю о практических советах, которые будут полезны.'
+          'Анализирую суть вопроса',
+          'Структурирую ответ для максимальной пользы',
+          'Добавлю примеры и практические советы'
         ]
       }
 
-      // Общие мысли для любых других вопросов
+      // Для остальных случаев
       return [
-        'Интересный вопрос. Подумаю, как лучше на него ответить.',
-        'Проанализирую контекст и дам максимально полезный ответ.',
-        'Нужно структурировать информацию и подать её понятно.'
+        'Обрабатываю запрос',
+        'Формирую наиболее полезный ответ'
       ]
     }
 
     const thinkingSteps = generateThinking(userMessage)
 
-    // Создаем единый блок мышления с заголовком
+    // Создаем блок мышления
     const thinkingBlockId = `thinking_block_${Date.now()}`
     const initialThinkingMessage: Message = {
       id: thinkingBlockId,
-      text: 'Thinking',
+      text: 'Thinking...',
       isUser: false,
       timestamp: new Date(),
       isThinking: true,
@@ -225,26 +248,36 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
 
     setMessages(prev => [...prev, initialThinkingMessage])
-    await new Promise(resolve => setTimeout(resolve, 500))
+    setCurrentThinkingText('')
+    await new Promise(resolve => setTimeout(resolve, 200))
 
-    // Добавляем каждую мысль в блок
-    let currentThoughts = ''
+    // Печатаем каждую мысль с эффектом печатания
+    let fullThought = ''
     for (let i = 0; i < thinkingSteps.length; i++) {
-      currentThoughts += (i > 0 ? '\n\n' : '') + thinkingSteps[i]
+      if (i > 0) {
+        fullThought += '\n\n'
+        setCurrentThinkingText(fullThought)
+      }
 
-      // Обновляем блок мышления с накопленными мыслями
+      const currentStep = thinkingSteps[i]
+      await typeText(currentStep, 25) // Быстрая печать
+      fullThought += currentStep
+
+      // Обновляем сообщение
       setMessages(prev => prev.map(msg =>
         msg.id === thinkingBlockId
-          ? { ...msg, text: `Thinking\n\n${currentThoughts}` }
+          ? { ...msg, text: `Thinking...\n\n${fullThought}` }
           : msg
       ))
 
-      // Пауза между мыслями
-      await new Promise(resolve => setTimeout(resolve, 1200 + Math.random() * 800))
+      // Короткая пауза между мыслями
+      if (i < thinkingSteps.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 300))
+      }
     }
 
-    // Пауза перед финальным ответом
-    await new Promise(resolve => setTimeout(resolve, 800))
+    // Финальная пауза
+    await new Promise(resolve => setTimeout(resolve, 400))
   }
 
   const handleSendMessage = async () => {
@@ -295,7 +328,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: 'Извините, произошла ошибка. Попробуйте позже. 😔',
+        text: 'Извините, произошла ошибк��. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
@@ -318,7 +351,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     if (!file) return
 
     if (file.size > 5 * 1024 * 1024) { // 5MB
-      alert('Файл слишком большой. Максимальный размер: 5MB')
+      alert('Файл слишком большой. Максимальны�� размер: 5MB')
       return
     }
 
@@ -366,11 +399,12 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите погов��рить?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }])
     setInteractionIds({})
+    setCurrentThinkingText('')
   }
 
   if (!isOpen) return null
@@ -389,7 +423,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               />
             </div>
             <div className="header-text">
-              <h3>��ЖАРВИС</h3>
+              <h3>ДЖАРВИС</h3>
               <span className="status">AI Помощник Онлайн</span>
             </div>
           </div>
@@ -429,8 +463,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                 >
                   {message.isThinking ? (
                     <div>
-                      <div className="thinking-title">Thinking</div>
-                      {message.text.replace('Thinking\n\n', '')}
+                      <div className="thinking-title">🤔 Думаю...</div>
+                      <div className="thinking-content">
+                        {message.text.replace('Thinking...\n\n', '')}
+                        <span className="thinking-cursor">|</span>
+                      </div>
                     </div>
                   ) : (
                     message.text
@@ -959,6 +996,24 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           color: #6366f1;
           margin-bottom: 8px;
           font-size: 12px;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+
+        .thinking-content {
+          position: relative;
+        }
+
+        .thinking-cursor {
+          animation: blink 1s infinite;
+          color: #6366f1;
+          font-weight: bold;
+        }
+
+        @keyframes blink {
+          0%, 50% { opacity: 1; }
+          51%, 100% { opacity: 0; }
         }
 
         .dark-theme .thinking-text {
@@ -969,6 +1024,10 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         .dark-theme .thinking-text .thinking-title {
+          color: #8b9dd4;
+        }
+
+        .dark-theme .thinking-cursor {
           color: #8b9dd4;
         }
 

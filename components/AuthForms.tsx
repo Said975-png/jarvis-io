@@ -50,10 +50,20 @@ export default function AuthForms({ onClose, onLogin }: AuthFormsProps) {
       if (response.ok) {
         try {
           const data = await response.json()
+
+          // Сохраняем данные в localStorage
           localStorage.setItem('user', JSON.stringify(data.user))
           localStorage.setItem('token', data.token)
+
+          // Логиним пользователя
           onLogin(data.user)
-          onClose()
+
+          // Небольшая задержка для обновления контекста
+          setTimeout(() => {
+            onClose()
+          }, 100)
+
+          console.log(`${isLogin ? 'Вход' : 'Регистрация'} успешна:`, data.user)
         } catch (parseError) {
           setError('Ошибка обработки ответа сервера')
         }

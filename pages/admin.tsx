@@ -296,17 +296,28 @@ export default function AdminPanel() {
                   Обновлено: {new Date().toLocaleTimeString()}
                 </small>
               </h2>
-              <button
-                onClick={() => loadOrders(true)}
-                className="refresh-btn"
-                disabled={refreshing}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.39 0 4.56.94 6.16 2.46" stroke="currentColor" strokeWidth="2"/>
-                  <path d="M17 8l4-4-4-4" stroke="currentColor" strokeWidth="2"/>
-                </svg>
-                {refreshing ? 'Обновляем' : 'Обновить'}
-              </button>
+              <div className="admin-buttons">
+                <button
+                  onClick={() => {
+                    console.log('Текущие заказы в админ панели:', orders)
+                    console.log('User IDs заказов:', orders.map(o => `${o.id.slice(-8)}: ${o.userId}`))
+                  }}
+                  className="debug-btn"
+                >
+                  Debug заказы
+                </button>
+                <button
+                  onClick={() => loadOrders(true)}
+                  className="refresh-btn"
+                  disabled={refreshing}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.39 0 4.56.94 6.16 2.46" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M17 8l4-4-4-4" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  {refreshing ? 'Обновляем' : 'Обновить'}
+                </button>
+              </div>
             </div>
 
             {orders.length === 0 ? (
@@ -322,8 +333,11 @@ export default function AdminPanel() {
                     onClick={() => setSelectedOrder(order)}
                   >
                     <div className="order-header">
-                      <span className="order-id">#{order.id.slice(-8)}</span>
-                      <span 
+                      <div className="order-ids">
+                        <span className="order-id">#{order.id.slice(-8)}</span>
+                        <span className="user-id">User: {order.userId === 'guest' ? 'Гость' : order.userId.slice(-8)}</span>
+                      </div>
+                      <span
                         className="order-status"
                         style={{ color: getStatusColor(order.status) }}
                       >
@@ -485,6 +499,27 @@ export default function AdminPanel() {
           margin-bottom: 24px;
         }
 
+        .admin-buttons {
+          display: flex;
+          gap: 12px;
+          align-items: center;
+        }
+
+        .debug-btn {
+          background: #6366f1;
+          color: #ffffff;
+          border: none;
+          padding: 10px 16px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+          transition: all 0.2s ease;
+        }
+
+        .debug-btn:hover {
+          background: #4f46e5;
+        }
+
         .orders-header h2 {
           font-size: 24px;
           font-weight: 600;
@@ -574,14 +609,27 @@ export default function AdminPanel() {
         .order-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
+          align-items: flex-start;
           margin-bottom: 12px;
+        }
+
+        .order-ids {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
         }
 
         .order-id {
           font-family: monospace;
           font-weight: 600;
           color: #000000;
+        }
+
+        .user-id {
+          font-family: monospace;
+          font-size: 11px;
+          color: #666666;
+          font-weight: 500;
         }
 
         .order-status {

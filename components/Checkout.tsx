@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useCart } from '../contexts/CartContext'
 import { useOrders, OrderFormData } from '../contexts/OrderContext'
 import { useAuth } from '../contexts/AuthContext'
@@ -20,13 +20,30 @@ export default function Checkout({ onClose, onSuccess }: CheckoutProps) {
     referenceUrl: ''
   })
 
+  // Логируем информацию о пользователе при инициализации
+  useEffect(() => {
+    console.log('=== CHECKOUT INITIALIZATION ===')
+    console.log('Current user:', user)
+    console.log('User ID:', user?.id)
+    console.log('Token in localStorage:', localStorage.getItem('token'))
+    console.log('User in localStorage:', localStorage.getItem('user'))
+  }, [user])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     setIsSubmitting(true)
     try {
+      console.log('=== СОЗДАНИЕ ЗАКАЗА ===')
+      console.log('User:', user)
+      console.log('User ID:', user?.id)
+      console.log('Items:', items)
+      console.log('Form data:', formData)
+
       // Создаем заказ с ID пользователя если есть, иначе как гостевой
-      await createOrder(items, formData, user?.id)
+      const order = await createOrder(items, formData, user?.id)
+      console.log('Заказ успешно создан:', order)
+
       clearCart()
       onSuccess()
       onClose()
