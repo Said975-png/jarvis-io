@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите поговорить?',
+      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программиро��анием, дизайном и техническими вопросами\n\nО чем хотите поговорить?',
       isUser: false,
       timestamp: new Date()
     }
@@ -73,7 +73,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     } catch (error) {
       console.error('Error saving interaction for learning:', error)
       // Не блокируем пользовательский ��нтерфейс при ошибках сохранения
-      // Это не к��итично для работы чата
+      // Это не к��ит��чно для работы чата
     }
   }
 
@@ -164,6 +164,32 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     } catch (error) {
       console.error('Error generating response:', error)
       return 'Произошла ошибка при генерации ответа. Проверьте подключение к интернету и ��опробуйте снова. 🌐'
+    }
+  }
+
+  const showThinkingProcess = async (userMessage: string) => {
+    const thinkingSteps = [
+      'Анализирую ваш вопрос...',
+      'Обрабатываю информацию и подбираю лучший ответ...',
+      'Формулирую детальный и полезный ответ...'
+    ]
+
+    for (let i = 0; i < thinkingSteps.length; i++) {
+      const thinkingMessage: Message = {
+        id: `thinking_${Date.now()}_${i}`,
+        text: thinkingSteps[i],
+        isUser: false,
+        timestamp: new Date(),
+        isThinking: true
+      }
+
+      setMessages(prev => [...prev, thinkingMessage])
+
+      // Пауза между этапами мышления
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      // Удаляем предыдущее сообщение мышления
+      setMessages(prev => prev.filter(msg => msg.id !== thinkingMessage.id))
     }
   }
 
