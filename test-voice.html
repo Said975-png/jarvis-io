@@ -59,7 +59,7 @@
             <div id="currentVoice">Загрузка...</div>
         </div>
 
-        <button class="test-btn" onclick="testMaleVoice()">🎯 Тест м��жского голоса</button>
+        <button class="test-btn" onclick="testMaleVoice()">🎯 Тест мужского голоса</button>
         <button class="test-btn" onclick="testJarvisPhrase()">🤖 Тест фразы JARVIS</button>
         <button class="test-btn" onclick="showAllVoices()">📋 Показать все голоса</button>
         <button class="test-btn" onclick="testDefaultVoice()">⚠️ Тест дефолтного голоса</button>
@@ -83,7 +83,7 @@
 
             console.log('🔍 Поиск голосов. Всего доступно:', voices.length);
 
-            // Логируем все русские голоса д��я отладки
+            // Логируем все русские голоса для отладки
             const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'));
             console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`));
 
@@ -149,11 +149,11 @@
                 utterance.voice = voice;
             }
             
-            // Настройки как в JARVIS
+            // Настройки как в JARVIS (обновленные)
             utterance.lang = customSettings.lang || 'ru-RU';
-            utterance.rate = customSettings.rate || 0.85;
-            utterance.pitch = customSettings.pitch || 0.8;
-            utterance.volume = customSettings.volume || 0.9;
+            utterance.rate = customSettings.rate || 0.8;   // Медленнее для ясности
+            utterance.pitch = customSettings.pitch || 0.7; // Еще ниже для мужского голоса
+            utterance.volume = customSettings.volume || 0.95; // Почти максимум
             
             speechSynthesis.speak(utterance);
         }
