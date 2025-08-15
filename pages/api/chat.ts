@@ -134,7 +134,7 @@ function replaceEnglishTerms(text: string): string {
 
   let result = text
 
-  // Применяем замены только для цельных слов
+  // Применяем за��ены только для цельных слов
   for (const [english, russian] of Object.entries(replacements)) {
     const regex = new RegExp(`\\b${english}\\b`, 'g')
     result = result.replace(regex, russian)
@@ -270,7 +270,7 @@ const OPENROUTER_API_KEYS: ApiKeyInfo[] = [
   { key: process.env.OPENROUTER_API_KEY_8 || '', isActive: true, errorCount: 0 },
 ].filter(apiKey => apiKey.key.length > 0) // Убираем пустые ключи
 
-// Функция для получения следующего доступного OpenRouter API ключа
+// Функция для пол��чения следующего доступного OpenRouter API ключа
 function getNextAvailableOpenRouterKey(excludeKey?: string): string | null {
   // Сначала пробуем активные ключи, исключая переданный
   const activeKeys = OPENROUTER_API_KEYS.filter(k =>
@@ -403,7 +403,7 @@ async function makeOpenRouterRequest(
   }
 }
 
-// Функция для выполнения запроса к Groq API
+// Функция для в��полнения запроса к Groq API
 async function makeGroqRequest(
   requestBody: any,
   timestamp: string
@@ -577,7 +577,7 @@ export default async function handler(
 ЕСЛИ СПРОСЯТ КТО ТЕБЯ СОЗДАЛ - ОТВЕЧАЙ "КОМАНДА JARVIS INTERCOMA"!
 НИ В КОЕМ СЛУЧАЕ НЕ GOOGLE, НЕ DEEPMIND!
 
-Будь максимально полезным и информативным!`
+ВАЖНО: Проверяй каждое слово - оно должно быть на русском языке!`
     }
 
     const requestBody = {
