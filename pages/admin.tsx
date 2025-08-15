@@ -333,8 +333,11 @@ export default function AdminPanel() {
                     onClick={() => setSelectedOrder(order)}
                   >
                     <div className="order-header">
-                      <span className="order-id">#{order.id.slice(-8)}</span>
-                      <span 
+                      <div className="order-ids">
+                        <span className="order-id">#{order.id.slice(-8)}</span>
+                        <span className="user-id">User: {order.userId === 'guest' ? 'Гость' : order.userId.slice(-8)}</span>
+                      </div>
+                      <span
                         className="order-status"
                         style={{ color: getStatusColor(order.status) }}
                       >
@@ -443,7 +446,7 @@ export default function AdminPanel() {
                       Статус: {getStatusText(selectedOrder.status)}
                     </p>
                     <p className="updated-date">
-                      Обновлено: {new Date(selectedOrder.updatedAt).toLocaleString('ru-RU')}
+                      О��новлено: {new Date(selectedOrder.updatedAt).toLocaleString('ru-RU')}
                     </p>
                   </div>
                 )}
