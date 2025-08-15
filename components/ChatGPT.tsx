@@ -399,7 +399,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите погов��рить?',
+      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по ве��-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите погов��рить?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -1024,6 +1024,10 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         .dark-theme .thinking-text .thinking-title {
+          color: #8b9dd4;
+        }
+
+        .dark-theme .thinking-cursor {
           color: #8b9dd4;
         }
 
