@@ -1,0 +1,44 @@
+# Development files
+.env.local
+.env.development
+
+# Build cache
+.next/cache
+
+# Node modules (handled by package.json)
+node_modules
+
+# Documentation
+README.md
+*.md
+
+# IDE files
+.vscode
+.idea
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Testing
+__tests__
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Development only components
+pages/_app-backup.tsx
+
+# Cache
+.eslintcache

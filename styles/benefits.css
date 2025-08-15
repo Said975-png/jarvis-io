@@ -1,0 +1,428 @@
+/* Benefits Section */
+.benefits-section {
+  position: relative;
+  min-height: 100vh;
+  background: transparent;
+  overflow: hidden;
+  padding: 50px 0;
+  margin: 0;
+}
+
+/* Benefits Container - Hero Style */
+.benefits-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Benefits Main Content */
+.benefits-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+/* Benefits Content */
+.benefits-content {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.benefits-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--color-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.benefits-title {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--color-text);
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.benefits-description {
+  font-size: 1.125rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  max-width: 500px;
+}
+
+/* Benefits List */
+.benefits-list {
+  margin-bottom: 2rem;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.benefit-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.benefit-item h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.25rem;
+}
+
+.benefit-item p {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+/* Benefits Stats */
+.benefits-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.benefits-stats .stat {
+  text-align: center;
+}
+
+.benefits-stats .stat-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  display: block;
+  font-family: var(--font-mono);
+}
+
+.benefits-stats .stat-label {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+/* Benefits Visual */
+.benefits-visual {
+  animation: slideInRight 0.8s ease-out;
+}
+
+.benefits-visual .visual-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+  justify-content: center;
+}
+
+/* AI Conversation */
+.ai-conversation {
+  background: white;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--color-gray-200);
+}
+
+.conversation-header {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.conversation-info {
+  flex: 1;
+}
+
+.user-name {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.online-status {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.jarvis-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.conversation-messages {
+  padding: 1.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.message {
+  margin-bottom: 1rem;
+}
+
+.user-message {
+  text-align: right;
+}
+
+.user-message .message-text {
+  background: var(--color-gray-100);
+  color: var(--color-text);
+  padding: 0.75rem 1rem;
+  border-radius: 20px 20px 4px 20px;
+  display: inline-block;
+  max-width: 80%;
+}
+
+.jarvis-message .message-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 20px 20px 20px 4px;
+  display: inline-block;
+  max-width: 80%;
+}
+
+.message-time {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+.user-message .message-time {
+  text-align: right;
+}
+
+.message-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.typing-dots span {
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  animation: typing 1.5s ease-in-out infinite;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+/* Savings Calculator */
+.savings-calculator {
+  background: var(--color-gray-900);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.calculator-header {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-weight: 600;
+}
+
+.calculator-icon {
+  color: var(--color-primary);
+}
+
+.calculator-content {
+  padding: 1.5rem;
+}
+
+.calculation-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.calc-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+}
+
+.calc-value {
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.calc-value.negative {
+  color: #ef4444;
+}
+
+.calc-value.positive {
+  color: #10b981;
+}
+
+.calc-value.savings {
+  color: #06b6d4;
+  font-size: 1.25rem;
+}
+
+.calculation-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 1rem 0;
+}
+
+.calculation-row.total {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.savings-percent {
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+/* Responsive for Benefits */
+@media (max-width: 1024px) {
+  .benefits-main {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .benefits-container {
+    padding: 0 1rem;
+  }
+  
+  .benefits-title {
+    font-size: 2.5rem;
+  }
+  
+  .benefits-stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .conversation-messages {
+    padding: 1rem;
+    max-height: 300px;
+  }
+  
+  .calculator-content {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .benefits-title {
+    font-size: 2rem;
+  }
+
+  .benefits-description {
+    font-size: 1rem;
+  }
+  
+  .user-message .message-text,
+  .jarvis-message .message-text {
+    max-width: 90%;
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "jarvis-ai-web",
+  "version": "1.0.0",
+  "description": "JARVIS - AI-Powered Web Development",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "keywords": [
+    "ai",
+    "web development",
+    "next.js",
+    "react"
+  ],
+  "author": "JARVIS Team",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/three": "^0.179.0",
+    "form-data": "^4.0.4",
+    "formidable": "^3.5.4",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "next": "^14.0.0",
+    "pdf-parse": "^1.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sharp": "^0.34.3",
+    "three": "^0.179.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0",
+    "typescript": "^5.0.0"
+  }
+}
