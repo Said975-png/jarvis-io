@@ -121,7 +121,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Извлечение тегов из текста
+  // Извлечение тегов из ��екста
   const extractTags = (text: string): string[] => {
     const commonTags = [
       'веб-разработка', 'дизайн', 'программирование', 'ai', 'технологии',
@@ -155,7 +155,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Останавливаем предыдущее воспроизведение
       speechSynthesis.cancel()
 
-      // Очищаем текст от эмодзи и специальных символов для лучшего произношения
+      // Очищаем текст от эмодзи и специальных символов для луч��его произношения
       const cleanText = text
         .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
         .replace(/[•·]/g, '')
@@ -163,10 +163,71 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (cleanText) {
         const utterance = new SpeechSynthesisUtterance(cleanText)
+
+        // Ищем лучший мужской русский голос
+        const voices = speechSynthesis.getVoices()
+        let selectedVoice = null
+
+        // Приоритет голосов: ищем качественные мужские русские голоса
+        const preferredVoices = [
+          // Google Chrome голоса
+          'Google русский',
+          'Microsoft Pavel - Russian (Russia)',
+          'Pavel',
+          // Microsoft Edge голоса
+          'Microsoft Pavel',
+          'Microsoft Irina - Russian (Russia)',
+          // Safari голоса
+          'Milena',
+          'Yuri',
+          // Системные голоса
+          'Russian Male',
+          'Russian (Russia)'
+        ]
+
+        // Ищем первый доступный предпочтительный голос
+        for (const preferred of preferredVoices) {
+          const voice = voices.find(v =>
+            v.name.includes(preferred) &&
+            (v.lang.includes('ru') || v.lang.includes('RU'))
+          )
+          if (voice) {
+            selectedVoice = voice
+            break
+          }
+        }
+
+        // Если предпочтительный не найден, ищем любой мужской русский голос
+        if (!selectedVoice) {
+          selectedVoice = voices.find(voice =>
+            (voice.lang.includes('ru') || voice.lang.includes('RU')) &&
+            (voice.name.toLowerCase().includes('male') ||
+             voice.name.toLowerCase().includes('мужской') ||
+             voice.name.toLowerCase().includes('pavel') ||
+             voice.name.toLowerCase().includes('yuri'))
+          )
+        }
+
+        // Если мужской не найден, берем любой русский
+        if (!selectedVoice) {
+          selectedVoice = voices.find(voice =>
+            voice.lang.includes('ru') || voice.lang.includes('RU')
+          )
+        }
+
+        // Устанавливаем найденный голос
+        if (selectedVoice) {
+          utterance.voice = selectedVoice
+          console.log('🎤 Используется голос:', selectedVoice.name, selectedVoice.lang)
+        } else {
+          console.log('⚠️ Р��сский голос не найден, используется дефолтный')
+        }
+
+        // Настройки для мужественного звучания
         utterance.lang = 'ru-RU'
-        utterance.rate = 0.9
-        utterance.pitch = 1.0
-        utterance.volume = 0.8
+        utterance.rate = 0.85  // Немного медленнее для серьезности
+        utterance.pitch = 0.8  // Ниже для мужского голоса
+        utterance.volume = 0.9 // Громче для уверенности
 
         speechSynthesis.speak(utterance)
       }
@@ -301,7 +362,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isTechnical) {
         return [
-          'Технический вопрос - анализирую детали',
+          'Технический вопрос - анализирую дет��ли',
           'Подготовлю практические решения',
           'Учту лучшие практики разработки'
         ]
@@ -463,7 +524,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
+        text: `✅ Файл "${file.name}" пол��чен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
