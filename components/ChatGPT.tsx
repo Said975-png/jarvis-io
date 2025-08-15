@@ -153,12 +153,76 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для остановки голосового ввода
+  // Функ��ия для остановки голосового ввода
   const stopListening = () => {
     if (recognition && isListening) {
       recognition.stop()
       setIsListening(false)
     }
+  }
+
+  // Функция для получения лучшего мужского голоса
+  const getBestMaleVoice = () => {
+    const voices = speechSynthesis.getVoices()
+    let selectedVoice = null
+
+    console.log('🔍 Поиск голосов. Всего доступно:', voices.length)
+
+    // Логируем все русские голоса для отладки
+    const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
+    console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
+
+    // ПРИОРИТЕТ 1: Специфичные мужские голоса
+    const maleVoiceNames = [
+      'Microsoft Pavel',
+      'Pavel',
+      'Yuri',
+      'Maxim',
+      'Dmitri',
+      'Aleksandr',
+      'Google русский мужской',
+      'Russian Male'
+    ]
+
+    for (const maleName of maleVoiceNames) {
+      selectedVoice = russianVoices.find(v =>
+        v.name.toLowerCase().includes(maleName.toLowerCase())
+      )
+      if (selectedVoice) {
+        console.log('✅ Найден мужской голос:', selectedVoice.name)
+        break
+      }
+    }
+
+    // ПРИОРИТЕТ 2: Качественные голоса (предпочитаем локальные)
+    if (!selectedVoice) {
+      const qualityVoices = [
+        'Google русский',
+        'Microsoft Irina - Russian (Russia)', // Хотя женский, но качественный
+        'Russian (Russia)',
+        'ru-RU'
+      ]
+
+      for (const quality of qualityVoices) {
+        selectedVoice = russianVoices.find(v =>
+          v.name.includes(quality) && v.localService
+        )
+        if (selectedVoice) {
+          console.log('✅ Найден качественный локальный голос:', selectedVoice.name)
+          break
+        }
+      }
+    }
+
+    // ПРИОРИТЕТ 3: Любой русский голос
+    if (!selectedVoice) {
+      selectedVoice = russianVoices.find(v => v.localService) || russianVoices[0]
+      if (selectedVoice) {
+        console.log('⚠️ Используем резервный голос:', selectedVoice.name)
+      }
+    }
+
+    return selectedVoice
   }
 
   // Функция для озвучивания текста
@@ -167,82 +231,48 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Останавливаем предыдущее воспроизведение
       speechSynthesis.cancel()
 
-      // Очищаем текст от эмодзи и специальных символов для лучшего произношения
-      const cleanText = text
-        .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
-        .replace(/[•·]/g, '')
-        .trim()
+      // Ждем немного, чтобы cancel успел отработать
+      setTimeout(() => {
+        // Очищаем текст от эмодзи и специальных символов для лучшего произношения
+        const cleanText = text
+          .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
+          .replace(/[•·]/g, '')
+          .replace(/\n+/g, '. ') // Заменяем переносы на паузы
+          .trim()
 
-      if (cleanText) {
-        const utterance = new SpeechSynthesisUtterance(cleanText)
+        if (cleanText) {
+          const utterance = new SpeechSynthesisUtterance(cleanText)
 
-        // Ищем лучший мужской русский голос
-        const voices = speechSynthesis.getVoices()
-        let selectedVoice = null
+          // Получаем лучший голос
+          const selectedVoice = getBestMaleVoice()
 
-        // Приоритет голосов: ищем качественные мужские русские голоса
-        const preferredVoices = [
-          // Google Chrome голоса
-          'Google русский',
-          'Microsoft Pavel - Russian (Russia)',
-          'Pavel',
-          // Microsoft Edge голоса
-          'Microsoft Pavel',
-          'Microsoft Irina - Russian (Russia)',
-          // Safari голоса
-          'Milena',
-          'Yuri',
-          // Системные голоса
-          'Russian Male',
-          'Russian (Russia)'
-        ]
-
-        // Ищем первый доступный предпочтительный голос
-        for (const preferred of preferredVoices) {
-          const voice = voices.find(v =>
-            v.name.includes(preferred) &&
-            (v.lang.includes('ru') || v.lang.includes('RU'))
-          )
-          if (voice) {
-            selectedVoice = voice
-            break
+          if (selectedVoice) {
+            utterance.voice = selectedVoice
+            console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
           }
+
+          // Настройки для естественного мужского звучания
+          utterance.lang = 'ru-RU'
+          utterance.rate = 0.8   // Медленнее д��я ясности
+          utterance.pitch = 0.7  // Еще ниже для мужского голоса
+          utterance.volume = 0.95 // Почти максимум
+
+          // Добавляем обработчики событий
+          utterance.onstart = () => {
+            console.log('🎵 Начало озвучивания')
+          }
+
+          utterance.onend = () => {
+            console.log('✅ Озвучивание завершено')
+          }
+
+          utterance.onerror = (event) => {
+            console.error('❌ Ошибка озвучивания:', event.error)
+          }
+
+          speechSynthesis.speak(utterance)
         }
-
-        // Если предпочтительный не найден, ищем любой мужской русский голос
-        if (!selectedVoice) {
-          selectedVoice = voices.find(voice =>
-            (voice.lang.includes('ru') || voice.lang.includes('RU')) &&
-            (voice.name.toLowerCase().includes('male') ||
-             voice.name.toLowerCase().includes('мужской') ||
-             voice.name.toLowerCase().includes('pavel') ||
-             voice.name.toLowerCase().includes('yuri'))
-          )
-        }
-
-        // Если мужской не найден, берем любой русский
-        if (!selectedVoice) {
-          selectedVoice = voices.find(voice =>
-            voice.lang.includes('ru') || voice.lang.includes('RU')
-          )
-        }
-
-        // Устанавливаем найденный голос
-        if (selectedVoice) {
-          utterance.voice = selectedVoice
-          console.log('🎤 Используется голос:', selectedVoice.name, selectedVoice.lang)
-        } else {
-          console.log('⚠️ Русский голос не найден, используется дефолтный')
-        }
-
-        // Настройки для мужественного звучания
-        utterance.lang = 'ru-RU'
-        utterance.rate = 0.85  // Немного медленнее для серьезности
-        utterance.pitch = 0.8  // Ниже для мужского голоса
-        utterance.volume = 0.9 // Громче для уверенности
-
-        speechSynthesis.speak(utterance)
-      }
+      }, 100)
     }
   }
 
@@ -259,9 +289,9 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для те��тирования голоса
+  // Функция для тестирования голоса
   const testVoice = () => {
-    speakText('Привет! Это тест голоса ДЖАРВИС. Как звучит мой новый мужской голос?')
+    speakText('Привет! Это тест голос�� ДЖАРВИС. Как звучит мой новый мужской голос?')
   }
 
   const scrollToBottom = () => {
@@ -334,7 +364,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return 'Извините, произошл�� ошибка. Попр��буйте переформулировать вопро��. 🤔'
       }
 
-      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то др����гое! 🤷‍♂️'
+      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то др��гое! 🤷‍♂️'
 
     } catch (error) {
       console.error('Error generating response:', error)
@@ -401,7 +431,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         ]
       }
 
-      // ��ля остальных случаев
+      // Для остальных случаев
       return [
         'Обрабатыва�� запрос',
         'Формирую наиболее полезный ответ'
