@@ -24,7 +24,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [isUploadingFile, setIsUploadingFile] = useState(false)
   const [interactionIds, setInteractionIds] = useState<{[messageId: string]: string}>({})
 
-  // Голосовые функц��и
+  // Голосовые функции
   const [isListening, setIsListening] = useState(false)
   const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('text') // 'text' = только текст, 'voice' = текст + голос
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
@@ -104,7 +104,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (response.ok) {
         const data = await response.json()
         if (data.success) {
-          // Сохраняем ID взаимодействия для связи с сообщением
+          // Сохраняем ID вз��имодействия для связи с сообщением
           setInteractionIds(prev => ({
             ...prev,
             [userMessageId]: data.data.interactionId
@@ -173,7 +173,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Переключение режима голоса
+  // Переключен��е режима голоса
   const toggleVoiceMode = () => {
     setVoiceMode(prev => prev === 'text' ? 'voice' : 'text')
   }
@@ -317,7 +317,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Для остальных случаев
       return [
-        'Обрабатываю запрос',
+        'Обрабатыва�� запрос',
         'Формирую наиболее полезный ответ'
       ]
     }
@@ -358,7 +358,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           : msg
       ))
 
-      // Короткая пауза между мыслями
+      // Короткая пауза ме��ду мыслями
       if (i < thinkingSteps.length - 1) {
         await new Promise(resolve => setTimeout(resolve, 300))
       }
@@ -390,7 +390,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const response = await generateJarvisResponse(userMessage, messages)
 
-      // Удаляем ��лок thinking перед показом ответа
+      // Удаляем блок thinking перед показом ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
       // Небольшая пауза перед показом ответа
@@ -463,7 +463,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы може��е описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
+        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
@@ -1028,7 +1028,8 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           gap: 8px;
         }
 
-        .jarvis-attachment-btn {
+        .jarvis-attachment-btn,
+        .jarvis-mic-btn {
           background: none;
           border: none;
           color: #666666;
@@ -1043,7 +1044,8 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           height: 36px;
         }
 
-        .jarvis-attachment-btn:hover {
+        .jarvis-attachment-btn:hover,
+        .jarvis-mic-btn:hover {
           background: #f0f0f0;
           color: #007bff;
         }
@@ -1053,12 +1055,56 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           cursor: not-allowed;
         }
 
-        .dark-theme .jarvis-attachment-btn {
+        .jarvis-mic-btn.listening {
+          background: #ef4444;
+          color: #ffffff;
+          animation: pulse 2s infinite;
+        }
+
+        .jarvis-mic-btn.listening:hover {
+          background: #dc2626;
+        }
+
+        @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+          100% { transform: scale(1); }
+        }
+
+        .mic-recording {
+          position: relative;
+        }
+
+        .mic-recording::after {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+          border: 2px solid #ef4444;
+          border-radius: 50%;
+          animation: recordingRing 1.5s infinite;
+        }
+
+        @keyframes recordingRing {
+          0% { transform: scale(1); opacity: 1; }
+          100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .dark-theme .jarvis-attachment-btn,
+        .dark-theme .jarvis-mic-btn {
           color: #cccccc;
         }
 
-        .dark-theme .jarvis-attachment-btn:hover {
+        .dark-theme .jarvis-attachment-btn:hover,
+        .dark-theme .jarvis-mic-btn:hover {
           background: #555555;
+          color: #ffffff;
+        }
+
+        .dark-theme .jarvis-mic-btn.listening {
+          background: #ef4444;
           color: #ffffff;
         }
 
