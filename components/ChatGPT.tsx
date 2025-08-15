@@ -30,7 +30,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
 
-  // ElevenLabs ключи (8 ключей с разных аккаунтов для ротации)
+  // ElevenLabs ключи (8 ключей с разн��х аккаунтов для ротации)
   const [elevenLabsKeys] = useState([
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
@@ -212,7 +212,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     // ПРИОРИТЕТ 1: Самые качественные муж��кие голоса (менее роботичные)
     const premiumMaleVoices = [
-      'Google русский (Россия)', // Самый ��ачественный если есть
+      'Google русский (Россия)', // Самый качественный если есть
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
       'Google русский',
       'Pavel (Enhanced)', // Если есть улучшенная версия
@@ -278,7 +278,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     // Если все ключи исчерпали лимит, сбрасываем счетчики (новый месяц)
     const keysWithLimitReached = elevenLabsKeys.filter(k => k.usage >= k.limit)
     if (keysWithLimitReached.length > 0) {
-      console.log('🔄 Сброс лимитов ElevenLabs ключей (��овый месяц)')
+      console.log('🔄 Сброс лимитов ElevenLabs ключей (новый месяц)')
       keysWithLimitReached.forEach(k => {
         k.usage = 0
         k.errorCount = 0
@@ -464,7 +464,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
           }
 
-          // Настройки для более естественного звучания (менее роботично)
+          // Настройки для бо��ее естественного звучания (менее роботично)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скорость (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
@@ -528,7 +528,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Функция для тестирования голоса
   const testVoice = () => {
     console.log('🧪 Тестирование голоса JARVIS...')
-    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
+    const testPhrase = '��ривет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
     speakText(testPhrase)
   }
 
@@ -663,7 +663,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isQuestion) {
         return [
-          'Анализ��рую суть вопроса',
+          'Анализирую суть вопроса',
           'Структурирую ответ для максимальной пользы',
           'Добавлю п��имеры и практические советы'
         ]
@@ -747,7 +747,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Удаляем блок thinking перед показом ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
-      // Небольшая пауза перед показом ответа
+      // Небольшая пауза перед показом отве��а
       await new Promise(resolve => setTimeout(resolve, 300))
 
       const botMessage: Message = {
@@ -903,7 +903,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                 <button
                   className="test-voice-btn"
                   onClick={testVoice}
-                  title="Тест голос��"
+                  title="Тест голоса"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                     <polygon points="11 5,6 9,2 9,2 15,6 15,11 19,11 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1201,6 +1201,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .voice-mode-btn:hover,
         .test-voice-btn:hover,
+        .setup-elevenlabs-btn:hover,
         .clear-chat-btn:hover,
         .close-btn:hover {
           background: #f0f0f0;
