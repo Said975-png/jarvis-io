@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и те��ническими вопросами\n\nО чем хотите поговорить?',
+      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите поговорить?',
       isUser: false,
       timestamp: new Date()
     }
@@ -175,7 +175,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (lowerMessage.includes('привет') || lowerMessage.includes('hello')) {
         return [
           'Пользователь поздоровался. Нужно ответить дружелюбно и спросить, чем могу помочь.',
-          'Это простое приветствие, отвечу коротко и тепло.'
+          'Это пр��стое приветствие, отвечу коротко и тепло.'
         ]
       }
 
@@ -268,7 +268,13 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       await showThinkingProcess(userMessage)
 
       const response = await generateJarvisResponse(userMessage, messages)
-      
+
+      // Удаляем блок thinking перед показом ответа
+      setMessages(prev => prev.filter(msg => !msg.isThinking))
+
+      // Небольшая пауза перед показом ответа
+      await new Promise(resolve => setTimeout(resolve, 300))
+
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: response,
@@ -357,7 +363,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'П��ивет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите погов��рить?',
+      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите погов��рить?',
       isUser: false,
       timestamp: new Date()
     }])
