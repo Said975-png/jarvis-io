@@ -57,7 +57,7 @@ function replaceEnglishTerms(text: string): string {
     'database': 'база данных',
     'Database': 'База данных',
     'SQL': 'СКЛ',
-    'MySQL': 'МайСКЛ',
+    'MySQL': 'Ма��СКЛ',
     'PostgreSQL': 'ПостгреСКЛ',
     'MongoDB': 'МонгоДБ',
 
@@ -217,8 +217,10 @@ function cleanMarkdown(text: string): string {
     .replace(/`([^`]+)`/g, '$1')
     // Убираем блоки кода ```код```
     .replace(/```[\s\S]*?```/g, '')
-    // Убираем все markdown символы
-    .replace(/[\*#`_~\[\]]/g, '')
+    // Убираем ВСЕ символы форматирования
+    .replace(/[\*#`_~\[\]|><]/g, '')
+    .replace(/[-]{2,}/g, '')
+    .replace(/[=]{2,}/g, '')
     // Заменяем списки на простые символы
     .replace(/^\*\s+/gm, '• ')
     .replace(/^-\s+/gm, '• ')
