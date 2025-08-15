@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест JARVIS</title>
+</head>
+<body>
+    <h1>Тест JARVIS API</h1>
+    <button onclick="testJarvis()">Протестировать JARVIS</button>
+    <div id="result"></div>
+
+    <script>
+        async function testJarvis() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Тестируем JARVIS...';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages: [
+                            {
+                                role: 'user',
+                                content: 'Привет! Ты работаешь? Ответь кратко со смайликами.'
+                            }
+                        ]
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<h3>Успех! ✅</h3><p><strong>Ответ JARVIS:</strong></p><p>${data.message}</p>`;
+                } else {
+                    const error = await response.text();
+                    resultDiv.innerHTML = `<h3>Ошибка ❌</h3><p>Status: ${response.status}</p><p>Error: ${error}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<h3>Ошибка сети ❌</h3><p>${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -33,9 +33,9 @@ export default async function handler(
           'X-Title': 'JARVIS AI Web Test'
         },
         body: JSON.stringify({
-          model: 'google/gemma-2-9b-it:free',
-          messages: [{ role: 'user', content: 'Test' }],
-          max_tokens: 10
+          model: 'anthropic/claude-3.5-sonnet',
+          messages: [{ role: 'user', content: 'Привет! Ты работаешь?' }],
+          max_tokens: 50
         })
       })
 
