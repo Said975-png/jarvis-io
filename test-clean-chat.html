@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка чистоты чата JARVIS</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .test-result { margin: 15px 0; padding: 15px; border-radius: 8px; }
+        .success { background: #d4edda; border: 2px solid #28a745; }
+        .error { background: #f8d7da; border: 2px solid #dc3545; }
+        .info { background: #d1ecf1; border: 2px solid #17a2b8; }
+        button { padding: 12px 24px; margin: 10px 5px; font-size: 16px; cursor: pointer; }
+        .symbols-to-check { background: #fff3cd; padding: 10px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Про��ерка JARVIS на отсутствие символов</h1>
+    
+    <div class="symbols-to-check">
+        <strong>Проверяем отсутствие символов:</strong> • ● ○ ■ □ ★ ☆ → ← ↑ ↓ ✓ ✗ ► ◄ ▲ ▼ # * ** ``` _ ~ | > < -
+    </div>
+    
+    <button onclick="testChatInterface()">🔍 Проверить интерфейс</button>
+    <button onclick="testChatAPI()">💬 Проверить API ответы</button>
+    
+    <div id="results"></div>
+
+    <script>
+        const symbolsToFind = ['•', '●', '○', '■', '□', '★', '☆', '→', '←', '↑', '↓', '✓', '✗', '►', '◄', '▲', '▼', '#', '**', '```', '_', '~', '|', '<', '>', '-'];
+        
+        function findSymbolsInText(text) {
+            const found = [];
+            symbolsToFind.forEach(symbol => {
+                if (text.includes(symbol)) {
+                    found.push(symbol);
+                }
+            });
+            return found;
+        }
+        
+        async function testChatInterface() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="info test-result">🔍 Проверяем интерфейс чата...</div>';
+            
+            try {
+                // Получаем главную страницу
+                const response = await fetch('/');
+                const html = await response.text();
+                
+                // Ищем символы в HTML
+                const foundSymbols = findSymbolsInText(html);
+                
+                let resultHtml = '';
+                if (foundSymbols.length === 0) {
+                    resultHtml = `<div class="success test-result">
+                        ✅ <strong>Интерфейс чистый!</strong><br>
+                        Никаких запрещенных символов не найдено в HTML коде.
+                    </div>`;
+                } else {
+                    resultHtml = `<div class="error test-result">
+                        ❌ <strong>Найдены символы в интерфейсе:</strong><br>
+                        ${foundSymbols.join(', ')}<br>
+                        <small>Требуется дополнительная очистка</small>
+                    </div>`;
+                }
+                
+                resultsDiv.innerHTML = resultHtml;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="error test-result">
+                    ❌ <strong>Ошибка пр��верки:</strong><br>
+                    ${error.message}
+                </div>`;
+            }
+        }
+        
+        async function testChatAPI() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="info test-result">💬 Тестируем API ответы...</div>';
+            
+            const testMessages = [
+                'привет',
+                'что умеешь',
+                'как дела',
+                'объясни что такое программирование'
+            ];
+            
+            let allClean = true;
+            let results = '';
+            
+            for (const message of testMessages) {
+                try {
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            messages: [{ role: 'user', content: message }]
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        const foundSymbols = findSymbolsInText(data.message);
+                        
+                        if (foundSymbols.length > 0) {
+                            allClean = false;
+                            results += `<div class="error test-result">
+                                ❌ <strong>Запрос:</strong> "${message}"<br>
+                                <strong>Найденные символы:</strong> ${foundSymbols.join(', ')}<br>
+                                <strong>Ответ:</strong> ${data.message.substring(0, 100)}...
+                            </div>`;
+                        } else {
+                            results += `<div class="success test-result">
+                                ✅ <strong>Запрос:</strong> "${message}"<br>
+                                <strong>Ответ чистый!</strong> Никаких символов форматирования.
+                            </div>`;
+                        }
+                    } else {
+                        results += `<div class="error test-result">
+                            ❌ <strong>Ошибка API для:</strong> "${message}"<br>
+                            Status: ${response.status}
+                        </div>`;
+                    }
+                    
+                    // Пауза между запросами
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                } catch (error) {
+                    results += `<div class="error test-result">
+                        ❌ <strong>Ошибка сети для:</strong> "${message}"<br>
+                        ${error.message}
+                    </div>`;
+                }
+            }
+            
+            if (allClean) {
+                results = `<div class="success test-result">
+                    🎉 <strong>ВСЕ ТЕСТЫ ПРОШЛИ!</strong><br>
+                    Все API ответы полностью очищены от символов форматирования.
+                </div>` + results;
+            }
+            
+            resultsDiv.innerHTML = results;
+        }
+    </script>
+</body>
+</html>
