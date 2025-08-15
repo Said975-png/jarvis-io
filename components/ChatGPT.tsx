@@ -195,7 +195,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       setMessages(prev => [...prev, botMessage])
 
-      // Сох��аняем взаимодействие для обучения
+      // Сох��аняем взаимоде��ствие для обучения
       await saveInteractionToLearning(userMessage, response, userMessageId)
 
     } catch (error) {
@@ -274,7 +274,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш персональный AI-помощник от команды Jarvis Intercoma!\n\nЯ сп��циализируюсь в:\n\n• Веб-разработке и программировании\n• UI/UX дизайне\n• Технических консультациях\n• AI-решениях для бизнеса\n• Анализе и оптимизации проектов\n\nПросто опишите вашу задачу, и я помогу найти оптимальное решение!\n\nО чем хотите поговорить?',
+      text: 'Привет! Я ДЖАРВИС - ваш персональный AI-помощник от команды Jarvis Intercoma!\n\nЯ специализируюсь в:\n\n• Веб-разработке и программировании\n• UI/UX дизайне\n• Технических консультациях\n• AI-решениях для бизнеса\n• Анализе и оптимизации проектов\n\nПросто опишите вашу задачу, и я помогу найти оптимальное решение!\n\nО чем хотите поговорить?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -701,11 +701,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .input-container {
           display: flex;
-          align-items: flex-end;
+          align-items: center;
           gap: 12px;
           background: #ffffff;
           border-radius: 24px;
-          padding: 8px 8px 8px 16px;
+          padding: 12px 16px;
           border: 2px solid transparent;
           transition: border-color 0.2s;
         }
