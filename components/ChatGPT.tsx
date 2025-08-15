@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите поговорить?',
+      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и те��ническими вопросами\n\nО чем хотите поговорить?',
       isUser: false,
       timestamp: new Date()
     }
@@ -357,7 +357,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите погов��рить?',
+      text: 'П��ивет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите погов��рить?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -934,21 +934,22 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         .thinking-text {
           background: #f8f9fa !important;
           border: 1px solid #e1e5e9 !important;
-          border-left: 4px solid #6366f1 !important;
+          border-left: 3px solid #6366f1 !important;
           color: #495057 !important;
           font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace !important;
-          font-size: 13px !important;
-          line-height: 1.6 !important;
-          padding: 16px 20px !important;
-          border-radius: 8px !important;
+          font-size: 12px !important;
+          line-height: 1.4 !important;
+          padding: 10px 14px !important;
+          border-radius: 6px !important;
           white-space: pre-line !important;
+          max-width: 80% !important;
         }
 
         .thinking-text .thinking-title {
           font-weight: 600;
           color: #6366f1;
-          margin-bottom: 12px;
-          font-size: 14px;
+          margin-bottom: 8px;
+          font-size: 12px;
         }
 
         .dark-theme .thinking-text {
