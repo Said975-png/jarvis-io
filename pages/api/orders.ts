@@ -163,6 +163,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       const orders = getOrders()
       console.log('Текущее количество заказов до добавления:', orders.length)
       const newOrder = req.body
+      console.log('=== ПОЛУЧЕН НОВЫЙ ЗАКАЗ ===')
+      console.log('Order ID:', newOrder.id)
+      console.log('User ID:', newOrder.userId)
+      console.log('Items:', newOrder.items?.map(item => item.name))
+      console.log('Total Price:', newOrder.totalPrice)
+      console.log('Form Data:', newOrder.formData)
+
       const updatedOrders = [...orders, newOrder] // Создаем новый массив
       saveOrders(updatedOrders)
       console.log('Заказ добавлен. Новое количество:', updatedOrders.length)
