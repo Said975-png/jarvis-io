@@ -195,7 +195,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       setMessages(prev => [...prev, botMessage])
 
-      // Сох��аняем взаимоде��ствие для обучения
+      // Сох��аняем взаимодействие для обучения
       await saveInteractionToLearning(userMessage, response, userMessageId)
 
     } catch (error) {
@@ -723,9 +723,10 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           border-color: #0056b3;
         }
 
-        .attachment-buttons {
+        .input-buttons {
           display: flex;
-          gap: 4px;
+          align-items: center;
+          gap: 8px;
         }
 
         .jarvis-attachment-btn {
