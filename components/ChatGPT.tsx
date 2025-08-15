@@ -156,7 +156,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, произошл�� ошибк��. Попробуйте переформулировать вопрос. 🤔'
+        return 'Извините, произошл�� ошибка. Попробуйте переформулировать вопро��. 🤔'
       }
 
       return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
@@ -764,6 +764,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         .loading-spinner {
+          width: 14px;
+          height: 14px;
+          border: 2px solid #e5e7eb;
+          border-top: 2px solid #007bff;
+          border-radius: 50%;
           animation: spin 1s linear infinite;
         }
 
