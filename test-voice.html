@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>��ест голоса JARVIS</title>
+    <title>Тест голоса JARVIS</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -68,7 +68,7 @@
 
         <div class="voice-info">
             <h3>🎯 Что тестируем:</h3>
-            <p>✅ Мужской голос (не женский)</p>
+            <p>✅ Мужской ��олос (не женский)</p>
             <p>✅ Русский язык без акцента</p>
             <p>✅ Низкий тон (pitch = 0.8)</p>
             <p>✅ Нормальная скорость (rate = 0.85)</p>
@@ -160,29 +160,32 @@
 
         function testMaleVoice() {
             const bestVoice = getBestMaleVoice();
-            const text = "Привет! Я ДЖАРВИС. Это мой новый мужской голос без женского акцента.";
-            
+            const text = "Привет! Я ДЖАРВИС. Это мой обновленный мужской голос. Звучу ли я естественно и без роботского акцента?";
+
             if (bestVoice) {
                 document.getElementById('currentVoice').innerHTML = `
                     <strong>${bestVoice.name}</strong><br>
                     Язык: ${bestVoice.lang}<br>
-                    Локальный: ${bestVoice.localService ? 'Да' : 'Нет'}
+                    Локальный: ${bestVoice.localService ? 'Да' : 'Нет'}<br>
+                    <span style="color: ${bestVoice.name.toLowerCase().includes('pavel') || bestVoice.name.toLowerCase().includes('yuri') || bestVoice.name.toLowerCase().includes('male') ? 'green' : 'orange'}">
+                        ${bestVoice.name.toLowerCase().includes('pavel') || bestVoice.name.toLowerCase().includes('yuri') || bestVoice.name.toLowerCase().includes('male') ? '✅ Мужской' : '⚠️ Возможно женский'}
+                    </span>
                 `;
                 speakWithSettings(text, bestVoice);
             } else {
-                document.getElementById('currentVoice').textContent = 'Русский голос не найден';
+                document.getElementById('currentVoice').innerHTML = '<span style="color: red;">❌ Русский голос не найден</span>';
                 speakWithSettings(text);
             }
         }
 
         function testJarvisPhrase() {
             const bestVoice = getBestMaleVoice();
-            const text = "Добро пожаловать! Я ДЖАРВИС - ваш умный помощник. Чем могу быть полезен?";
+            const text = "Добро пожаловать! Я ДЖАРВИС - ваш персональный умный помощник. Мой голос должен звучать мужественно и профессионально.";
             speakWithSettings(text, bestVoice);
         }
 
         function testDefaultVoice() {
-            const text = "Это дефолтный голос для сравнения. Должен отличаться от мужского ДЖАРВИС.";
+            const text = "Это обычный дефолтный голос системы для сравнения. Он должен сильно отличаться от настроенного ДЖАРВИС.";
             speakWithSettings(text, null, { pitch: 1.0, rate: 1.0 });
         }
 
@@ -195,7 +198,7 @@
             
             if (list.style.display === 'block') {
                 list.innerHTML = `
-                    <h4>Доступные русские голоса (${russianVoices.length}):</h4>
+                    <h4>Доступны�� русские голоса (${russianVoices.length}):</h4>
                     ${russianVoices.map(voice => `
                         <div style="margin: 5px 0; padding: 5px; background: white; border-radius: 3px;">
                             <strong>${voice.name}</strong> - ${voice.lang} 
