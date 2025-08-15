@@ -199,7 +199,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для получения лучшего мужского голоса
+  // Функция для получения лучшего мужского голо��а
   const getBestMaleVoice = () => {
     const voices = speechSynthesis.getVoices()
     let selectedVoice = null
@@ -397,7 +397,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
 
     } catch (error) {
-      console.error('��� ElevenLabs ошибка сети:', error)
+      console.error('💥 ElevenLabs ошибка сети:', error)
       markElevenLabsKeyAsProblematic(apiKey, error instanceof Error ? error.message : 'Network error')
       return false
     }
@@ -412,7 +412,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       speechSynthesis.cancel()
     }
 
-    // Очищаем текст
+    // Очищаем ��екст
     const cleanText = text
       .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
       .replace(/[•·]/g, '')
@@ -446,7 +446,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Ждем немного, чтоб�� cancel успел отработать
       setTimeout(() => {
-        // Очищаем текст от эмодзи и специальных символов для лучшего произношения
+        // Очищаем текст от эмодз�� и специальных символов для лучшего произношения
         const cleanText = text
           .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
           .replace(/[��·]/g, '')
@@ -470,7 +470,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
           utterance.volume = 0.8 // Комфортная громкость
 
-          // Добавляем обработчики событий
+          // Добавляем обр��ботчики событий
           utterance.onstart = () => {
             console.log('🎵 Начало ��звучивания')
           }
@@ -640,7 +640,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isGreeting) {
         return [
-          'Пользователь поздоровался',
+          'Пользовател�� поздоровался',
           'Отвечу дружелюбно и предложу помощь'
         ]
       }
@@ -663,7 +663,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isQuestion) {
         return [
-          'Анали��ирую суть вопроса',
+          'Анализирую суть вопроса',
           'Структурирую ответ для максимальной пользы',
           'Добавлю п��имеры и практические советы'
         ]
@@ -846,7 +846,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консу��ьтант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -903,7 +903,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                 <button
                   className="test-voice-btn"
                   onClick={testVoice}
-                  title="Тест голо��а"
+                  title="Тест голоса"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                     <polygon points="11 5,6 9,2 9,2 15,6 15,11 19,11 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1264,6 +1264,15 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         .dark-theme .test-voice-btn:hover {
           background: #1e3a8a;
           color: #93c5fd;
+        }
+
+        .dark-theme .setup-elevenlabs-btn {
+          color: #fbbf24;
+        }
+
+        .dark-theme .setup-elevenlabs-btn:hover {
+          background: #451a03;
+          color: #fed7aa;
         }
 
         .jarvis-chat-messages {
