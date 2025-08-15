@@ -144,7 +144,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (!response.ok) {
         if (response.status === 429) {
-          return 'Слишком много запросов. Пожалуйста, подождите немного перед следующим сообщением. ⏳'
+          return 'Слишком много запросов. Пожалуйста, подождите немного перед следующи�� сообщением. ⏳'
         }
         
         const errorText = await response.text()
@@ -389,7 +389,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               />
             </div>
             <div className="header-text">
-              <h3>��ЖАРВИС</h3>
+              <h3>ДЖАРВИС</h3>
               <span className="status">AI Помощник Онлайн</span>
             </div>
           </div>
