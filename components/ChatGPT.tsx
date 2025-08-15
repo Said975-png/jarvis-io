@@ -69,7 +69,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (window.speechSynthesis) {
         setSpeechSynthesis(window.speechSynthesis)
 
-        // Форсируем загрузку голосов (работает в большинстве браузеров)
+        // Форсируем загрузк�� голосов (работает в большинстве браузеров)
         const forceLoadVoices = () => {
           // Создаем пустое высказывание чтобы активировать голоса
           const utterance = new SpeechSynthesisUtterance('')
@@ -82,7 +82,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
           console.log('🎤 Русские голоса загружены:', russianVoices.length)
-          russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Лок��льный]' : '[Онлайн]'}`))
+          russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
         }
 
         // Попытка 1: загрузка сразу
@@ -310,7 +310,14 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     // Тестируем голос при включении
     if (newMode === 'voice') {
       setTimeout(() => {
-        speakText('Голосовой режим включен. Теперь я буду озвучивать свои ответы.')
+        const voices = speechSynthesis.getVoices()
+        const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
+
+        if (russianVoices.length === 0) {
+          speakText('Внимание! Русские голоса не найдены. Качество речи может быть низким.')
+        } else {
+          speakText('Голосовой режим включен. Если голос звучит роботично, это ограничение браузера.')
+        }
       }, 300)
     }
   }
