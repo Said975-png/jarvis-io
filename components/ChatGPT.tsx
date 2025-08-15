@@ -159,7 +159,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return 'Извините, произошл�� ошибка. Попр��буйте переформулировать вопро��. 🤔'
       }
 
-      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷‍♂��'
+      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
 
     } catch (error) {
       console.error('Error generating response:', error)
@@ -175,14 +175,14 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (lowerMessage.includes('привет') || lowerMessage.includes('hello')) {
         return [
           'Пользователь поздоровался. Нужно ответить дружелюбно и спросить, чем могу помочь.',
-          'Это простое приветствие, отвечу коротко и тепло.'
+          'Это простое ��риветствие, отвечу коротко и тепло.'
         ]
       }
 
       if (lowerMessage.includes('сайт') || lowerMessage.includes('веб')) {
         return [
           'Вопрос о веб-разработке. Проанализирую, что именно нужно пользователю.',
-          'Нужно предложить конкретные решения и уточнить техническ��е требования.',
+          'Нужно предложить конкретные решения и уточнить технические требования.',
           'Расскажу о наших возможностях в веб-разработке и тарифах.'
         ]
       }
@@ -205,7 +205,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Общие мысли для любых других вопросов
       return [
-        'Интересн��й вопрос. Подумаю, как лучше на него ответить.',
+        'Интересный вопрос. Подумаю, как лучше на него ответить.',
         'Проанализирую контекст и дам максимально полезный ответ.',
         'Нужно структурировать информацию и подать её понятно.'
       ]
@@ -213,23 +213,38 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     const thinkingSteps = generateThinking(userMessage)
 
-    for (let i = 0; i < thinkingSteps.length; i++) {
-      const thinkingMessage: Message = {
-        id: `thinking_${Date.now()}_${i}`,
-        text: `🤔 ${thinkingSteps[i]}`,
-        isUser: false,
-        timestamp: new Date(),
-        isThinking: true
-      }
-
-      setMessages(prev => [...prev, thinkingMessage])
-
-      // Пауза между этапами мышления (варьируется)
-      await new Promise(resolve => setTimeout(resolve, 1200 + Math.random() * 800))
-
-      // Удаляем предыдущее сообщение мышления
-      setMessages(prev => prev.filter(msg => msg.id !== thinkingMessage.id))
+    // Создаем единый блок мышления с заголовком
+    const thinkingBlockId = `thinking_block_${Date.now()}`
+    const initialThinkingMessage: Message = {
+      id: thinkingBlockId,
+      text: 'Thinking',
+      isUser: false,
+      timestamp: new Date(),
+      isThinking: true,
+      isThinkingHeader: true
     }
+
+    setMessages(prev => [...prev, initialThinkingMessage])
+    await new Promise(resolve => setTimeout(resolve, 500))
+
+    // Доба��ляем каждую мысль в блок
+    let currentThoughts = ''
+    for (let i = 0; i < thinkingSteps.length; i++) {
+      currentThoughts += (i > 0 ? '\n\n' : '') + thinkingSteps[i]
+
+      // Обновляем блок мышления с накопленными мыслями
+      setMessages(prev => prev.map(msg =>
+        msg.id === thinkingBlockId
+          ? { ...msg, text: `Thinking\n\n${currentThoughts}` }
+          : msg
+      ))
+
+      // Пауза между мыслями
+      await new Promise(resolve => setTimeout(resolve, 1200 + Math.random() * 800))
+    }
+
+    // Пауза перед финальным ответом
+    await new Promise(resolve => setTimeout(resolve, 800))
   }
 
   const handleSendMessage = async () => {
@@ -325,7 +340,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       const errorMessage: Message = {
         id: Date.now().toString(),
-        text: '��ши��ка при загрузке файла. Попробуй��е позже. 😔',
+        text: '��ши��ка при загрузке файла. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
