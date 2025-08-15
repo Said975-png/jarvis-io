@@ -33,6 +33,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const login = (userData: User) => {
     console.log('AuthContext: logging in user', userData)
     setUser(userData)
+    // Принудительно обновляем localStorage
+    localStorage.setItem('user', JSON.stringify(userData))
   }
 
   const logout = () => {
