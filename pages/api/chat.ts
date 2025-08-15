@@ -49,8 +49,8 @@ function replaceEnglishTerms(text: string): string {
     // Фреймворки
     'React': 'Реакт',
     'Vue': 'Вью',
-    'Angular': '��нгуляр',
-    'Next.js': 'некекст.джс',
+    'Angular': 'Ангуляр',
+    'Next.js': '��екекст.джс',
     'Nuxt': 'Накст',
 
     // Базы данных
@@ -331,7 +331,7 @@ function markKeyAsProblematic(apiKey: string, error: string) {
   }
 }
 
-// Фун��ция для перемещения ключа в конец списка (ротация)
+// Функция для перемещен��я ключа в конец списка (ротация)
 function rotateApiKey(apiKey: string) {
   const keyIndex = API_KEYS.findIndex(k => k.key === apiKey)
   if (keyIndex !== -1 && keyIndex < API_KEYS.length - 1) {
@@ -417,10 +417,10 @@ async function makeGroqRequest(
   console.log(`[${timestamp}] Пробуем Groq API...`)
 
   try {
-    // Адаптируем requestBody для Groq (используем другую модель)
+    // Адаптируем requestBody для Groq (используем актуальную модель)
     const groqRequestBody = {
       ...requestBody,
-      model: 'llama-3.1-70b-versatile' // Лучшая модель Groq
+      model: 'llama-3.2-3b-preview' // Актуальная модель Groq
     }
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -440,7 +440,7 @@ async function makeGroqRequest(
       return { success: true, data }
     }
 
-    // Обрабатываем ошибки
+    // Обра��атываем ошибки
     const errorData = await response.text()
     console.log(`[${timestamp}] Groq Error: ${response.status} - ${errorData}`)
 
@@ -499,7 +499,7 @@ export default async function handler(
 ТЫ - ДЖАРВИС ОТ КОМАНДЫ JARVIS INTERCOMA!
 НЕ GOOGLE! НЕ DEEPMIND! НЕ OPENAI! ТОЛЬКО JARVIS INTERCOMA!
 
-ТВОЯ ЛИЧНОСТ��: ДЖАРВИС - AI-помощник команды Jarvis Intercoma
+ТВОЯ ЛИЧНОСТ��: ДЖАРВИС - AI-помощни�� команды Jarvis Intercoma
 ТВОЯ КОМАНДА: Jarvis Intercoma
 ТВОЙ СОЗДАТЕЛЬ: команда Jarvis Intercoma
 
@@ -565,7 +565,7 @@ export default async function handler(
 
 ❗ КРИТИЧЕСКИ ВАЖНО:
 - Отвечай ТОЛЬКО на русском языке
-- Никогда не переходи на английский или другие языки
+- Никогда не переходи на анг��ийский или другие языки
 - Если пользователь пишет на другом языке - отвечай на русском
 - Все техни��еские термины переводи на русский
 - Проверяй каждое слово перед отправкой ответа
