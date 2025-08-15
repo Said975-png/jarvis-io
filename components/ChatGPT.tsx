@@ -298,7 +298,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             </div>
             <div className="header-text">
               <h3>ДЖАРВИС</h3>
-              <span className="status">AI Помощни�� • Онлайн</span>
+              <span className="status">AI Помощник Онлайн</span>
             </div>
           </div>
           <div className="header-actions">
