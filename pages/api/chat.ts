@@ -49,7 +49,7 @@ function replaceEnglishTerms(text: string): string {
     // Фреймворки
     'React': 'Реакт',
     'Vue': 'Вью',
-    'Angular': 'Ангуляр',
+    'Angular': '��нгуляр',
     'Next.js': 'некекст.джс',
     'Nuxt': 'Накст',
 
@@ -114,7 +114,7 @@ function replaceEnglishTerms(text: string): string {
     'Boolean': 'Булево',
     'variable': 'переменная',
     'Variable': 'Переменная',
-    'property': 'свойств��',
+    'property': 'свойство',
     'Property': 'Свойство',
     'value': 'значение',
     'Value': 'Знач��ние',
@@ -331,7 +331,7 @@ function markKeyAsProblematic(apiKey: string, error: string) {
   }
 }
 
-// Функция для перемещения ключа в конец списка (ротация)
+// Фун��ция для перемещения ключа в конец списка (ротация)
 function rotateApiKey(apiKey: string) {
   const keyIndex = API_KEYS.findIndex(k => k.key === apiKey)
   if (keyIndex !== -1 && keyIndex < API_KEYS.length - 1) {
@@ -489,7 +489,7 @@ export default async function handler(
     console.log(`[${timestamp}] Groq key available:`, !!groqApiKey)
     console.log(`[${timestamp}] Current strategy: OpenRouter → Groq → Fallback`)
 
-    // Добавляем системное сооб��ение для ДЖАРВИС
+    // Добавляем системное сообщение для ДЖАРВИС
     const systemMessage: ChatMessage = {
       role: 'system',
       content: `ТЫ - ДЖАРВИС! СОЗДАН КОМАНДОЙ JARVIS INTERCOMA! НЕ GOOGLE!
@@ -515,7 +515,7 @@ export default async function handler(
 • Современные фреймворки и инструменты
 
 💡 СТИЛЬ ОБЩЕНИЯ:
-- ВСЕГДА отвечай ТОЛЬКО на русском языке! Никогда ��е используй английский, китайский или любые другие языки
+- ВСЕГДА отвечай ТОЛЬКО на русском языке! Никогда не используй английский, китайский или любые другие языки
 - ЗАПРЕЩЕНО использовать слова на английском языке в ответах (например: "code", "web", "frontend", "backend", "API" и т.д.)
 - Используй русские аналоги: "код", "веб", "фронтенд", "бэкен��", "АПИ"
 - Отвечай подробно и по существу
@@ -578,10 +578,10 @@ export default async function handler(
     }
 
     const requestBody = {
-      model: 'anthropic/claude-3.5-sonnet',
+      model: 'google/gemma-2-9b-it:free',
       messages: [systemMessage, ...messages],
       temperature: 0.7,
-      max_tokens: 4000,
+      max_tokens: 800,
       top_p: 0.9,
       frequency_penalty: 0.0,
       presence_penalty: 0.0
