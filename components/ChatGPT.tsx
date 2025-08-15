@@ -81,7 +81,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Извлечение тегов из текста
   const extractTags = (text: string): string[] => {
     const commonTags = [
-      'веб-разработка', 'дизайн', 'пр��граммирование', 'ai', 'тех��ологии',
+      'веб-разработка', 'дизайн', 'программирование', 'ai', 'тех��ологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
       'html', 'api', 'база д��нных', 'сеть', 'б��зо��асность', 'ui', 'ux'
     ]
@@ -121,7 +121,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       // Обычный чат-запрос
       const apiMessages = conversationHistory
-        .filter(msg => !msg.text.includes('Привет! Я ДЖАРВИС, ваш AI-помощн��к!'))
+        .filter(msg => !msg.text.includes('Привет! Я ДЖАРВИС, ваш AI-помощник!'))
         .map(msg => ({
           role: msg.isUser ? 'user' : 'assistant' as const,
           content: msg.text
@@ -302,7 +302,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const response = await generateJarvisResponse(userMessage, messages)
 
-      // Уда��яем блок thinking перед показом ответа
+      // Удаляем блок thinking перед показом ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
       // Небольшая пауза перед показом ответа
@@ -382,7 +382,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       const errorMessage: Message = {
         id: Date.now().toString(),
-        text: '��ши��ка при загрузке ��айла. Попробуйте позже. 😔',
+        text: '��ши��ка при загрузке файла. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
@@ -399,11 +399,12 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите погов��рить?',
+      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотит�� погов��рить?',
       isUser: false,
       timestamp: new Date()
     }])
     setInteractionIds({})
+    setCurrentThinkingText('')
   }
 
   if (!isOpen) return null
