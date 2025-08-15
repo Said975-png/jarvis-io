@@ -59,8 +59,9 @@
             <div id="currentVoice">Загрузка...</div>
         </div>
 
-        <button class="test-btn" onclick="testMaleVoice()">🎯 Тест мужского голоса</button>
+        <button class="test-btn" onclick="testMaleVoice()">🎯 Тест обновленного голоса</button>
         <button class="test-btn" onclick="testJarvisPhrase()">🤖 Тест фразы JARVIS</button>
+        <button class="test-btn" onclick="testNaturalSettings()">🎵 Тест естественных настроек</button>
         <button class="test-btn" onclick="showAllVoices()">📋 Показать все голоса</button>
         <button class="test-btn" onclick="testDefaultVoice()">⚠️ Тест дефолтного голоса</button>
 
@@ -68,7 +69,7 @@
 
         <div class="voice-info">
             <h3>🎯 Что тестируем:</h3>
-            <p>✅ Мужской ��олос (не женский)</p>
+            <p>✅ Мужской голос (не женский)</p>
             <p>✅ Русский язык без акцента</p>
             <p>✅ Низкий тон (pitch = 0.8)</p>
             <p>✅ Нормальная скорость (rate = 0.85)</p>
@@ -185,7 +186,7 @@
         }
 
         function testDefaultVoice() {
-            const text = "Это обычный дефолтный голос системы для сравнения. Он должен сильно отличаться от настроенного ДЖАРВИС.";
+            const text = "Это обычный дефолтный гол��с системы для сравнения. Он должен сильно отличаться от настроенного ДЖАРВИС.";
             speakWithSettings(text, null, { pitch: 1.0, rate: 1.0 });
         }
 
@@ -198,7 +199,7 @@
             
             if (list.style.display === 'block') {
                 list.innerHTML = `
-                    <h4>Доступны�� русские голоса (${russianVoices.length}):</h4>
+                    <h4>Доступные русские голоса (${russianVoices.length}):</h4>
                     ${russianVoices.map(voice => `
                         <div style="margin: 5px 0; padding: 5px; background: white; border-radius: 3px;">
                             <strong>${voice.name}</strong> - ${voice.lang} 
