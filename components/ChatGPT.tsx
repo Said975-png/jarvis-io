@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС, ваш AI-помощник! 🤖\n\nЯ помогу вам с:\n\nВеб-разработкой и программированием\nДизайном и UI/UX\nТехническими вопросам��\nАнализом и консультациями\nРешением задач\n\nПросто напишите свой вопрос и я постараюсь помочь!\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите поговорить?',
       isUser: false,
       timestamp: new Date()
     }
@@ -73,14 +73,14 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     } catch (error) {
       console.error('Error saving interaction for learning:', error)
       // Не блокируем пользовательский ��нтерфейс при ошибках сохранения
-      // Это не критично для работы чата
+      // Это не к��итично для работы чата
     }
   }
 
   // Извлечение тегов из текста
   const extractTags = (text: string): string[] => {
     const commonTags = [
-      'веб-разработка', 'дизайн', 'программирование', 'ai', 'технологии',
+      'веб-разработка', 'дизайн', 'программирование', 'ai', 'тех��ологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
       'html', 'api', 'база д��нных', 'сеть', 'б��зо��асность', 'ui', 'ux'
     ]
@@ -156,7 +156,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, произошл�� ошибка. Попробуйте переформулировать вопрос. 🤔'
+        return 'Извините, произошл�� ошибка. Попр��буйте переформулировать вопро��. 🤔'
       }
 
       return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
@@ -165,6 +165,86 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       console.error('Error generating response:', error)
       return 'Произошла ошибка при генерации ответа. Проверьте подключение к интернету и ��опробуйте снова. 🌐'
     }
+  }
+
+  const showThinkingProcess = async (userMessage: string) => {
+    // Генерируем реалистичные мысли на основе вопроса пользователя
+    const generateThinking = (message: string) => {
+      const lowerMessage = message.toLowerCase()
+
+      if (lowerMessage.includes('привет') || lowerMessage.includes('hello')) {
+        return [
+          'Пользователь поздоровался. Нужно ответить дружелюбно и спросить, чем могу помочь.',
+          'Это простое приветствие, отвечу коротко и тепло.'
+        ]
+      }
+
+      if (lowerMessage.includes('сайт') || lowerMessage.includes('веб')) {
+        return [
+          'Вопрос о веб-разработке. Проанализирую, что именно нужно пользователю.',
+          'Нужно предложить конкретные решения и уточнить технические требования.',
+          'Расскажу о наших возможностях в веб-разработке и тарифах.'
+        ]
+      }
+
+      if (lowerMessage.includes('цена') || lowerMessage.includes('стоимость') || lowerMessage.includes('тариф')) {
+        return [
+          'Пользователь интересуется ценами. Проверю наши актуальные тарифы.',
+          'Нужно объяснить различия между планами Basic, Pro и Max.',
+          'Подберу оптимальный план исходя из потребностей пользователя.'
+        ]
+      }
+
+      if (lowerMessage.includes('как') || lowerMessage.includes('что') || lowerMessage.includes('?')) {
+        return [
+          'Это вопрос требует детального анализа. Разберу по частям.',
+          'Нужно дать исчерпывающий ответ с примерами и объяснениями.',
+          'Подумаю о практических советах, которые будут полезны.'
+        ]
+      }
+
+      // Общие мысли для любых других вопросов
+      return [
+        'Интересный вопрос. Подумаю, как лучше на него ответить.',
+        'Проанализирую контекст и дам максимально полезный ответ.',
+        'Нужно структурировать информацию и подать её понятно.'
+      ]
+    }
+
+    const thinkingSteps = generateThinking(userMessage)
+
+    // Создаем единый блок мышления с заголовком
+    const thinkingBlockId = `thinking_block_${Date.now()}`
+    const initialThinkingMessage: Message = {
+      id: thinkingBlockId,
+      text: 'Thinking',
+      isUser: false,
+      timestamp: new Date(),
+      isThinking: true,
+      isThinkingHeader: true
+    }
+
+    setMessages(prev => [...prev, initialThinkingMessage])
+    await new Promise(resolve => setTimeout(resolve, 500))
+
+    // Добавляем каждую мысль в блок
+    let currentThoughts = ''
+    for (let i = 0; i < thinkingSteps.length; i++) {
+      currentThoughts += (i > 0 ? '\n\n' : '') + thinkingSteps[i]
+
+      // Обновляем блок мышления с накопленными мыслями
+      setMessages(prev => prev.map(msg =>
+        msg.id === thinkingBlockId
+          ? { ...msg, text: `Thinking\n\n${currentThoughts}` }
+          : msg
+      ))
+
+      // Пауза между мыслями
+      await new Promise(resolve => setTimeout(resolve, 1200 + Math.random() * 800))
+    }
+
+    // Пауза перед финальным ответом
+    await new Promise(resolve => setTimeout(resolve, 800))
   }
 
   const handleSendMessage = async () => {
@@ -184,8 +264,17 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     setIsTyping(true)
 
     try {
+      // Показываем процесс мышления
+      await showThinkingProcess(userMessage)
+
       const response = await generateJarvisResponse(userMessage, messages)
-      
+
+      // Удаляем блок thinking перед показом ответа
+      setMessages(prev => prev.filter(msg => !msg.isThinking))
+
+      // Небольшая пауза перед показом ответа
+      await new Promise(resolve => setTimeout(resolve, 300))
+
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: response,
@@ -195,19 +284,22 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       setMessages(prev => [...prev, botMessage])
 
-      // Сох��аняем взаимодействие для обучения
+      // Сох��аняем ��заимодействие для обучения
       await saveInteractionToLearning(userMessage, response, userMessageId)
 
     } catch (error) {
       console.error('Error in handleSendMessage:', error)
-      
+
+      // Удаляем блок thinking при ошибке
+      setMessages(prev => prev.filter(msg => !msg.isThinking))
+
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: 'Извините, произошла ошибка. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
-      
+
       setMessages(prev => [...prev, errorMessage])
     } finally {
       setIsTyping(false)
@@ -245,7 +337,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожалени��, обработка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
+        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
@@ -257,7 +349,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       const errorMessage: Message = {
         id: Date.now().toString(),
-        text: 'Ошибка при загрузке файла. Попробуйте позже. 😔',
+        text: '��ши��ка при загрузке файла. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
@@ -274,7 +366,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС, ваш AI-п��мощник! 🤖\n\n🚀 Я помогу вам с:\n\n• 💻 Веб-разработк��й и программированием\n• 🎨 ��изайном и UI/UX\n• 🔧 Техническими вопросами\n• 📊 Анализом и консультациями\n• 🛠️ Решением задач\n\n💡 Просто напишите свой вопрос и я постараюсь помочь!\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите погов��рить?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -297,7 +389,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               />
             </div>
             <div className="header-text">
-              <h3>ДЖАРВИС</h3>
+              <h3>��ЖАРВИС</h3>
               <span className="status">AI Помощник Онлайн</span>
             </div>
           </div>
@@ -319,7 +411,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         <div className="jarvis-chat-messages">
           {messages.map((message) => (
-            <div key={message.id} className={`message ${message.isUser ? 'user-message' : 'bot-message'}`}>
+            <div key={message.id} className={`message ${message.isUser ? 'user-message' : 'bot-message'} ${message.isThinking ? 'thinking-message' : ''}`}>
               {!message.isUser && (
                 <div className="message-avatar">
                   <img
@@ -332,20 +424,29 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               )}
               <div className="message-content">
                 <div
-                  className="message-text"
+                  className={`message-text ${message.isThinking ? 'thinking-text' : ''}`}
                   style={{ whiteSpace: 'pre-wrap' }}
                 >
-                  {message.text}
+                  {message.isThinking ? (
+                    <div>
+                      <div className="thinking-title">Thinking</div>
+                      {message.text.replace('Thinking\n\n', '')}
+                    </div>
+                  ) : (
+                    message.text
+                  )}
                 </div>
-                <div className="message-time">
-                  {message.timestamp.toLocaleTimeString('ru-RU', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                  })}
-                </div>
+                {!message.isThinking && (
+                  <div className="message-time">
+                    {message.timestamp.toLocaleTimeString('ru-RU', {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </div>
+                )}
               </div>
-              {!message.isUser && interactionIds[message.id] && (
-                <MessageFeedback 
+              {!message.isUser && !message.isThinking && interactionIds[message.id] && (
+                <MessageFeedback
                   interactionId={interactionIds[message.id]}
                   messageId={message.id}
                 />
@@ -378,30 +479,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         <div className="jarvis-chat-input">
           <div className="input-container">
-            <div className="attachment-buttons">
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileUpload}
-                style={{ display: 'none' }}
-                accept=".txt,.pdf,.doc,.docx,.md"
-              />
-              <button 
-                className={`jarvis-attachment-btn ${isUploadingFile ? 'uploading' : ''}`}
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploadingFile}
-                title="Прикрепить файл"
-              >
-                {isUploadingFile ? (
-                  <div className="loading-spinner">⏳</div>
-                ) : (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.49" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                )}
-              </button>
-            </div>
-
             <textarea
               ref={textareaRef}
               value={inputText}
@@ -412,16 +489,40 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               rows={1}
               disabled={isTyping}
             />
-            
-            <button 
-              className={`jarvis-send-btn ${!inputText.trim() || isTyping ? 'disabled' : ''}`}
-              onClick={handleSendMessage}
-              disabled={!inputText.trim() || isTyping}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+
+            <div className="input-buttons">
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileUpload}
+                style={{ display: 'none' }}
+                accept=".txt,.pdf,.doc,.docx,.md"
+              />
+              <button
+                className={`jarvis-attachment-btn ${isUploadingFile ? 'uploading' : ''}`}
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploadingFile}
+                title="Прикрепить файл"
+              >
+                {isUploadingFile ? (
+                  <div className="loading-spinner"></div>
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.49" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                )}
+              </button>
+
+              <button
+                className={`jarvis-send-btn ${!inputText.trim() || isTyping ? 'disabled' : ''}`}
+                onClick={handleSendMessage}
+                disabled={!inputText.trim() || isTyping}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -701,11 +802,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .input-container {
           display: flex;
-          align-items: flex-end;
+          align-items: center;
           gap: 12px;
           background: #ffffff;
           border-radius: 24px;
-          padding: 8px 8px 8px 16px;
+          padding: 12px 16px;
           border: 2px solid transparent;
           transition: border-color 0.2s;
         }
@@ -723,9 +824,10 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           border-color: #0056b3;
         }
 
-        .attachment-buttons {
+        .input-buttons {
           display: flex;
-          gap: 4px;
+          align-items: center;
+          gap: 8px;
         }
 
         .jarvis-attachment-btn {
@@ -763,6 +865,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         .loading-spinner {
+          width: 14px;
+          height: 14px;
+          border: 2px solid #e5e7eb;
+          border-top: 2px solid #007bff;
+          border-radius: 50%;
           animation: spin 1s linear infinite;
         }
 
@@ -779,10 +886,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           font-size: 14px;
           line-height: 1.4;
           resize: none;
-          min-height: 20px;
+          min-height: 24px;
           max-height: 120px;
           color: #000000;
           font-family: inherit;
+          padding: 0;
         }
 
         .jarvis-message-input::placeholder {
@@ -825,6 +933,43 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .dark-theme .jarvis-send-btn.disabled {
           background: #555555;
+        }
+
+        /* Стили для сообщений мышления */
+        .thinking-message {
+          opacity: 0.8;
+        }
+
+        .thinking-text {
+          background: #f8f9fa !important;
+          border: 1px solid #e1e5e9 !important;
+          border-left: 3px solid #6366f1 !important;
+          color: #495057 !important;
+          font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace !important;
+          font-size: 12px !important;
+          line-height: 1.4 !important;
+          padding: 10px 14px !important;
+          border-radius: 6px !important;
+          white-space: pre-line !important;
+          max-width: 80% !important;
+        }
+
+        .thinking-text .thinking-title {
+          font-weight: 600;
+          color: #6366f1;
+          margin-bottom: 8px;
+          font-size: 12px;
+        }
+
+        .dark-theme .thinking-text {
+          background: #1e1e1e !important;
+          border: 1px solid #333 !important;
+          border-left: 4px solid #6366f1 !important;
+          color: #e1e5e9 !important;
+        }
+
+        .dark-theme .thinking-text .thinking-title {
+          color: #8b9dd4;
         }
 
       `}</style>
