@@ -38,7 +38,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 4
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 5
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 6
-    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 7
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // К��юч 7
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 8
   ])
 
@@ -236,7 +236,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     if (!selectedVoice) {
       const qualityVoices = [
         'Google русский',
-        'Microsoft Irina - Russian (Russia)', // Хотя женский, но качественный
+        'Microsoft Irina - Russian (Russia)', // Хотя женский, но качест��енный
         'Russian (Russia)',
         'ru-RU'
       ]
@@ -263,8 +263,148 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return selectedVoice
   }
 
-  // Функция для озвучивания текста
-  const speakText = (text: string) => {
+  // Функция получения доступного ElevenLabs ключа (система ротации как у OpenRouter)
+  const getNextAvailableElevenLabsKey = () => {
+    // Ищем активные ключи с доступным лимитом
+    const availableKeys = elevenLabsKeys.filter(k =>
+      k.isActive && k.key.length > 0 && k.usage < k.limit && k.errorCount < 3
+    )
+
+    if (availableKeys.length > 0) {
+      console.log(`🔑 Доступно ElevenLabs ключей: ${availableKeys.length}`)
+      return availableKeys[0].key
+    }
+
+    // Если все ключи исчерпали лимит, сбрасываем счетчики (новый месяц)
+    const keysWithLimitReached = elevenLabsKeys.filter(k => k.usage >= k.limit)
+    if (keysWithLimitReached.length > 0) {
+      console.log('🔄 Сброс лимитов ElevenLabs ключей (новый месяц)')
+      keysWithLimitReached.forEach(k => {
+        k.usage = 0
+        k.errorCount = 0
+        k.isActive = true
+      })
+
+      const resetKey = elevenLabsKeys.find(k => k.key.length > 0)
+      return resetKey ? resetKey.key : null
+    }
+
+    return null
+  }
+
+  // Отметить ключ как проблемный
+  const markElevenLabsKeyAsProblematic = (apiKey: string, error: string) => {
+    const keyInfo = elevenLabsKeys.find(k => k.key === apiKey)
+    if (keyInfo) {
+      keyInfo.errorCount++
+      if (keyInfo.errorCount >= 3) {
+        keyInfo.isActive = false
+        console.log(`❌ ElevenLabs ключ отключен после 3 ошибок: ${apiKey.substring(0, 8)}...`)
+      }
+      console.log(`⚠️ ElevenLabs ошибка (${keyInfo.errorCount}/3): ${error}`)
+    }
+  }
+
+  // Увеличить счетчик использования ключа
+  const updateElevenLabsUsage = (apiKey: string, charactersUsed: number) => {
+    const keyInfo = elevenLabsKeys.find(k => k.key === apiKey)
+    if (keyInfo) {
+      keyInfo.usage += charactersUsed
+      console.log(`📊 ElevenLabs использование: ${keyInfo.usage}/${keyInfo.limit} символов`)
+
+      if (keyInfo.usage >= keyInfo.limit) {
+        keyInfo.isActive = false
+        console.log(`🚫 ElevenLabs ключ исчерпал лимит: ${apiKey.substring(0, 8)}...`)
+      }
+    }
+  }
+
+  // Функция для ElevenLabs TTS (премиум качество)
+  const speakWithElevenLabs = async (text: string): Promise<boolean> => {
+    const apiKey = getNextAvailableElevenLabsKey()
+
+    if (!apiKey) {
+      console.log('❌ Нет доступных ElevenLabs ключей, fallback на браузерный TTS')
+      return false
+    }
+
+    try {
+      console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
+
+      // Используем качественный мужской голос ElevenLabs
+      const voiceId = 'pNInz6obpgDQGcFmaJgB' // Adam (мужской голос)
+
+      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'audio/mpeg',
+          'Content-Type': 'application/json',
+          'xi-api-key': apiKey
+        },
+        body: JSON.stringify({
+          text: text,
+          model_id: 'eleven_monolingual_v1',
+          voice_settings: {
+            stability: 0.75,
+            similarity_boost: 0.75,
+            style: 0.0,
+            use_speaker_boost: true
+          }
+        })
+      })
+
+      if (response.ok) {
+        const audioBlob = await response.blob()
+        const audioUrl = URL.createObjectURL(audioBlob)
+        const audio = new Audio(audioUrl)
+
+        audio.onended = () => {
+          URL.revokeObjectURL(audioUrl)
+          console.log('✅ ElevenLabs TTS завершен')
+        }
+
+        audio.onerror = () => {
+          console.error('❌ Ошибка воспроизведения ElevenLabs аудио')
+          URL.revokeObjectURL(audioUrl)
+        }
+
+        await audio.play()
+
+        // Обновляем счетчик использования
+        updateElevenLabsUsage(apiKey, text.length)
+
+        console.log('🎵 ElevenLabs TTS успешно воспроизведен')
+        return true
+
+      } else {
+        let errorMessage = 'Unknown error'
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.detail?.message || errorData.message || `HTTP ${response.status}`
+        } catch {
+          errorMessage = `HTTP ${response.status}`
+        }
+
+        markElevenLabsKeyAsProblematic(apiKey, errorMessage)
+
+        if (response.status === 401) {
+          console.log('🔑 Неверный ключ ElevenLabs, пробуем следующий...')
+        } else if (response.status === 429) {
+          console.log('⏰ Лимит ElevenLabs превышен, пробуем следующий ключ...')
+        }
+
+        return false
+      }
+
+    } catch (error) {
+      console.error('💥 ElevenLabs ошибка сети:', error)
+      markElevenLabsKeyAsProblematic(apiKey, error instanceof Error ? error.message : 'Network error')
+      return false
+    }
+  }
+
+  // Функция для озвучивания текста (теперь с ElevenLabs + fallback)
+  const speakText = async (text: string) => {
     if (speechSynthesis && voiceMode === 'voice') {
       // Останавливаем предыдущее воспроизведение
       speechSynthesis.cancel()
@@ -297,7 +437,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           // Добавляем обработчики событий
           utterance.onstart = () => {
-            console.log('🎵 Начало озвучивания')
+            console.log('🎵 Начало ��звучивания')
           }
 
           utterance.onend = () => {
@@ -442,7 +582,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       const words = lowerMessage.split(' ')
 
       // Анализируем тип вопроса
-      const isQuestion = message.includes('?') || words.some(w => ['как', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
+      const isQuestion = message.includes('?') || words.some(w => ['��ак', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
       const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
@@ -474,7 +614,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Анализирую суть вопроса',
           'Структурирую ответ для максимальной пользы',
-          'Добавлю примеры и практические советы'
+          'Добавлю п��имеры и практические советы'
         ]
       }
 
