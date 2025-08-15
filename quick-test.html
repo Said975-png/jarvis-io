@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Быстрый тест JARVIS</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Тест новой мощной модели JARVIS</h1>
+    <button onclick="testNewModel()">Протестировать</button>
+    <div id="result"></div>
+    
+    <script>
+        async function testNewModel() {
+            const result = document.getElementById('result');
+            result.innerHTML = 'Тестируем...';
+            
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: 'объясни кратко что такое machine learning' }]
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    result.innerHTML = `<h3>✅ Ответ новой модели:</h3><p>${data.message}</p>`;
+                } else {
+                    result.innerHTML = `<h3>❌ Ошибка:</h3><p>${response.status}</p>`;
+                }
+            } catch (error) {
+                result.innerHTML = `<h3>❌ Ошибка:</h3><p>${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
