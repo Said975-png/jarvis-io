@@ -129,7 +129,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     } catch (error) {
       console.error('Error saving interaction for learning:', error)
       // Не блокируем пользовательский ��нтерфейс при ошибках сохранения
-      // Это не к��итично для работы чата
+      // Э��о не к��итично для работы чата
     }
   }
 
@@ -167,7 +167,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Останавливаем предыдущее воспроизведение
       speechSynthesis.cancel()
 
-      // Очищаем текст от эмо��зи и специальных символов для лучшего произношения
+      // Очищаем текст от эмодзи и специальных символов для лучшего произношения
       const cleanText = text
         .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
         .replace(/[•·]/g, '')
@@ -197,7 +197,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           'Russian (Russia)'
         ]
 
-        // Ищем первый доступный предпочтительный голос
+        // Ищем первый доступный предпочтит��льный голос
         for (const preferred of preferredVoices) {
           const voice = voices.find(v =>
             v.name.includes(preferred) &&
@@ -261,7 +261,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
   // Функция для тестирования голоса
   const testVoice = () => {
-    speakText('Привет! Это тест голоса ДЖАРВИС. Как звучит мой новый мужской голос?')
+    speakText('Привет! Это тест голоса ДЖАРВИС. Как звучит мой новый мужс��ой голос?')
   }
 
   const scrollToBottom = () => {
@@ -338,7 +338,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при г��нерации ответа. Проверьте подключе��ие к интернету и ��опробуйте снова. 🌐'
+      return 'Произошла ошибка при г��нерац��и ответа. Проверьте подключение к интернету и ��опробуйте снова. 🌐'
     }
   }
 
@@ -368,7 +368,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       const isQuestion = message.includes('?') || words.some(w => ['как', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
       const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
-      const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
+      const isGreeting = words.some(w => ['привет', 'здравствуй', 'д��бро', 'hello', 'hi'].includes(w))
 
       if (isGreeting) {
         return [
@@ -491,7 +491,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       setMessages(prev => [...prev, botMessage])
 
-      // Озвучиваем ответ бота если включен голосовой ре��им
+      // Озвучиваем ответ б��та если включен голосовой режим
       if (voiceMode === 'voice') {
         setTimeout(() => speakText(response), 500) // Небольшая задержка для плавности
       }
@@ -530,7 +530,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     if (!file) return
 
     if (file.size > 5 * 1024 * 1024) { // 5MB
-      alert('Файл слишком большой. Максимальны���� размер: 5MB')
+      alert('Файл слишком большой. Максимальны�� размер: 5MB')
       return
     }
 
@@ -947,6 +947,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         .dark-theme .voice-mode-btn:hover,
+        .dark-theme .test-voice-btn:hover,
         .dark-theme .clear-chat-btn:hover,
         .dark-theme .close-btn:hover {
           background: #404040;
