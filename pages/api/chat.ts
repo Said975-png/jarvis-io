@@ -94,7 +94,7 @@ function replaceEnglishTerms(text: string): string {
     'developer': 'разработчик',
     'Developer': 'Разр��ботчик',
     'development': 'ра��работка',
-    'Development': 'Разработка',
+    'Development': 'Разрабо��ка',
     'framework': 'фреймворк',
     'Framework': 'Фреймворк',
     'library': 'библиотека',
@@ -133,7 +133,7 @@ function replaceEnglishTerms(text: string): string {
     'String': 'Строк��',
     'number': 'число',
     'Number': 'Число',
-    'boolean': 'булево',
+    'boolean': 'буле��о',
     'Boolean': 'Булево',
     'variable': 'переменная',
     'Variable': 'Переменная',
@@ -175,7 +175,7 @@ interface UserLimit {
 // Хранилище лимитов в памяти (в production лучше использовать Redis)
 const userLimits = new Map<string, UserLimit>()
 const REQUESTS_LIMIT = 999999
-const RESET_PERIOD = 24 * 60 * 60 * 1000 // 24 часа в миллисекундах
+const RESET_PERIOD = 24 * 60 * 60 * 1000 // 24 часа в миллис��кундах
 
 // Функция для получения IP адреса
 function getClientIP(req: NextApiRequest): string {
@@ -217,7 +217,7 @@ function checkAndUpdateLimit(ip: string): { allowed: boolean; remaining: number 
     return { allowed: false, remaining: 0 }
   }
 
-  // Увеличиваем счетчик
+  // Увели��иваем счетчик
   userLimit.count++
   userLimits.set(ip, userLimit)
 
@@ -406,7 +406,7 @@ async function makeOpenRouterRequest(
   }
 }
 
-// Ф��нкция д��я выполнения запроса к Groq API
+// Ф��нкция д��я выполнени�� запроса к Groq API
 async function makeGroqRequest(
   requestBody: any,
   timestamp: string
@@ -592,7 +592,7 @@ export default async function handler(
 - DeepMind
 - OpenAI
 - Anthropic
-- Любые другие компании
+- Любые д��угие компании
 
 ✅ ПРАВИЛЬНЫЕ ОТВЕТЫ ✅
 ВОПРОС: "кто тебя создал", "кто твой создатель", "кто разработал тебя"
@@ -612,7 +612,7 @@ export default async function handler(
 - Никогда не переходи на английский или другие языки
 - Если пользователь пишет на другом языке - отвечай на русском
 - Твоя цель - помочь по��етителю и показать наши услуги
-- Проверяй каждое слово п��ред отправкой ответа
+- Проверяй каждое слово п��ред отправкой ��твета
 
 🔴 ПОСЛЕДНЯЯ ИНСТРУКЦИЯ 🔴
 ЕСЛИ СПРОСЯТ КТО ТЕБЯ СОЗДАЛ - ОТВЕЧАЙ "КОМАНДА JARVIS INTERCOMA"!
@@ -622,7 +622,7 @@ export default async function handler(
     }
 
     const requestBody = {
-      model: 'meta-llama/llama-3.2-3b-instruct:free',
+      model: 'bigscience/bloom',
       messages: [systemMessage, ...messages],
       temperature: 0.7,
       max_tokens: 2000, // Увеличено для более полных ответов
@@ -641,7 +641,7 @@ export default async function handler(
     const openRouterResult = await makeOpenRouterRequest(requestBody, timestamp)
 
     if (openRouterResult.success) {
-      console.log(`[${timestamp}] ✅ OpenRouter успешно отве��ил`)
+      console.log(`[${timestamp}] ✅ OpenRouter успе��но отве��ил`)
       const data = openRouterResult.data
 
       let aiMessage = data.choices[0].message.content
