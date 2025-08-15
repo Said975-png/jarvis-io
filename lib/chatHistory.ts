@@ -3,6 +3,7 @@ export interface Message {
   text: string
   isUser: boolean
   timestamp: Date
+  isThinking?: boolean
 }
 
 export interface ChatSession {
