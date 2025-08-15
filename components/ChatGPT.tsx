@@ -80,7 +80,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Извлечение тегов из текста
   const extractTags = (text: string): string[] => {
     const commonTags = [
-      'веб-разработка', 'дизайн', 'программирование', 'ai', 'технологии',
+      'веб-разработка', 'дизайн', 'программирование', 'ai', 'тех��ологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
       'html', 'api', 'база д��нных', 'сеть', 'б��зо��асность', 'ui', 'ux'
     ]
@@ -183,7 +183,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Вопрос о веб-разработке. Проанализирую, что именно нужно пользователю.',
           'Нужно предложить конкретные решения и уточнить технические требования.',
-          'Расскажу о наших во��можностях в веб-разработке и тарифах.'
+          'Расскажу о наших возможностях в веб-разработке и тарифах.'
         ]
       }
 
@@ -357,7 +357,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите поговорить?',
+      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите погов��рить?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -418,7 +418,14 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`message-text ${message.isThinking ? 'thinking-text' : ''}`}
                   style={{ whiteSpace: 'pre-wrap' }}
                 >
-                  {message.text}
+                  {message.isThinking ? (
+                    <div>
+                      <div className="thinking-title">Thinking</div>
+                      {message.text.replace('Thinking\n\n', '')}
+                    </div>
+                  ) : (
+                    message.text
+                  )}
                 </div>
                 {!message.isThinking && (
                   <div className="message-time">
