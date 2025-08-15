@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш персональный AI-помощник от команды Jarvis Intercoma!\n\nЯ специали��ируюсь в:\n\n• Веб-разработке и программировании\n• UI/UX дизай��е\n• Технических консультациях\n• AI-решениях для бизнеса\n• Анализе и оптимизации проектов\n\nПросто опишите вашу задачу, и я помогу найти оптимальное решение!\n\nО чем хотите поговорить?',
+      text: 'Привет! Я ДЖАРВИС - ваш персональный AI-помощник от команды Jarvis Intercoma!\n\nЯ специали��ируюсь в:\n\n• Веб-разработке и программировании\n• UI/UX дизайне\n• Технических консультациях\n• AI-решениях для бизнеса\n• Анализе и оптимизации проектов\n\nПросто опишите вашу задачу, и я помогу найти оптимальное решение!\n\nО чем хотите поговорить?',
       isUser: false,
       timestamp: new Date()
     }
@@ -274,7 +274,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш персональный AI-помощник от команды Jarvis Intercoma!\n\nЯ специализируюсь в:\n\n• Веб-разработке и программировании\n• UI/UX дизайне\n• Технических консультациях\n• AI-решениях для бизнеса\n• Анализе и оптимизации проектов\n\nПросто опишите вашу задачу, и я помогу найти оптимальное решение!\n\nО чем хотите поговорить?',
+      text: 'Привет! Я ДЖАРВИС - ваш персональный AI-помощник от команды Jarvis Intercoma!\n\nЯ сп��циализируюсь в:\n\n• Веб-разработке и программировании\n• UI/UX дизайне\n• Технических консультациях\n• AI-решениях для бизнеса\n• Анализе и оптимизации проектов\n\nПросто опишите вашу задачу, и я помогу найти оптимальное решение!\n\nО чем хотите поговорить?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -378,30 +378,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         <div className="jarvis-chat-input">
           <div className="input-container">
-            <div className="attachment-buttons">
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileUpload}
-                style={{ display: 'none' }}
-                accept=".txt,.pdf,.doc,.docx,.md"
-              />
-              <button 
-                className={`jarvis-attachment-btn ${isUploadingFile ? 'uploading' : ''}`}
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploadingFile}
-                title="Прикрепить файл"
-              >
-                {isUploadingFile ? (
-                  <div className="loading-spinner">⏳</div>
-                ) : (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.49" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                )}
-              </button>
-            </div>
-
             <textarea
               ref={textareaRef}
               value={inputText}
@@ -412,16 +388,40 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               rows={1}
               disabled={isTyping}
             />
-            
-            <button 
-              className={`jarvis-send-btn ${!inputText.trim() || isTyping ? 'disabled' : ''}`}
-              onClick={handleSendMessage}
-              disabled={!inputText.trim() || isTyping}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+
+            <div className="input-buttons">
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileUpload}
+                style={{ display: 'none' }}
+                accept=".txt,.pdf,.doc,.docx,.md"
+              />
+              <button
+                className={`jarvis-attachment-btn ${isUploadingFile ? 'uploading' : ''}`}
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploadingFile}
+                title="Прикрепить файл"
+              >
+                {isUploadingFile ? (
+                  <div className="loading-spinner"></div>
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.49" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                )}
+              </button>
+
+              <button
+                className={`jarvis-send-btn ${!inputText.trim() || isTyping ? 'disabled' : ''}`}
+                onClick={handleSendMessage}
+                disabled={!inputText.trim() || isTyping}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
