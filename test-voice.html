@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест голоса JARVIS</title>
+    <title>��ест голоса JARVIS</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -207,18 +207,36 @@
             }
         }
 
+        // Форсированная загрузка голосов
+        function forceLoadVoices() {
+            const utterance = new SpeechSynthesisUtterance('');
+            speechSynthesis.speak(utterance);
+            speechSynthesis.cancel();
+        }
+
         // Инициализация при загрузке
         window.addEventListener('load', () => {
             // Загружаем голоса
             const loadVoices = () => {
                 setTimeout(testMaleVoice, 500);
             };
-            
+
             if (speechSynthesis.getVoices().length > 0) {
                 loadVoices();
             } else {
+                // Форсируем загрузку
+                forceLoadVoices();
+                setTimeout(loadVoices, 200);
                 speechSynthesis.onvoiceschanged = loadVoices;
             }
+
+            // Дополнительная попытка через секунду
+            setTimeout(() => {
+                if (speechSynthesis.getVoices().length === 0) {
+                    forceLoadVoices();
+                    setTimeout(loadVoices, 300);
+                }
+            }, 1000);
         });
     </script>
 </body>
