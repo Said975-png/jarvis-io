@@ -88,7 +88,7 @@ function replaceEnglishTerms(text: string): string {
     'Desktop': 'Десктоп',
     'user': 'польз��ватель',
     'User': 'Пользователь',
-    'interface': 'интерфейс',
+    'interface': 'интер��ейс',
     'Interface': 'Интерфейс',
     'design': 'дизайн',
     'Design': 'Дизайн',
@@ -129,7 +129,7 @@ function replaceEnglishTerms(text: string): string {
     'version': 'версия',
     'Version': 'Ве��сия',
     'release': 'релиз',
-    'Release': 'Релиз'
+    'Release': 'Ре��из'
   }
 
   let result = text
@@ -402,7 +402,7 @@ async function makeGroqRequest(
     // Адаптируем requestBody для Groq (используем самую мощную модель)
     const groqRequestBody = {
       ...requestBody,
-      model: 'llama-3.1-70b-versatile' // Самая мощная модель Groq
+      model: 'llama3-70b-8192' // Обновленная модель Groq
     }
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -581,7 +581,7 @@ export default async function handler(
 
 📞 КОНТАКТЫ:
 • Онлайн-чат на сайте (прямо здесь!)
-• Мы отвечаем быстро и помогаем с выбором
+• Мы отвечаем быстро и помогаем с в��бором
 
 ❗ КРИТИЧЕСКИ ВАЖНО:
 - Отвечай ТОЛЬКО на русском языке
@@ -639,7 +639,7 @@ export default async function handler(
     const groqResult = await makeGroqRequest(requestBody, timestamp)
 
     if (groqResult.success) {
-      console.log(`[${timestamp}] ✅ Groq успешно отве��ил`)
+      console.log(`[${timestamp}] ✅ Groq у��пешно отве��ил`)
       const data = groqResult.data
 
       let aiMessage = data.choices[0].message.content
