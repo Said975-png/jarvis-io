@@ -24,7 +24,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [isUploadingFile, setIsUploadingFile] = useState(false)
   const [interactionIds, setInteractionIds] = useState<{[messageId: string]: string}>({})
 
-  // Голосовые функции
+  // Голосовые функц��и
   const [isListening, setIsListening] = useState(false)
   const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('text') // 'text' = только текст, 'voice' = текст + голос
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
@@ -141,7 +141,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для ост��новки голосового ввода
+  // Функция для остановки голосового ввода
   const stopListening = () => {
     if (recognition && isListening) {
       recognition.stop()
@@ -364,7 +364,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     }
 
-    // Финальная ��ауза
+    // Финальная пауза
     await new Promise(resolve => setTimeout(resolve, 400))
   }
 
@@ -390,7 +390,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const response = await generateJarvisResponse(userMessage, messages)
 
-      // Удаляем блок thinking перед показом ответа
+      // Удаляем ��лок thinking перед показом ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
       // Небольшая пауза перед показом ответа
@@ -463,7 +463,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
+        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы може��е описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
@@ -798,6 +798,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           gap: 8px;
         }
 
+        .voice-mode-btn,
         .clear-chat-btn,
         .close-btn {
           background: none;
@@ -812,20 +813,37 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           justify-content: center;
         }
 
+        .voice-mode-btn:hover,
         .clear-chat-btn:hover,
         .close-btn:hover {
           background: #f0f0f0;
           color: #000000;
         }
 
+        .voice-mode-btn.active {
+          background: #10b981;
+          color: #ffffff;
+        }
+
+        .voice-mode-btn.active:hover {
+          background: #059669;
+        }
+
+        .dark-theme .voice-mode-btn,
         .dark-theme .clear-chat-btn,
         .dark-theme .close-btn {
           color: #cccccc;
         }
 
+        .dark-theme .voice-mode-btn:hover,
         .dark-theme .clear-chat-btn:hover,
         .dark-theme .close-btn:hover {
           background: #404040;
+          color: #ffffff;
+        }
+
+        .dark-theme .voice-mode-btn.active {
+          background: #10b981;
           color: #ffffff;
         }
 
