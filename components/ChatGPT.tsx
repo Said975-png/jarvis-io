@@ -30,7 +30,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
 
-  // ElevenLabs ключи (8 ключей с разных аккаунт��в для ротации)
+  // ElevenLabs ключи (8 ключей с разных аккаунтов для ротации)
   const [elevenLabsKeys] = useState([
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
@@ -89,7 +89,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           window.speechSynthesis.cancel()
         }
 
-        // Инициализируем голоса (некоторые браузеры загружают их асинхронно)
+        // Инициализируем голоса (некоторые браузеры загружают их асинхронн��)
         const loadVoices = () => {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
@@ -154,7 +154,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (response.ok) {
         const data = await response.json()
         if (data.success) {
-          // Сохран��ем ID вз��имодействия для связи с сообщением
+          // Сохраняем ID вз��имодействия для связи с сообщением
           setInteractionIds(prev => ({
             ...prev,
             [userMessageId]: data.data.interactionId
@@ -215,7 +215,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       'Google русский (Россия)', // Самый качественный если есть
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
       'Google русский',
-      'Pavel (Enhanced)', // Если есть улучшенная версия
+      'Pavel (Enhanced)', // Е��ли есть улучшенная версия
       'Yuri (Natural)', // Естественный вариант
       'Microsoft Pavel',
       'Pavel',
@@ -252,7 +252,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     }
 
-    // ПРИ��РИТЕТ 3: Любой русский голос
+    // ПРИОРИТЕТ 3: Любой русский голос
     if (!selectedVoice) {
       selectedVoice = russianVoices.find(v => v.localService) || russianVoices[0]
       if (selectedVoice) {
@@ -364,7 +364,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         audio.onerror = () => {
-          console.error('❌ Ошибка воспроизведения ElevenLabs аудио')
+          console.error('�� Ошибка воспроизведения ElevenLabs аудио')
           URL.revokeObjectURL(audioUrl)
         }
 
@@ -464,7 +464,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
           }
 
-          // Настройки для более естественного звучания (менее роботично)
+          // Настройки для более естественного звучания (менее роботич��о)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скорость (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
@@ -528,7 +528,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Функция для тестирования голоса
   const testVoice = () => {
     console.log('🧪 Тестирование голоса JARVIS...')
-    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
+    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового го��оса через ElevenLabs API.'
     speakText(testPhrase)
   }
 
@@ -606,7 +606,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при г��нерации ответа. Проверьте подключение к интернету и ��опробуйте снова. 🌐'
+      return 'Произош��а ошибка при г��нерации ответа. Проверьте подключение к интернету и ��опробуйте снова. 🌐'
     }
   }
 
@@ -665,7 +665,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Анализирую суть вопроса',
           'Структурирую ответ для максимальной пользы',
-          'Добавлю п��имеры и практические советы'
+          'Добавлю п��имеры �� практические советы'
         ]
       }
 
@@ -798,7 +798,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     if (!file) return
 
     if (file.size > 5 * 1024 * 1024) { // 5MB
-      alert('Файл слишком большой. Максимальны�� размер: 5MB')
+      alert('Файл с��ишком большой. Максимальны�� размер: 5MB')
       return
     }
 
@@ -829,7 +829,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       const errorMessage: Message = {
         id: Date.now().toString(),
-        text: '��ши��ка при ��агрузке файла. Попробуйте позже. 😔',
+        text: '��ши��ка при загрузке файла. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
@@ -899,17 +899,34 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               )}
             </button>
             {voiceMode === 'voice' && (
-              <button
-                className="test-voice-btn"
-                onClick={testVoice}
-                title="Тест голоса"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <polygon points="11 5,6 9,2 9,2 15,6 15,11 19,11 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
+              <>
+                <button
+                  className="test-voice-btn"
+                  onClick={testVoice}
+                  title="Тест голоса"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <polygon points="11 5,6 9,2 9,2 15,6 15,11 19,11 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <button
+                  className="setup-elevenlabs-btn"
+                  onClick={() => {
+                    const keys = prompt('Введите ElevenLabs ключи через запятую:')
+                    if (keys) {
+                      setElevenLabsKeys(keys.split(','))
+                    }
+                  }}
+                  title="Настроить ElevenLabs ключи"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 15l-3-3h6l-3 3z" fill="currentColor"/>
+                    <path d="M17 8V7a5 5 0 0 0-10 0v1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                </button>
+              </>
             )}
             <button className="clear-chat-btn" onClick={clearChat} title="Очистить чат">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
