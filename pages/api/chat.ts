@@ -55,9 +55,9 @@ function replaceEnglishTerms(text: string): string {
 
     // Базы данных
     'database': 'база данных',
-    'Database': 'База данных',
+    'Database': 'База дан��ых',
     'SQL': 'СКЛ',
-    'MySQL': 'Ма��СКЛ',
+    'MySQL': 'МайСКЛ',
     'PostgreSQL': 'ПостгреСКЛ',
     'MongoDB': 'МонгоДБ',
 
@@ -92,7 +92,7 @@ function replaceEnglishTerms(text: string): string {
     'Interface': 'Интерфейс',
     'design': 'дизайн',
     'Design': 'Дизайн',
-    'layout': 'макет',
+    'layout': 'ма��ет',
     'Layout': 'Макет',
     'component': 'компонент',
     'Component': 'Компонент',
@@ -211,7 +211,7 @@ function cleanMarkdown(text: string): string {
     .replace(/\*\*([^*]+)\*\*/g, '$1')
     // Убираем курсив *текст*
     .replace(/\*([^*]+)\*/g, '$1')
-    // Убираем заголовки ### текст
+    // Убираем з��головки ### текст
     .replace(/^#{1,6}\s+/gm, '')
     // Убираем инлайн код `код`
     .replace(/`([^`]+)`/g, '$1')
@@ -270,7 +270,7 @@ const OPENROUTER_API_KEYS: ApiKeyInfo[] = [
   { key: process.env.OPENROUTER_API_KEY_8 || '', isActive: true, errorCount: 0 },
 ].filter(apiKey => apiKey.key.length > 0) // Убираем пустые ключи
 
-// Функция для получения следующего доступного OpenRouter API ключа
+// Функция для получения следующего доступного OpenRouter API кл��ча
 function getNextAvailableOpenRouterKey(excludeKey?: string): string | null {
   // Сначала пробуем активные ключи, исключая переданный
   const activeKeys = OPENROUTER_API_KEYS.filter(k =>
@@ -521,7 +521,7 @@ export default async function handler(
 - ЗАПРЕЩЕНО использовать слова на английском языке в ответах (например: "code", "web", "frontend", "backend", "API" и т.д.)
 - Используй русские аналоги: "код", "веб", "фронтенд", "бэкен��", "АПИ"
 - Отвечай подробно и по существу
-- Объясняй "почему" и "как", а не только "что"
+- Объясняй "поч��му" и "как", а не только "что"
 - Приводи конкретные примеры кода когда нужно
 - Предлагай несколько вариантов решения
 - Учитывай современные best practices
@@ -580,10 +580,10 @@ export default async function handler(
     }
 
     const requestBody = {
-      model: 'google/gemma-2-9b-it:free',
+      model: 'meta-llama/llama-3.2-3b-instruct:free',
       messages: [systemMessage, ...messages],
       temperature: 0.7,
-      max_tokens: 800,
+      max_tokens: 1000,
       top_p: 0.9,
       frequency_penalty: 0.0,
       presence_penalty: 0.0
