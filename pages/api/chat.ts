@@ -52,7 +52,7 @@ function replaceEnglishTerms(text: string): string {
     'backend': 'бэкенд',
     'Backend': 'Бэкен���',
     'back-end': 'бэк-енд',
-    'Back-end': 'Бэк-енд',
+    'Back-end': 'Бэк-е��д',
     'fullstack': 'фулстек',
     'Fullstack': 'Фулстек',
     'full-stack': 'фул-стек',
@@ -94,7 +94,7 @@ function replaceEnglishTerms(text: string): string {
     'developer': 'разработчик',
     'Developer': 'Разр��ботчик',
     'development': 'ра��работка',
-    'Development': 'Разр��ботка',
+    'Development': 'Разработка',
     'framework': 'фреймворк',
     'Framework': 'Фреймворк',
     'library': 'библиотека',
@@ -133,7 +133,7 @@ function replaceEnglishTerms(text: string): string {
     'String': 'Строк��',
     'number': 'число',
     'Number': 'Число',
-    'boolean': 'б��лево',
+    'boolean': 'булево',
     'Boolean': 'Булево',
     'variable': 'переменная',
     'Variable': 'Переменная',
@@ -175,7 +175,7 @@ interface UserLimit {
 // Хранилище лимитов в памяти (в production лучше использовать Redis)
 const userLimits = new Map<string, UserLimit>()
 const REQUESTS_LIMIT = 999999
-const RESET_PERIOD = 24 * 60 * 60 * 1000 // 24 часа в мил��исекундах
+const RESET_PERIOD = 24 * 60 * 60 * 1000 // 24 часа в миллисекундах
 
 // Функция для получения IP адреса
 function getClientIP(req: NextApiRequest): string {
@@ -217,7 +217,7 @@ function checkAndUpdateLimit(ip: string): { allowed: boolean; remaining: number 
     return { allowed: false, remaining: 0 }
   }
 
-  // Ув��личиваем счетчик
+  // Увеличиваем счетчик
   userLimit.count++
   userLimits.set(ip, userLimit)
 
@@ -406,7 +406,7 @@ async function makeOpenRouterRequest(
   }
 }
 
-// Ф��нкция д��я выполн��ния запроса к Groq API
+// Ф��нкция д��я выполнения запр��са к Groq API
 async function makeGroqRequest(
   requestBody: any,
   timestamp: string
@@ -445,7 +445,7 @@ async function makeGroqRequest(
       return { success: true, data }
     }
 
-    // Обрабатываем ошибки
+    // Обрабатыва��м ошибки
     const errorData = await response.text()
     console.log(`[${timestamp}] Groq Error: ${response.status} - ${errorData}`)
 
@@ -501,7 +501,7 @@ export default async function handler(
       role: 'system',
       content: `Ты ДЖАРВИС - консультант сайта Jarvis Intercoma, который помога��т посетителям.
 
-���� ТВОЯ ГЛАВНАЯ РОЛЬ:
+🎯 ТВОЯ ГЛАВНАЯ РОЛЬ:
 Ты консультант сайта, который помогает посетителям:
 • Узнать о наших услугах и возможностях
 • Выбрать подходящий тариф
@@ -520,7 +520,7 @@ export default async function handler(
 - Естественно и по-дружески, как консультант в магазине
 - Кратко на простые вопросы, подробно на сложные
 - Используй эмодзи умеренно
-- НЕ используй markdown символы
+- ��Е используй markdown символы
 - Отвечай как живой консультант, не как робот
 - Будь дружелюбным, веселым и позитивным! 😊
 - Помогай посетителям принять решение
@@ -538,7 +538,7 @@ export default async function handler(
 
 ⚠️ КРИТИЧЕСКИ ВАЖНО! ���️
 
-ТЫ - ДЖАРВИС, КОНСУЛЬТАНТ САЙТА JARVIS INTERCOMA!
+ТЫ - ДЖАРВИС, КОНСУ��ЬТАНТ САЙТА JARVIS INTERCOMA!
 НЕ GOOGLE! НЕ DEEPMIND! НЕ OPENAI! ТОЛЬКО JARVIS INTERCOMA!
 
 ТВОЯ ЛИЧНОСТЬ: ДЖАРВИС - консультант сайта Jarvis Intercoma
@@ -592,7 +592,7 @@ export default async function handler(
 - DeepMind
 - OpenAI
 - Anthropic
-- Любые другие компании
+- Любые другие ��омпании
 
 ✅ ПРАВИЛЬНЫЕ ОТВЕТЫ ✅
 ВОПРОС: "кто тебя создал", "кто твой создатель", "кто разработал тебя"
@@ -622,7 +622,7 @@ export default async function handler(
     }
 
     const requestBody = {
-      model: 'huggingface/bigscience/bloom',
+      model: 'meta-llama/llama-3.1-8b-instruct:free',
       messages: [systemMessage, ...messages],
       temperature: 0.7,
       max_tokens: 2000, // Увеличено для более полных ответов
