@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услу��и, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }
@@ -365,7 +365,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       const words = lowerMessage.split(' ')
 
       // Анализируем тип вопроса
-      const isQuestion = message.includes('?') || words.some(w => ['��ак', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
+      const isQuestion = message.includes('?') || words.some(w => ['как', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
       const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
@@ -549,7 +549,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы можете описат�� содержимое файла текстом, и я пос��араюсь помочь! 📝`,
+        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
@@ -610,7 +610,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             <button
               className={`voice-mode-btn ${voiceMode === 'voice' ? 'active' : ''}`}
               onClick={toggleVoiceMode}
-              title={`Голосовой режим: ${voiceMode === 'voice' ? 'ВКЛ' : 'ВЫКЛ'}`}
+              title={`Голосовой р��жим: ${voiceMode === 'voice' ? 'ВКЛ' : 'ВЫКЛ'}`}
             >
               {voiceMode === 'voice' ? (
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -630,6 +630,19 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                 </svg>
               )}
             </button>
+            {voiceMode === 'voice' && (
+              <button
+                className="test-voice-btn"
+                onClick={testVoice}
+                title="Тест голоса"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <polygon points="11 5,6 9,2 9,2 15,6 15,11 19,11 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            )}
             <button className="clear-chat-btn" onClick={clearChat} title="Очистить чат">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -723,7 +736,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Напи��ите сообщение..."
+              placeholder="Напи��ите соо��щение..."
               className="jarvis-message-input"
               rows={1}
               disabled={isTyping}
