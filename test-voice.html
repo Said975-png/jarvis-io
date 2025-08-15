@@ -59,7 +59,7 @@
             <div id="currentVoice">Загрузка...</div>
         </div>
 
-        <button class="test-btn" onclick="testMaleVoice()">🎯 Тест мужского голоса</button>
+        <button class="test-btn" onclick="testMaleVoice()">🎯 Тест м��жского голоса</button>
         <button class="test-btn" onclick="testJarvisPhrase()">🤖 Тест фразы JARVIS</button>
         <button class="test-btn" onclick="showAllVoices()">📋 Показать все голоса</button>
         <button class="test-btn" onclick="testDefaultVoice()">⚠️ Тест дефолтного голоса</button>
@@ -76,54 +76,67 @@
     </div>
 
     <script>
-        // Функция получения лучшего мужского голоса (такая же как в JARVIS)
+        // Функция получения лучшего мужского голоса (обновленная версия как в JARVIS)
         function getBestMaleVoice() {
             const voices = speechSynthesis.getVoices();
             let selectedVoice = null;
-            
-            // Приоритет голосов: ищем качественные мужские русские голоса
-            const preferredVoices = [
-                'Google русский',
-                'Microsoft Pavel - Russian (Russia)',
-                'Pavel',
+
+            console.log('🔍 Поиск голосов. Всего доступно:', voices.length);
+
+            // Логируем все русские голоса д��я отладки
+            const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'));
+            console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`));
+
+            // ПРИОРИТЕТ 1: Специфичные мужские голоса
+            const maleVoiceNames = [
                 'Microsoft Pavel',
-                'Microsoft Irina - Russian (Russia)',
-                'Milena',
+                'Pavel',
                 'Yuri',
-                'Russian Male',
-                'Russian (Russia)'
+                'Maxim',
+                'Dmitri',
+                'Aleksandr',
+                'Google русский мужской',
+                'Russian Male'
             ];
-            
-            // Ищем первый доступный предпочтительный голос
-            for (const preferred of preferredVoices) {
-                const voice = voices.find(v => 
-                    v.name.includes(preferred) && 
-                    (v.lang.includes('ru') || v.lang.includes('RU'))
+
+            for (const maleName of maleVoiceNames) {
+                selectedVoice = russianVoices.find(v =>
+                    v.name.toLowerCase().includes(maleName.toLowerCase())
                 );
-                if (voice) {
-                    selectedVoice = voice;
+                if (selectedVoice) {
+                    console.log('✅ Найден мужской голос:', selectedVoice.name);
                     break;
                 }
             }
-            
-            // Если предпочтительный не найден, ищем любой мужской русский голос
+
+            // ПРИОРИТЕТ 2: Качественные голоса (предпочитаем локальные)
             if (!selectedVoice) {
-                selectedVoice = voices.find(voice => 
-                    (voice.lang.includes('ru') || voice.lang.includes('RU')) &&
-                    (voice.name.toLowerCase().includes('male') || 
-                     voice.name.toLowerCase().includes('мужской') ||
-                     voice.name.toLowerCase().includes('pavel') ||
-                     voice.name.toLowerCase().includes('yuri'))
-                );
+                const qualityVoices = [
+                    'Google русский',
+                    'Microsoft Irina - Russian (Russia)', // Хотя женский, но качественный
+                    'Russian (Russia)',
+                    'ru-RU'
+                ];
+
+                for (const quality of qualityVoices) {
+                    selectedVoice = russianVoices.find(v =>
+                        v.name.includes(quality) && v.localService
+                    );
+                    if (selectedVoice) {
+                        console.log('✅ Найден качественный локальный голос:', selectedVoice.name);
+                        break;
+                    }
+                }
             }
-            
-            // Если мужской не найден, берем любой русский
+
+            // ПРИОРИТЕТ 3: Любой русский голос
             if (!selectedVoice) {
-                selectedVoice = voices.find(voice => 
-                    voice.lang.includes('ru') || voice.lang.includes('RU')
-                );
+                selectedVoice = russianVoices.find(v => v.localService) || russianVoices[0];
+                if (selectedVoice) {
+                    console.log('⚠️ Используем резервный голос:', selectedVoice.name);
+                }
             }
-            
+
             return selectedVoice;
         }
 
