@@ -82,7 +82,7 @@
             const voices = speechSynthesis.getVoices();
             let selectedVoice = null;
 
-            console.log('🔍 Поиск голосов. Всего д��ступно:', voices.length);
+            console.log('🔍 Поиск голосов. Всего доступно:', voices.length);
 
             // Логируем все русские голоса для отладки
             const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'));
@@ -150,11 +150,11 @@
                 utterance.voice = voice;
             }
             
-            // Настройки как в JARVIS (обновленные)
+            // Настройки как в JARVIS (обновленные для естественности)
             utterance.lang = customSettings.lang || 'ru-RU';
-            utterance.rate = customSettings.rate || 0.8;   // Медленнее для ясности
-            utterance.pitch = customSettings.pitch || 0.7; // Еще ниже для мужского голоса
-            utterance.volume = customSettings.volume || 0.95; // Почти максимум
+            utterance.rate = customSettings.rate || 1.0;   // Нормальная скорость
+            utterance.pitch = customSettings.pitch || 0.95; // Близко к естественному
+            utterance.volume = customSettings.volume || 0.8; // Комфортная громкость
             
             speechSynthesis.speak(utterance);
         }
@@ -187,11 +187,11 @@
 
         function testNaturalSettings() {
             const bestVoice = getBestMaleVoice();
-            const text = "Это тест с ��овыми естественными настройками. Скорость нормальная, тон близкий к естественному.";
+            const text = "Это тест с новыми естественными настройками. Скорость нормальная, тон близкий к естественному.";
             // Используем новые настройки как в JARVIS
             speakWithSettings(text, bestVoice, {
                 pitch: 0.95,  // Близко к естественному
-                rate: 1.0,    // Нормальная скорость
+                rate: 1.0,    // Нормальная ��корость
                 volume: 0.8   // Комфортная громкость
             });
         }
