@@ -159,7 +159,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return 'Извините, произошл�� ошибка. Попр��буйте переформулировать вопро��. 🤔'
       }
 
-      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷��♂️'
+      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷‍♂��'
 
     } catch (error) {
       console.error('Error generating response:', error)
@@ -182,7 +182,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (lowerMessage.includes('сайт') || lowerMessage.includes('веб')) {
         return [
           'Вопрос о веб-разработке. Проанализирую, что именно нужно пользователю.',
-          'Нужно предложить конкретные решения и уточнить технич��ские требования.',
+          'Нужно предложить конкретные решения и уточнить техническ��е требования.',
           'Расскажу о наших возможностях в веб-разработке и тарифах.'
         ]
       }
@@ -205,7 +205,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Общие мысли для любых других вопросов
       return [
-        'Интер��сный вопрос. Подумаю, как лучше на него ответить.',
+        'Интересн��й вопрос. Подумаю, как лучше на него ответить.',
         'Проанализирую контекст и дам максимально полезный ответ.',
         'Нужно структурировать информацию и подать её понятно.'
       ]
@@ -325,7 +325,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       const errorMessage: Message = {
         id: Date.now().toString(),
-        text: '��ши��ка при загрузке файла. Попробуйте позже. 😔',
+        text: '��ши��ка при загрузке файла. Попробуй��е позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
@@ -910,41 +910,30 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         .thinking-text {
-          background: linear-gradient(90deg, #f0f8ff, #e6f3ff, #f0f8ff) !important;
+          background: linear-gradient(90deg, #f8f9ff, #eef2ff, #f8f9ff) !important;
           background-size: 200% 100% !important;
-          animation: thinkingGlow 2s ease-in-out infinite !important;
-          border: 1px solid #007bff !important;
-          color: #0056b3 !important;
+          animation: thinkingGlow 3s ease-in-out infinite !important;
+          border: 1px solid #6366f1 !important;
+          color: #4338ca !important;
           font-style: italic;
+          opacity: 0.9;
         }
 
         .dark-theme .thinking-text {
-          background: linear-gradient(90deg, #1a2a3a, #2a3a4a, #1a2a3a) !important;
+          background: linear-gradient(90deg, #1e1b3a, #2e2b4a, #1e1b3a) !important;
           background-size: 200% 100% !important;
-          border: 1px solid #0056b3 !important;
-          color: #4dabf7 !important;
-        }
-
-        .thinking-icon {
-          margin-right: 8px;
-          animation: bounce 1s ease-in-out infinite;
+          border: 1px solid #6366f1 !important;
+          color: #a5b4fc !important;
         }
 
         @keyframes thinkingGlow {
           0%, 100% {
             background-position: 0% 50%;
+            opacity: 0.8;
           }
           50% {
             background-position: 100% 50%;
-          }
-        }
-
-        @keyframes bounce {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-3px);
+            opacity: 1;
           }
         }
 
