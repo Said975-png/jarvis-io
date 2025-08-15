@@ -36,6 +36,42 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const sessionId = useRef(`session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`)
 
+  // Инициализация голосовых API
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Speech Recognition API
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+      if (SpeechRecognition) {
+        const recognitionInstance = new SpeechRecognition()
+        recognitionInstance.continuous = false
+        recognitionInstance.interimResults = false
+        recognitionInstance.lang = 'ru-RU'
+
+        recognitionInstance.onresult = (event: any) => {
+          const transcript = event.results[0][0].transcript
+          setInputText(transcript)
+          setIsListening(false)
+        }
+
+        recognitionInstance.onerror = (event: any) => {
+          console.error('Speech recognition error:', event.error)
+          setIsListening(false)
+        }
+
+        recognitionInstance.onend = () => {
+          setIsListening(false)
+        }
+
+        setRecognition(recognitionInstance)
+      }
+
+      // Speech Synthesis API
+      if (window.speechSynthesis) {
+        setSpeechSynthesis(window.speechSynthesis)
+      }
+    }
+  }, [])
+
   // Функция для сохранения взаимодействия в базе знаний
   const saveInteractionToLearning = async (userMessage: string, botResponse: string, userMessageId: string) => {
     try {
@@ -335,7 +371,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: 'Извините, ��роизошла ошибк��. Попробуйте позже. 😔',
+        text: 'Извините, произошла ошибк��. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
@@ -377,7 +413,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я пос��араюсь по��очь! 📝`,
+        text: `✅ Файл "${file.name}" получен! К сожалени��, обра��отка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
