@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест API ключей JARVIS</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .result { margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 10px 0; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Тест API ключей JARVIS</h1>
+    
+    <button onclick="testAPIKeys()">Проверить API ключи</button>
+    <button onclick="testChat()">Тест чата</button>
+    
+    <div id="results"></div>
+
+    <script>
+        async function testAPIKeys() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="result">Проверяем API ключи...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/test-keys');
+                const data = await response.json();
+                
+                let html = '';
+                if (data.success) {
+                    html += `<div class="result success">
+                        <h3>✅ Статус API ключей</h3>
+                        <p><strong>OpenRouter ключей:</strong> ${data.openrouter_keys}</p>
+                        <p><strong>Groq ключ:</strong> ${data.groq_key ? 'Есть' : 'Нет'}</p>
+                        <p><strong>Тест соединения:</strong> ${data.test_response ? 'Успешно' : 'Ошибка'}</p>
+                    </div>`;
+                } else {
+                    html += `<div class="result error">
+                        <h3>❌ Ошибка API ключей</h3>
+                        <p>${data.error}</p>
+                    </div>`;
+                }
+                
+                resultsDiv.innerHTML = html;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="result error">
+                    <h3>❌ Ошибка сети</h3>
+                    <p>${error.message}</p>
+                </div>`;
+            }
+        }
+
+        async function testChat() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="result">Тестируем чат...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages: [
+                            {
+                                role: 'user',
+                                content: 'привет'
+                            }
+                        ]
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Проверяем на английские слова
+                    const hasEnglish = /[a-zA-Z]{2,}/.test(data.message);
+                    const languageCheck = hasEnglish ? '❌ Найдены англи��ские слова' : '✅ Только русский язык';
+                    
+                    resultsDiv.innerHTML = `<div class="result success">
+                        <h3>✅ Чат работает!</h3>
+                        <p><strong>Ответ JARVIS:</strong></p>
+                        <p>${data.message}</p>
+                        <p><strong>Проверка языка:</strong> ${languageCheck}</p>
+                    </div>`;
+                } else {
+                    const error = await response.text();
+                    resultsDiv.innerHTML = `<div class="result error">
+                        <h3>❌ Ошибка чата</h3>
+                        <p>Status: ${response.status}</p>
+                        <p>Error: ${error}</p>
+                    </div>`;
+                }
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="result error">
+                    <h3>❌ Ошибка сети</h3>
+                    <p>${error.message}</p>
+                </div>`;
+            }
+        }
+    </script>
+</body>
+</html>
