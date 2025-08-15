@@ -30,13 +30,25 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
 
+  // ElevenLabs ключи (8 ключей с разных аккаунтов для ротации)
+  const [elevenLabsKeys] = useState([
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 3
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 4
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 5
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 6
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 7
+    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 8
+  ])
+
   const fileInputRef = useRef<HTMLInputElement>(null)
   
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const sessionId = useRef(`session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`)
 
-  // Инициализация голосовых API
+  // Инициализация голосов��х API
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // Speech Recognition API
@@ -69,9 +81,9 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (window.speechSynthesis) {
         setSpeechSynthesis(window.speechSynthesis)
 
-        // Форсируем загрузк�� голосов (работает в большинстве браузеров)
+        // Форсируем загрузку голосов (работает в большинстве браузеров)
         const forceLoadVoices = () => {
-          // Создаем пустое высказывание чтобы активировать голоса
+          // Создаем пустое высказывание чтобы акт��вировать голоса
           const utterance = new SpeechSynthesisUtterance('')
           window.speechSynthesis.speak(utterance)
           window.speechSynthesis.cancel()
@@ -99,7 +111,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           loadVoices()
         }
 
-        // Попытка 4: дополнительная загрузка через секунду
+        // Попытка 4: допол��ительная загрузка через секунду
         setTimeout(() => {
           if (window.speechSynthesis.getVoices().length === 0) {
             forceLoadVoices()
@@ -198,7 +210,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
     console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
 
-    // ПРИОРИТЕТ 1: Самые качественные мужские голоса (менее роботичные)
+    // ПРИОРИТЕТ 1: Самые качественные муж��кие голоса (менее роботичные)
     const premiumMaleVoices = [
       'Google русский (Россия)', // Самый качественный если есть
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
@@ -262,7 +274,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         // Очищаем текст от эмодзи и специальных символов для лучшего произношения
         const cleanText = text
           .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
-          .replace(/[•·]/g, '')
+          .replace(/[��·]/g, '')
           .replace(/\n+/g, '. ') // Заменяем переносы на паузы
           .trim()
 
@@ -302,7 +314,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Переключение режима голоса
+  // Переключение режима ��олоса
   const toggleVoiceMode = () => {
     const newMode = voiceMode === 'text' ? 'voice' : 'text'
     setVoiceMode(newMode)
