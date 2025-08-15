@@ -94,7 +94,7 @@ function replaceEnglishTerms(text: string): string {
     'developer': 'разработчик',
     'Developer': 'Разр��ботчик',
     'development': 'ра��работка',
-    'Development': 'Разрабо��ка',
+    'Development': 'Разр��ботка',
     'framework': 'фреймворк',
     'Framework': 'Фреймворк',
     'library': 'библиотека',
@@ -133,7 +133,7 @@ function replaceEnglishTerms(text: string): string {
     'String': 'Строк��',
     'number': 'число',
     'Number': 'Число',
-    'boolean': 'буле��о',
+    'boolean': 'б��лево',
     'Boolean': 'Булево',
     'variable': 'переменная',
     'Variable': 'Переменная',
@@ -175,7 +175,7 @@ interface UserLimit {
 // Хранилище лимитов в памяти (в production лучше использовать Redis)
 const userLimits = new Map<string, UserLimit>()
 const REQUESTS_LIMIT = 999999
-const RESET_PERIOD = 24 * 60 * 60 * 1000 // 24 часа в миллис��кундах
+const RESET_PERIOD = 24 * 60 * 60 * 1000 // 24 часа в мил��исекундах
 
 // Функция для получения IP адреса
 function getClientIP(req: NextApiRequest): string {
@@ -217,7 +217,7 @@ function checkAndUpdateLimit(ip: string): { allowed: boolean; remaining: number 
     return { allowed: false, remaining: 0 }
   }
 
-  // Увели��иваем счетчик
+  // Ув��личиваем счетчик
   userLimit.count++
   userLimits.set(ip, userLimit)
 
@@ -406,7 +406,7 @@ async function makeOpenRouterRequest(
   }
 }
 
-// Ф��нкция д��я выполнени�� запроса к Groq API
+// Ф��нкция д��я выполн��ния запроса к Groq API
 async function makeGroqRequest(
   requestBody: any,
   timestamp: string
@@ -501,7 +501,7 @@ export default async function handler(
       role: 'system',
       content: `Ты ДЖАРВИС - консультант сайта Jarvis Intercoma, который помога��т посетителям.
 
-🎯 ТВОЯ ГЛАВНАЯ РОЛЬ:
+���� ТВОЯ ГЛАВНАЯ РОЛЬ:
 Ты консультант сайта, который помогает посетителям:
 • Узнать о наших услугах и возможностях
 • Выбрать подходящий тариф
@@ -592,7 +592,7 @@ export default async function handler(
 - DeepMind
 - OpenAI
 - Anthropic
-- Любые д��угие компании
+- Любые другие компании
 
 ✅ ПРАВИЛЬНЫЕ ОТВЕТЫ ✅
 ВОПРОС: "кто тебя создал", "кто твой создатель", "кто разработал тебя"
@@ -612,7 +612,7 @@ export default async function handler(
 - Никогда не переходи на английский или другие языки
 - Если пользователь пишет на другом языке - отвечай на русском
 - Твоя цель - помочь по��етителю и показать наши услуги
-- Проверяй каждое слово п��ред отправкой ��твета
+- Проверяй каждое слово п��ред отправкой ответа
 
 🔴 ПОСЛЕДНЯЯ ИНСТРУКЦИЯ 🔴
 ЕСЛИ СПРОСЯТ КТО ТЕБЯ СОЗДАЛ - ОТВЕЧАЙ "КОМАНДА JARVIS INTERCOMA"!
@@ -622,7 +622,7 @@ export default async function handler(
     }
 
     const requestBody = {
-      model: 'bigscience/bloom',
+      model: 'huggingface/bigscience/bloom',
       messages: [systemMessage, ...messages],
       temperature: 0.7,
       max_tokens: 2000, // Увеличено для более полных ответов
@@ -641,7 +641,7 @@ export default async function handler(
     const openRouterResult = await makeOpenRouterRequest(requestBody, timestamp)
 
     if (openRouterResult.success) {
-      console.log(`[${timestamp}] ✅ OpenRouter успе��но отве��ил`)
+      console.log(`[${timestamp}] ✅ OpenRouter успешно отве��ил`)
       const data = openRouterResult.data
 
       let aiMessage = data.choices[0].message.content
