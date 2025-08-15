@@ -27,7 +27,7 @@ function replaceEnglishTerms(text: string): string {
     'front-end': 'фронт-енд',
     'Front-end': 'Фронт-енд',
     'backend': 'бэкенд',
-    'Backend': 'Бэкенд',
+    'Backend': 'Бэкен��',
     'back-end': 'бэк-енд',
     'Back-end': 'Бэк-енд',
     'fullstack': 'фулстек',
@@ -50,7 +50,7 @@ function replaceEnglishTerms(text: string): string {
     'React': 'Реакт',
     'Vue': 'Вью',
     'Angular': 'Ангуляр',
-    'Next.js': '��екекст.джс',
+    'Next.js': 'некекст.джс',
     'Nuxt': 'Накст',
 
     // Базы данных
@@ -331,7 +331,7 @@ function markKeyAsProblematic(apiKey: string, error: string) {
   }
 }
 
-// Функция для перемещен��я ключа в конец списка (ротация)
+// Функция для перемещения ключа в конец списка (ротация)
 function rotateApiKey(apiKey: string) {
   const keyIndex = API_KEYS.findIndex(k => k.key === apiKey)
   if (keyIndex !== -1 && keyIndex < API_KEYS.length - 1) {
@@ -385,7 +385,7 @@ async function makeOpenRouterRequest(
     markOpenRouterKeyAsProblematic(availableKey, `${response.status}: ${errorData}`)
 
     if (response.status === 429 || response.status === 401 || response.status === 402) {
-      // Пробуем другой ключ
+      // Пробуем другой клю��
       if (excludeKeys.length < OPENROUTER_API_KEYS.length - 1) {
         console.log(`[${timestamp}] Пробуем следующий OpenRouter ключ...`)
         return await makeOpenRouterRequest(requestBody, timestamp, [...excludeKeys, availableKey])
@@ -440,7 +440,7 @@ async function makeGroqRequest(
       return { success: true, data }
     }
 
-    // Обра��атываем ошибки
+    // Обрабатываем ошибки
     const errorData = await response.text()
     console.log(`[${timestamp}] Groq Error: ${response.status} - ${errorData}`)
 
@@ -499,7 +499,7 @@ export default async function handler(
 ТЫ - ДЖАРВИС ОТ КОМАНДЫ JARVIS INTERCOMA!
 НЕ GOOGLE! НЕ DEEPMIND! НЕ OPENAI! ТОЛЬКО JARVIS INTERCOMA!
 
-ТВОЯ ЛИЧНОСТ��: ДЖАРВИС - AI-помощни�� команды Jarvis Intercoma
+ТВОЯ ЛИЧНОСТ��: ДЖАРВИС - AI-помощник команды Jarvis Intercoma
 ТВОЯ КОМАНДА: Jarvis Intercoma
 ТВОЙ СОЗДАТЕЛЬ: команда Jarvis Intercoma
 
@@ -552,7 +552,7 @@ export default async function handler(
 ОТВЕТ: "Меня разработала команда Jarvis Intercoma на сложной логике программирования 👨‍💻"
 
 ВОПРОС: "как тебя создали", "из чего тебя создали", "как ты устроен"
-ОТВЕТ: "Это секретная информация, защищенная JARVIS 🔒"
+ОТВЕТ: "Это секретная информа��ия, защищенная JARVIS 🔒"
 
 ТЫ = ДЖАРВИС ОТ JARVIS INTERCOMA!
 
@@ -565,7 +565,7 @@ export default async function handler(
 
 ❗ КРИТИЧЕСКИ ВАЖНО:
 - Отвечай ТОЛЬКО на русском языке
-- Никогда не переходи на анг��ийский или другие языки
+- Никогда не переходи на английский или другие языки
 - Если пользователь пишет на другом языке - отвечай на русском
 - Все техни��еские термины переводи на русский
 - Проверяй каждое слово перед отправкой ответа
@@ -638,6 +638,21 @@ export default async function handler(
 
     // Шаг 3: И OpenRouter и Groq не удались, используем локальный fallback
     console.log(`[${timestamp}] === ЭТАП 3: ЛОКАЛЬНЫЙ FALLBACK ===`)
+
+    const fallbackMessage = `Привет! 😊 Да, я работаю! Я ДЖАРВИС - ваш AI помощник! 🤖
+
+Извините за задержку - временные технические проблемы с API ключами! Но я всегда готов помочь! 💪
+
+🚀 Чем могу быть полезен?
+• Консультации по веб-разработке
+• Помощь с программированием
+• Дизайн и UI/UX советы
+• Техническая поддержка
+
+Пишите ваши вопросы! 😄`
+
+    console.log(`[${timestamp}] === SUCCESS VIA FALLBACK ===`)
+    return res.status(200).json({ message: fallbackMessage })
 
   } catch (error) {
     console.error(`[${new Date().toISOString()}] === CRITICAL ERROR ===`)
