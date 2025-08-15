@@ -156,7 +156,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, произошл�� ошибка. Попробуйте переформулировать вопрос. 🤔'
+        return 'Извините, произошл�� ошибк��. Попробуйте переформулировать вопрос. 🤔'
       }
 
       return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
@@ -780,10 +780,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           font-size: 14px;
           line-height: 1.4;
           resize: none;
-          min-height: 20px;
+          min-height: 24px;
           max-height: 120px;
           color: #000000;
           font-family: inherit;
+          padding: 0;
         }
 
         .jarvis-message-input::placeholder {
