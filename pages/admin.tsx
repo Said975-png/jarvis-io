@@ -62,7 +62,7 @@ export default function AdminPanel() {
       localStorage.setItem('admin_authenticated', 'true')
       setPasswordError('')
     } else {
-      setPasswordError('Неверный пароль')
+      setPasswordError('Невер��ый пароль')
     }
   }
 
@@ -106,7 +106,7 @@ export default function AdminPanel() {
     }
   }
 
-  // Автообновление каждые 30 секунд
+  // Автообновление каждые 30 с��кунд
   useEffect(() => {
     if (!isAuthenticated) return
 
@@ -296,17 +296,28 @@ export default function AdminPanel() {
                   Обновлено: {new Date().toLocaleTimeString()}
                 </small>
               </h2>
-              <button
-                onClick={() => loadOrders(true)}
-                className="refresh-btn"
-                disabled={refreshing}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.39 0 4.56.94 6.16 2.46" stroke="currentColor" strokeWidth="2"/>
-                  <path d="M17 8l4-4-4-4" stroke="currentColor" strokeWidth="2"/>
-                </svg>
-                {refreshing ? 'Обновляем' : 'Обновить'}
-              </button>
+              <div className="admin-buttons">
+                <button
+                  onClick={() => {
+                    console.log('Текущие заказы в админ панели:', orders)
+                    console.log('User IDs заказов:', orders.map(o => `${o.id.slice(-8)}: ${o.userId}`))
+                  }}
+                  className="debug-btn"
+                >
+                  Debug заказы
+                </button>
+                <button
+                  onClick={() => loadOrders(true)}
+                  className="refresh-btn"
+                  disabled={refreshing}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.39 0 4.56.94 6.16 2.46" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M17 8l4-4-4-4" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  {refreshing ? 'Обновляем' : 'Обновить'}
+                </button>
+              </div>
             </div>
 
             {orders.length === 0 ? (
