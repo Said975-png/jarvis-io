@@ -175,7 +175,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (lowerMessage.includes('привет') || lowerMessage.includes('hello')) {
         return [
           'Пользователь поздоровался. Нужно ответить дружелюбно и спросить, чем могу помочь.',
-          'Это простое ��риветствие, отвечу коротко и тепло.'
+          'Это простое приветствие, отвечу коротко и тепло.'
         ]
       }
 
@@ -183,7 +183,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Вопрос о веб-разработке. Проанализирую, что именно нужно пользователю.',
           'Нужно предложить конкретные решения и уточнить технические требования.',
-          'Расскажу о наших возможностях в веб-разработке и тарифах.'
+          'Расскажу о наших во��можностях в веб-разработке и тарифах.'
         ]
       }
 
@@ -227,7 +227,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     setMessages(prev => [...prev, initialThinkingMessage])
     await new Promise(resolve => setTimeout(resolve, 500))
 
-    // Доба��ляем каждую мысль в блок
+    // Добавляем каждую мысль в блок
     let currentThoughts = ''
     for (let i = 0; i < thinkingSteps.length; i++) {
       currentThoughts += (i > 0 ? '\n\n' : '') + thinkingSteps[i]
@@ -925,31 +925,34 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         .thinking-text {
-          background: linear-gradient(90deg, #f8f9ff, #eef2ff, #f8f9ff) !important;
-          background-size: 200% 100% !important;
-          animation: thinkingGlow 3s ease-in-out infinite !important;
-          border: 1px solid #6366f1 !important;
-          color: #4338ca !important;
-          font-style: italic;
-          opacity: 0.9;
+          background: #f8f9fa !important;
+          border: 1px solid #e1e5e9 !important;
+          border-left: 4px solid #6366f1 !important;
+          color: #495057 !important;
+          font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace !important;
+          font-size: 13px !important;
+          line-height: 1.6 !important;
+          padding: 16px 20px !important;
+          border-radius: 8px !important;
+          white-space: pre-line !important;
+        }
+
+        .thinking-text .thinking-title {
+          font-weight: 600;
+          color: #6366f1;
+          margin-bottom: 12px;
+          font-size: 14px;
         }
 
         .dark-theme .thinking-text {
-          background: linear-gradient(90deg, #1e1b3a, #2e2b4a, #1e1b3a) !important;
-          background-size: 200% 100% !important;
-          border: 1px solid #6366f1 !important;
-          color: #a5b4fc !important;
+          background: #1e1e1e !important;
+          border: 1px solid #333 !important;
+          border-left: 4px solid #6366f1 !important;
+          color: #e1e5e9 !important;
         }
 
-        @keyframes thinkingGlow {
-          0%, 100% {
-            background-position: 0% 50%;
-            opacity: 0.8;
-          }
-          50% {
-            background-position: 100% 50%;
-            opacity: 1;
-          }
+        .dark-theme .thinking-text .thinking-title {
+          color: #8b9dd4;
         }
 
       `}</style>
