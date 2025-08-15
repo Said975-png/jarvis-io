@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программиро��анием, дизайном и техническими вопросами\n\nО чем хотите поговорить?',
+      text: 'Привет! Я ДЖАРВИС - ваш AI-помощник по веб-разработке\n\nГотов помочь с программированием, дизайном и техническими вопросами\n\nО чем хотите поговорить?',
       isUser: false,
       timestamp: new Date()
     }
@@ -73,7 +73,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     } catch (error) {
       console.error('Error saving interaction for learning:', error)
       // Не блокируем пользовательский ��нтерфейс при ошибках сохранения
-      // Это не к��ит��чно для работы чата
+      // Это не к��итично для работы чата
     }
   }
 
@@ -210,6 +210,9 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     setIsTyping(true)
 
     try {
+      // Показываем процесс мышления
+      await showThinkingProcess(userMessage)
+
       const response = await generateJarvisResponse(userMessage, messages)
       
       const botMessage: Message = {
@@ -283,7 +286,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       const errorMessage: Message = {
         id: Date.now().toString(),
-        text: 'Оши��ка при загрузке файла. Попробуйте позже. 😔',
+        text: '��ши��ка при загрузке файла. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
