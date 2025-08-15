@@ -257,7 +257,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Останавливаем предыдущее воспроизведение
       speechSynthesis.cancel()
 
-      // Ждем немного, чтобы cancel успел отработать
+      // Ждем немного, чтоб�� cancel успел отработать
       setTimeout(() => {
         // Очищаем текст от эмодзи и специальных символов для лучшего произношения
         const cleanText = text
@@ -317,7 +317,9 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
   // Функция для тестирования голоса
   const testVoice = () => {
-    speakText('Привет! Это тест голоса ДЖАРВИС. Как звучит мой новый мужской голос?')
+    console.log('🧪 Тестирование голоса JARVIS...')
+    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового мужского голоса. Звучу ли я естественно и без акцента?'
+    speakText(testPhrase)
   }
 
   const scrollToBottom = () => {
@@ -380,7 +382,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         
         const errorText = await response.text()
         console.error('Chat API error:', errorText)
-        return 'Извините, прои��ошла ошибка при обработке запроса. Попробуйте позже. 😔'
+        return 'Извините, произошла ошибка при обработке запроса. Попробуйте позже. 😔'
       }
 
       const data = await response.json()
@@ -398,7 +400,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Эффект печатания для thinking
+  // Эффект печ��тания для thinking
   const typeText = async (text: string, speed: number = 30) => {
     return new Promise<void>((resolve) => {
       let i = 0
