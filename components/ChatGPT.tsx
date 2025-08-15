@@ -124,13 +124,58 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Извлечение тегов из текста
   const extractTags = (text: string): string[] => {
     const commonTags = [
-      'веб-разработка', 'дизайн', 'программирование', 'ai', 'тех��ологии',
+      'веб-разработка', 'дизайн', 'программирование', 'ai', 'технологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
-      'html', 'api', 'база д��нных', 'сеть', 'б��зо��асность', 'ui', 'ux'
+      'html', 'api', 'база данных', 'сеть', 'безопасность', 'ui', 'ux'
     ]
 
     const lowerText = text.toLowerCase()
     return commonTags.filter(tag => lowerText.includes(tag))
+  }
+
+  // Функция для запуска голосового ввода
+  const startListening = () => {
+    if (recognition && !isListening) {
+      setIsListening(true)
+      recognition.start()
+    }
+  }
+
+  // Функция для остановки голосового ввода
+  const stopListening = () => {
+    if (recognition && isListening) {
+      recognition.stop()
+      setIsListening(false)
+    }
+  }
+
+  // Функция для озвучивания текста
+  const speakText = (text: string) => {
+    if (speechSynthesis && voiceMode === 'voice') {
+      // Останавливаем предыдущее воспроизведение
+      speechSynthesis.cancel()
+
+      // Очищаем текст от эмодзи и специальных символов для лучшего произношения
+      const cleanText = text
+        .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
+        .replace(/[•·]/g, '')
+        .trim()
+
+      if (cleanText) {
+        const utterance = new SpeechSynthesisUtterance(cleanText)
+        utterance.lang = 'ru-RU'
+        utterance.rate = 0.9
+        utterance.pitch = 1.0
+        utterance.volume = 0.8
+
+        speechSynthesis.speak(utterance)
+      }
+    }
+  }
+
+  // Переключение режима голоса
+  const toggleVoiceMode = () => {
+    setVoiceMode(prev => prev === 'text' ? 'voice' : 'text')
   }
 
   const scrollToBottom = () => {
@@ -207,7 +252,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при г��нерации ответа. Проверьте подключение к интернету и ��опробуйте снова. 🌐'
+      return 'Произошла ошибка при г��нерации от��ета. Проверьте подключение к интернету и ��опробуйте снова. 🌐'
     }
   }
 
@@ -360,7 +405,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       setMessages(prev => [...prev, botMessage])
 
-      // Сох��аняем ��заимодействие для обучения
+      // Сох��аняем ��заимодейств��е для обучения
       await saveInteractionToLearning(userMessage, response, userMessageId)
 
     } catch (error) {
