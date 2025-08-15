@@ -62,7 +62,7 @@ export default function AdminPanel() {
       localStorage.setItem('admin_authenticated', 'true')
       setPasswordError('')
     } else {
-      setPasswordError('Невер��ый пароль')
+      setPasswordError('Неверный пароль')
     }
   }
 
@@ -106,7 +106,7 @@ export default function AdminPanel() {
     }
   }
 
-  // Автообновление каждые 30 с��кунд
+  // Автообновление каждые 30 секунд
   useEffect(() => {
     if (!isAuthenticated) return
 
@@ -494,6 +494,27 @@ export default function AdminPanel() {
           justify-content: space-between;
           align-items: center;
           margin-bottom: 24px;
+        }
+
+        .admin-buttons {
+          display: flex;
+          gap: 12px;
+          align-items: center;
+        }
+
+        .debug-btn {
+          background: #6366f1;
+          color: #ffffff;
+          border: none;
+          padding: 10px 16px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+          transition: all 0.2s ease;
+        }
+
+        .debug-btn:hover {
+          background: #4f46e5;
         }
 
         .orders-header h2 {
