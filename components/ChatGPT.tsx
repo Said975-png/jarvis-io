@@ -163,7 +163,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при генерации ответа. Проверьте подключение к интернету и попробуйте снова. 🌐'
+      return 'Произошла ошибка при генерации ответа. Проверьте подключение к интернету и ��опробуйте снова. 🌐'
     }
   }
 
@@ -245,7 +245,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожалени��, обработка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я постараюсь помочь! 📝`,
+        text: `✅ Файл "${file.name}" получен! К сожалени��, обработка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я пос��араюсь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
@@ -333,10 +333,10 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               <div className="message-content">
                 <div
                   className="message-text"
-                  dangerouslySetInnerHTML={{
-                    __html: message.text.replace(/\n/g, ' ')
-                  }}
-                />
+                  style={{ whiteSpace: 'pre-wrap' }}
+                >
+                  {message.text}
+                </div>
                 <div className="message-time">
                   {message.timestamp.toLocaleTimeString('ru-RU', { 
                     hour: '2-digit', 
