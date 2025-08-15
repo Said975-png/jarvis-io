@@ -122,7 +122,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }, [])
 
-  // Функция для сохранения взаимодействия в базе знаний
+  // Функция для сохранения взаимодействия �� базе знаний
   const saveInteractionToLearning = async (userMessage: string, botResponse: string, userMessageId: string) => {
     try {
       console.log('=== SAVING INTERACTION TO LEARNING ===')
@@ -403,9 +403,44 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для озвучивания текста (теперь с ElevenLabs + fallback)
+  // Функция для ��звучивания текста (теперь с ElevenLabs + fallback)
   const speakText = async (text: string) => {
-    if (speechSynthesis && voiceMode === 'voice') {
+    if (voiceMode !== 'voice') return
+
+    // Останавливаем предыдущее воспроизведение
+    if (speechSynthesis) {
+      speechSynthesis.cancel()
+    }
+
+    // Очищаем текст
+    const cleanText = text
+      .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
+      .replace(/[•·]/g, '')
+      .replace(/\n+/g, '. ')
+      .trim()
+
+    if (!cleanText) return
+
+    console.log('🎵 === НАЧИНАЕМ ОЗВУЧИВАНИЕ ===')
+    console.log(`📝 Текст: ${cleanText.substring(0, 50)}...`)
+
+    // ЭТАП 1: Пробуем ElevenLabs (премиум качество)
+    try {
+      console.log('🔥 ЭТАП 1: ELEVENLABS TTS')
+      const elevenLabsSuccess = await speakWithElevenLabs(cleanText)
+
+      if (elevenLabsSuccess) {
+        console.log('✅ === SUCCESS VIA ELEVENLABS ===')
+        return
+      }
+    } catch (error) {
+      console.error('💥 ElevenLabs критическая ошибка:', error)
+    }
+
+    // ЭТАП 2: Fallback на браузерный TTS
+    console.log('📱 ЭТАП 2: BROWSER TTS FALLBACK')
+
+    if (speechSynthesis) {
       // Останавливаем предыдущее воспроизведение
       speechSynthesis.cancel()
 
@@ -597,7 +632,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isPricing) {
         return [
           'Запрос о ценах и тарифах',
-          'Проанализирую потребности пользователя',
+          'П��оанализирую потребности пользователя',
           'Подбер�� оптимальный тарифный план'
         ]
       }
