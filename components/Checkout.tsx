@@ -20,6 +20,15 @@ export default function Checkout({ onClose, onSuccess }: CheckoutProps) {
     referenceUrl: ''
   })
 
+  // Логируем информацию о пользователе при инициализации
+  useEffect(() => {
+    console.log('=== CHECKOUT INITIALIZATION ===')
+    console.log('Current user:', user)
+    console.log('User ID:', user?.id)
+    console.log('Token in localStorage:', localStorage.getItem('token'))
+    console.log('User in localStorage:', localStorage.getItem('user'))
+  }, [user])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
