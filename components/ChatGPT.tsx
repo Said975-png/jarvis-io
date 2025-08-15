@@ -69,17 +69,43 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (window.speechSynthesis) {
         setSpeechSynthesis(window.speechSynthesis)
 
+        // Форсируем загрузку голосов (работает в большинстве браузеров)
+        const forceLoadVoices = () => {
+          // Создаем пустое высказывание чтобы активировать голоса
+          const utterance = new SpeechSynthesisUtterance('')
+          window.speechSynthesis.speak(utterance)
+          window.speechSynthesis.cancel()
+        }
+
         // Инициализируем голоса (некоторые браузеры загружают их асинхронно)
         const loadVoices = () => {
           const voices = window.speechSynthesis.getVoices()
-          console.log('🎤 Доступные голоса:', voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU')))
+          const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
+          console.log('🎤 Русские голоса загружены:', russianVoices.length)
+          russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
         }
 
-        // Загружаем голоса сразу
-        loadVoices()
+        // Попытка 1: загрузка сразу
+        if (window.speechSynthesis.getVoices().length > 0) {
+          loadVoices()
+        } else {
+          // Попытка 2: форсируем загрузку
+          forceLoadVoices()
+          setTimeout(loadVoices, 100)
+        }
 
-        // И подписываемся на событие загрузки голосов
-        window.speechSynthesis.onvoiceschanged = loadVoices
+        // Попытка 3: подписываемся на событие загрузки голосов
+        window.speechSynthesis.onvoiceschanged = () => {
+          loadVoices()
+        }
+
+        // Попытка 4: дополнительная загрузка через секунду
+        setTimeout(() => {
+          if (window.speechSynthesis.getVoices().length === 0) {
+            forceLoadVoices()
+            setTimeout(loadVoices, 200)
+          }
+        }, 1000)
       }
     }
   }, [])
@@ -153,7 +179,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функ��ия для остановки голосового ввода
+  // Функция для остановки голосового ввода
   const stopListening = () => {
     if (recognition && isListening) {
       recognition.stop()
@@ -253,7 +279,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           // Настройки для естественного мужского звучания
           utterance.lang = 'ru-RU'
-          utterance.rate = 0.8   // Медленнее д��я ясности
+          utterance.rate = 0.8   // Медленнее для ясности
           utterance.pitch = 0.7  // Еще ниже для мужского голоса
           utterance.volume = 0.95 // Почти максимум
 
@@ -291,7 +317,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
   // Функция для тестирования голоса
   const testVoice = () => {
-    speakText('Привет! Это тест голос�� ДЖАРВИС. Как звучит мой новый мужской голос?')
+    speakText('Привет! Это тест голоса ДЖАРВИС. Как звучит мой новый мужской голос?')
   }
 
   const scrollToBottom = () => {
@@ -354,7 +380,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         
         const errorText = await response.text()
         console.error('Chat API error:', errorText)
-        return 'Извините, произошла ошибка при обработке запроса. Попробуйте позже. 😔'
+        return 'Извините, прои��ошла ошибка при обработке запроса. Попробуйте позже. 😔'
       }
 
       const data = await response.json()
