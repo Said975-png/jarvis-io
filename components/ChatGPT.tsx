@@ -88,7 +88,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
           console.log('🎤 Русские голоса загружены:', russianVoices.length)
-          russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Ло��альный]' : '[Онлайн]'}`))
+          russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
         }
 
         // Попытка 1: загрузка сразу
@@ -193,7 +193,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для получения лучшего мужского гололюа
+  // Функция для получения лучшег�� мужского гололюа
   const getBestMaleVoice = () => {
     const voices = speechSynthesis.getVoices()
     let selectedVoice = null
@@ -257,7 +257,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return selectedVoice
   }
 
-  // Функция получения доступного ElevenLabs ключа (система ротации как у OpenRouter)
+  // Функция получения доступного ElevenLabs ключа (��истема ротации как у OpenRouter)
   const getNextAvailableElevenLabsKey = () => {
     // Ищем активные ключи с доступным лимитом
     const availableKeys = elevenLabsKeys.filter(k =>
@@ -358,7 +358,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         audio.onerror = () => {
-          console.error('❌ Ошибка воспроизведения ElevenLabs аудио')
+          console.error('❌ Ошибка воспроизведения ElevenLabs ауди��')
           URL.revokeObjectURL(audioUrl)
         }
 
@@ -606,7 +606,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   }
 
   const showThinkingProcess = async (userMessage: string) => {
-    // Более умная ге��ерация мыслей на основе анализа вопрос��
+    // Более умная генерация мыслей на основе анализа вопрос��
     const generateThinking = (message: string) => {
       const lowerMessage = message.toLowerCase()
       const words = lowerMessage.split(' ')
@@ -627,8 +627,8 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isPricing) {
         return [
           'Запрос о ценах и тарифах',
-          'Проанализирую потребности пользователя',
-          'Подберлю оп��имальный тарифный п��ан'
+          'Проанализирую потребности пользоват��ля',
+          'Подберлю оптимальный тарифный п��ан'
         ]
       }
 
@@ -1198,7 +1198,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .dark-theme .voice-mode-btn:hover,
         .dark-theme .test-voice-btn:hover,
-        .dark-theme .setup-elevenlabs-btn:hover,
         .dark-theme .clear-chat-btn:hover,
         .dark-theme .close-btn:hover {
           background: #404040;
@@ -1560,7 +1559,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           background: #555555;
         }
 
-        /* Стили для сообщений мы����ения */
+        /* Стили для сообщений мыш����ния */
         .thinking-message {
           opacity: 0.8;
         }
