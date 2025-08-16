@@ -62,6 +62,12 @@ export default async function handler(
       console.error(`❌ DeepAI API Error: ${response.status} - ${errorText}`)
 
       if (response.status === 401) {
+        if (errorText.includes('Out of API credits')) {
+          return res.status(401).json({
+            success: false,
+            error: 'Лимит генерации изображений DeepAI исчерпан'
+          })
+        }
         return res.status(401).json({
           success: false,
           error: 'Invalid DeepAI API key'
