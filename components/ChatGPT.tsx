@@ -83,7 +83,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             setInputText(interimTranscript)
           }
 
-          // Обрабатываем финальный текст и запускаем автоот��равку
+          // Обрабатываем финальный текст и запускаем автоотправку
           if (finalTranscript) {
             console.log('📝 Получен финальный текст:', finalTranscript)
             // Устанавлива��м только финальный текст (не накапливаем)
@@ -103,7 +103,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               // Используем актуальный текст из ref
               const currentText = inputTextRef.current?.trim()
               if (currentText && currentText.length > 0) {
-                console.log('📤 Отправляем голосовое ��ообщение:', currentText)
+                console.log('📤 Отправляем голосовое сообщение:', currentText)
                 handleVoiceAutoSend(currentText)
               } else {
                 console.log('⚠️ Нет текста для отправки, очищаем поле')
@@ -132,7 +132,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           console.log('🔇 Конец речи, запускаем таймер тишины (3 сек)')
           // Запускаем таймер тишины
           const timer = setTimeout(() => {
-            console.log('😴 Длительная тишина обнаружена, останавливаем распознава��ие')
+            console.log('😴 Длительная тишина обнаружена, останавливаем распознавание')
             setIsListening(false)
             recognitionInstance.stop()
           }, 3000) // 3 секунды тишины
@@ -200,7 +200,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
         }
 
-        // Попытка 1: загрузка сразу
+        // Попытка 1: загрузка с��азу
         if (window.speechSynthesis.getVoices().length > 0) {
           loadVoices()
         } else {
@@ -303,7 +303,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         setIsListening(false)
       }
     } else {
-      console.log('⚠️ Не удалось запустить: recognition не готов или уж�� слушает')
+      console.log('⚠��� Не удалось запустить: recognition не готов или уж�� слушает')
     }
   }
 
@@ -459,7 +459,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
 
       // Используем качественный русский мужской голос без акцента (лучший для русского языка)
-      const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента, оптимизирован для рус��кого)
+      const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента, оптимизирован для русского)
 
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
         method: 'POST',
@@ -495,12 +495,17 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           URL.revokeObjectURL(audioUrl)
         }
 
-        await audio.play()
+        // 🚀 НЕМЕДЛЕННОЕ воспроизведение для синхронизации с текстом
+        audio.play().then(() => {
+          console.log('🎵 ElevenLabs TTS начал воспроизведение МГНОВЕННО')
+        }).catch(error => {
+          console.error('❌ Ошибка немедленного воспроизведения:', error)
+        })
 
         // Обновляем счетчик испо��ьзования
         updateElevenLabsUsage(apiKey, text.length)
 
-        console.log('🎵 ElevenLabs TTS успешно воспроизведен')
+        console.log('🎵 ElevenLabs TTS успешно запущен')
         return true
 
       } else {
@@ -605,7 +610,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
           utterance.volume = 0.8 // Комфортная громкость
 
-          // Добавляем обрлюботчики событий
+          // Добавляем обрлюбот��ики событий
           utterance.onstart = () => {
             console.log('🎵 Начало люзвучивания')
           }
@@ -791,7 +796,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Технический вопрос - анализирую детали',
           'Подготовлю практические решения',
-          '��чту лучшие практики р��зработки'
+          '��чту лучшие практики разработки'
         ]
       }
 
@@ -903,13 +908,13 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // 🚀 ЗАПУСКАЕМ ГОЛОС СРАЗУ, БЕЗ ЗАДЕРЖЕК!
       if (voiceMode === 'voice') {
         console.log('🎤 🚀 МГНОВЕННЫЙ запуск озвучивания (handleVoiceAutoSend):', response.substring(0, 50) + '...')
-        // Запускаем озвучивание параллельно, не блокируя UI
+        // З��пускаем озвучивание параллельно, не блокируя UI
         speakText(response).catch(error => {
           console.error('Ошибка озвучивания:', error)
         })
       }
 
-      // Показываем те��ст ОДНОВРЕМЕННО с голосом (без пауз)
+      // Показываем текст ОДНОВРЕМЕННО с голосом (без пауз)
       setMessages(prev => [...prev, botMessage])
 
       if (voiceMode !== 'voice') {
@@ -983,7 +988,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       setMessages(prev => [...prev, botMessage])
 
       if (voiceMode !== 'voice') {
-        console.log('🔇 Голосовой реж��м выключен')
+        console.log('🔇 Голосовой режим выключен')
       }
 
       // Сохраняем взаимодействие для обучения
@@ -1027,7 +1032,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     setIsUploadingFile(true)
 
     try {
-      // Просто ��обавл��ем сообщение о загруженном файле
+      // Просто ��обавляем сообщение о загруженном файле
       const fileMessage: Message = {
         id: Date.now().toString(),
         text: `📎 Файл загружен: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`,
@@ -1051,7 +1056,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       const errorMessage: Message = {
         id: Date.now().toString(),
-        text: 'люшилюка при загрузке файла. Попробуйте позже. люлю',
+        text: 'люшилюка п��и загрузке файла. Попробуйте позже. люлю',
         isUser: false,
         timestamp: new Date()
       }
@@ -1068,7 +1073,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - ко��сультант нашего сайта! 😊\n\nПомогу выб��ать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выб��ать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -1267,7 +1272,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Остановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
+                  title={isListening ? "Остановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосо��ой ввод (автоотправка через 2 сек после речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
