@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! ����\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }
@@ -54,7 +54,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (SpeechRecognition) {
         const recognitionInstance = new SpeechRecognition()
         recognitionInstance.continuous = true // Включаем непрерывное распознавание
-        recognitionInstance.interimResults = true // Включаем промежуточные результаты
+        recognitionInstance.interimResults = true // Включаем промежуточн��е результаты
         recognitionInstance.lang = 'ru-RU'
 
         recognitionInstance.onresult = (event: any) => {
@@ -294,7 +294,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для получения лучшег�� мужского гололюа
+  // Функция для получения лучшег�� мужского гололю��
   const getBestMaleVoice = () => {
     const voices = speechSynthesis.getVoices()
     let selectedVoice = null
@@ -327,7 +327,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     }
 
-    // ПРИОРИТЕТ 2: Качественные голоса (предпочитаем локальные)
+    // ПРИОРИТЕТ 2: Качественные ��олоса (предпочитаем локальные)
     if (!selectedVoice) {
       const qualityVoices = [
         'Google русский',
@@ -498,7 +498,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для озвучивания тек��чиа (теперь с ElevenLabs + fallback)
+  // Функция для озвучивания т��к��чиа (теперь с ElevenLabs + fallback)
   const speakText = async (text: string) => {
     if (voiceMode !== 'voice') return
 
@@ -672,7 +672,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         
         const errorText = await response.text()
         console.error('Chat API error:', errorText)
-        return 'Извините, произошла ошибка при обработке запроса. Попробуйте позже. 😔'
+        return 'Извините, произошла ошибка при обработк�� запроса. Попробуйте позже. 😔'
       }
 
       const data = await response.json()
@@ -728,14 +728,14 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isPricing) {
         return [
           'Запрос о ценах и тарифах',
-          'Проанализирую потребности пользоват��л��',
+          'Проанализирую потребности польз��ват��л��',
           'Подберлю оптимальный тарифный п��ан'
         ]
       }
 
       if (isTechnical) {
         return [
-          'Технический вопрос - анализирую детали',
+          'Технический ��опрос - анализирую детали',
           'Подготовлю практические решения',
           'Учту лучшие практики раз��аботки'
         ]
@@ -804,6 +804,16 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
   const handleSendMessage = async () => {
     if (!inputText.trim() || isTyping) return
+
+    // Очищаем все голосовые таймеры при отправке сообщения
+    if (autoSendTimer) {
+      clearTimeout(autoSendTimer)
+      setAutoSendTimer(null)
+    }
+    if (silenceTimer) {
+      clearTimeout(silenceTimer)
+      setSilenceTimer(null)
+    }
 
     const userMessage = inputText.trim()
     const userMessageId = Date.now().toString()
@@ -926,7 +936,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консулюьтант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВ��С - консулюьтант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }])
