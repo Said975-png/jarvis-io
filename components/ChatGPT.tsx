@@ -33,7 +33,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [silenceTimer, setSilenceTimer] = useState<NodeJS.Timeout | null>(null)
   const inputTextRef = useRef('')
 
-  // ElevenLabs ключи (4 ключа с разных аккаунтов для ротации - ОБНОВЛЕНЫ С ВАШИМИ КЛЮЧАМИ)
+  // ElevenLabs кл��чи (4 ключа с разных аккаунтов для ротации - ОБНОВЛЕНЫ С ВАШИМИ КЛЮЧАМИ)
   const [elevenLabsKeys] = useState([
     { key: 'sk_1df0aad8b96f47707c32565c8a91421e994da2f1858563f1', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
     { key: 'sk_5db328d5ec7cec7e73430d76b064cfb0c883cbc757497b22', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
@@ -333,7 +333,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     console.log('🔍 Поиск голосов. Всего доступно:', voices.length)
 
-    // Логируем все русские голоса для отла��ки
+    // Логируем все русские голоса д��я отла��ки
     const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
     console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
 
@@ -513,7 +513,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         audio.play().then(() => {
           console.log('🎵 ElevenLabs TTS начал воспроизведен��е МГНОВЕННО')
         }).catch(error => {
-          console.error('❌ Ошибка немедленного воспроизведения:', error)
+          console.error('❌ Ош��бка немедленного воспроизведения:', error)
         })
 
         // Обновляем счетчик испо��ьзования
@@ -984,7 +984,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: 'Извините, произошла ошибка. Попробуйте позже. 😔',
+        text: 'Извините, пр��изошла ошибка. Попробуйте позже. 😔',
         isUser: false,
         timestamp: new Date()
       }
@@ -1029,7 +1029,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // 🚀 ЗАПУСКАЕМ ГОЛОС СРАЗУ, БЕЗ ЗАДЕРЖЕК!
       if (voiceMode === 'voice') {
-        console.log('🎤 🚀 МГНОВЕННЫЙ запуск озвучивания (handleSendMessage):', response.substring(0, 50) + '...')
+        console.log('🎤 🚀 М��НОВЕННЫЙ запуск озвучивания (handleSendMessage):', response.substring(0, 50) + '...')
         // Запускаем озвучивание параллельно, не блокир��я UI
         speakText(response).catch(error => {
           console.error('Ошибка озвучивания:', error)
@@ -1096,7 +1096,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Фай�� "${file.name}" получен! К сожал��нилю, обралюотка фай��ов пока находится в разра��отке. Но вы можете описать содер��имое файла текстом, и я послюараю��ь помочь! 📝`,
+        text: `✅ Фай�� "${file.name}" получен! К сожал��нилю, обралюотка фай��ов пока находится в разра��отке. Но вы можете описать содер��имое файла текстом, и я послюа��аю��ь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
@@ -1150,7 +1150,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             </div>
             <div className="header-text">
               <h3>ДЖАРВИС</h3>
-              <span className="status">AI Помощни�� Онлайн</span>
+              <span className="status">AI Помощник Онлайн</span>
             </div>
           </div>
           <div className="header-actions">
@@ -1317,7 +1317,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         <div className="jarvis-chat-input">
           {isListening && (
             <div className="auto-send-indicator">
-              🎤 Слушаю... Сообщение отправится автоматически через 2 сек после окончания речи
+              🎤 Слушаю... Сообщение отправится автоматически через 2 сек после о��ончания речи
             </div>
           )}
           <div className="input-container">
