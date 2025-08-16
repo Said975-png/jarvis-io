@@ -26,7 +26,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
   // Голосовые функции
   const [isListening, setIsListening] = useState(false)
-  const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('text') // 'text' = тол��ко текст, 'voice' = текст + голос
+  const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('text') // 'text' = только текст, 'voice' = текст + голос
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
 
@@ -116,7 +116,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }, [])
 
-  // Функция для сохралюения ��заимодействия в базе знаний
+  // Функция для сохралюения взаимодействия в базе знаний
   const saveInteractionToLearning = async (userMessage: string, botResponse: string, userMessageId: string) => {
     try {
       console.log('=== SAVING INTERACTION TO LEARNING ===')
@@ -206,7 +206,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     // ПРИОРИТЕТ 1: Самые качественные мужлюкие голоса (менее роботичные)
     const premiumMaleVoices = [
-      'Google русский (Россия)', // Самый качественный если есть
+      'Google русский (Россия)', // ��амый качественный если есть
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
       'Google русский',
       'Pavel (Enhanced)', // Если есть улучшенная чиерсия
@@ -313,7 +313,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для ElevenLabs TTS (прелюиум кач��ство)
+  // Функция для ElevenLabs TTS (прелюиум качество)
   const speakWithElevenLabs = async (text: string): Promise<boolean> => {
     const apiKey = getNextAvailableElevenLabsKey()
 
@@ -337,10 +337,10 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         },
         body: JSON.stringify({
           text: text,
-          model_id: 'eleven_monolingual_v1',
+          model_id: 'eleven_multilingual_v2', // Лучше для русского языка
           voice_settings: {
-            stability: 0.75,
-            similarity_boost: 0.75,
+            stability: 0.85, // Увели��иваем стабильность для русского
+            similarity_boost: 0.80, // Улучшаем похожесть на оригинальный голос
             style: 0.0,
             use_speaker_boost: true
           }
@@ -522,7 +522,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Функция для тестирования голоса
   const testVoice = () => {
     console.log('🧪 Тестирование голоса JARVIS...')
-    const testPhrase = 'Привет! Я ДЖАРВИС. Э��о тест моего нового голоса через ElevenLabs API.'
+    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
     speakText(testPhrase)
   }
 
@@ -659,7 +659,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Анализирую суть вопроса',
           'Структурирую ответ для максимальной пользы',
-          'Доб��влю плюимеры и практические советы'
+          'Добавлю плюимеры и практические советы'
         ]
       }
 
@@ -811,7 +811,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожаленилю, обралюотка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я послюараюсь помочь! 📝`,
+        text: `✅ Файл "${file.name}" получен! К сожаленилю, обралюотка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я послюараю��ь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
