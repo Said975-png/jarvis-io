@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консуль��ант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }
@@ -29,6 +29,8 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('text') // 'text' = только текст, 'voice' = текст + голос
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
+  const [autoSendTimer, setAutoSendTimer] = useState<NodeJS.Timeout | null>(null)
+  const [silenceTimer, setSilenceTimer] = useState<NodeJS.Timeout | null>(null)
 
   // ElevenLabs ключии (8 ключей с разных аккаунтов для ротации)
   const [elevenLabsKeys] = useState([
@@ -252,7 +254,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     if (!selectedVoice) {
       selectedVoice = russianVoices.find(v => v.localService) || russianVoices[0]
       if (selectedVoice) {
-        console.log('⚠️ Используем резервный голос:', selectedVoice.name)
+        console.log('���️ Используем резервный голос:', selectedVoice.name)
       }
     }
 
@@ -325,7 +327,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
 
     try {
-      console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
+      console.log(`🎤 ��спользуем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
 
       // Используем качественный русский мужской голос без акцента
       const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента)
@@ -622,7 +624,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isGreeting) {
         return [
           'Пользователлю поздоровался',
-          'Отвечу дружелюбно и предложу помощь'
+          'Отвечу дружелюбно и предложу помощ��'
         ]
       }
 
@@ -827,7 +829,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консулюьтант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консулюьтант нашего сайт��! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }])
