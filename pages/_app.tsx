@@ -6,7 +6,7 @@ import { AuthProvider } from '../contexts/AuthContext'
 import { CartProvider } from '../contexts/CartContext'
 import { OrderProvider } from '../contexts/OrderContext'
 import { ThemeProvider } from '../contexts/ThemeContext'
-import CodeProtection from '../components/CodeProtection'
+// import CodeProtection from '../components/CodeProtection' // Temporarily disabled
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthProvider>
           <CartProvider>
             <OrderProvider>
-              <CodeProtection />
+              {/* <CodeProtection /> Temporarily disabled to restore functionality */}
               <Component {...pageProps} />
             </OrderProvider>
           </CartProvider>

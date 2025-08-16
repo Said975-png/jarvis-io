@@ -91,7 +91,7 @@ export default function AdvancedProtection() {
         return false;
       }, true);
       
-      // Блокируем вырезание
+      // Блокируем ��ырезание
       document.addEventListener('cut', function(e) {
         e.preventDefault();
         return false;
@@ -108,20 +108,9 @@ export default function AdvancedProtection() {
       document.oncontextmenu = function() { return false; };
       document.ondragstart = function() { return false; };
       
-      // Обнаружение DevTools
-      let devtools = false;
-      const devtoolsInterval = setInterval(function() {
-        if (window.outerHeight - window.innerHeight > 200 || 
-            window.outerWidth - window.innerWidth > 200) {
-          if (!devtools) {
-            devtools = true;
-            alert('Доступ запрещен!');
-            window.location.href = 'about:blank';
-          }
-        } else {
-          devtools = false;
-        }
-      }, 100);
+      // ВРЕМЕННО ОТКЛЮЧЕНА детекция DevTools по размеру окна
+      // Оставляем только блокировку горячих клавиш для базовой защиты
+      console.log('🛡️ AdvancedProtection: только горячие клавиши');
       
       // Переопределяем console
       if (typeof console !== 'undefined') {
@@ -133,8 +122,8 @@ export default function AdvancedProtection() {
         console.trace = function() {};
       }
       
-      // Блокируем alert, prompt, confirm для безопасности
-      window.alert = function() {};
+      // Оставляем alert для уведомлений о защите
+      // window.alert = function() {};
       window.prompt = function() { return null; };
       window.confirm = function() { return false; };
       
@@ -148,20 +137,20 @@ export default function AdvancedProtection() {
       };
       window.addEventListener('beforeunload', beforeUnloadHandler);
       
-      // Дополнительная защита для мобильных
-      document.addEventListener('touchstart', function(e) {
-        if (e.touches.length > 1) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-      
-      document.addEventListener('gesturestart', function(e) {
-        e.preventDefault();
-      });
+      // Дополнительн��я защита для мобильных (убрано - мешало использованию)
+      // document.addEventListener('touchstart', function(e) {
+      //   if (e.touches.length > 1) {
+      //     e.preventDefault();
+      //   }
+      // }, { passive: false });
+      //
+      // document.addEventListener('gesturestart', function(e) {
+      //   e.preventDefault();
+      // });
       
       // Cleanup function
       return () => {
-        clearInterval(devtoolsInterval);
+        // devtoolsInterval больше не используется
         window.removeEventListener('beforeunload', beforeUnloadHandler);
       };
     })();
