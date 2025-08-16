@@ -89,7 +89,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           window.speechSynthesis.cancel()
         }
 
-        // Инициализируем голоса (некоторые браузеры загружают их асинхронно)
+        // Инициализируем голоса (некотор��е браузеры загружают их асинхронно)
         const loadVoices = () => {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
@@ -464,7 +464,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
           }
 
-          // Настройки для более естественного звучания (менелю роботично)
+          // Настройки для более естественного ��вучания (менелю роботично)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скорость (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
@@ -635,7 +635,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Анализируем тип вопроса
       const isQuestion = message.includes('?') || words.some(w => ['люак', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
-      const isPricing = words.some(w => ['цена', 'ст��имость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
+      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
 
       if (isGreeting) {
