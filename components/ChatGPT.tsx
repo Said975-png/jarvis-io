@@ -379,7 +379,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     }
 
-    // ПРИОРИТЕТ 3: Любой русский голос
+    // ПРИОРИТЕТ 3: Любой рус��кий голос
     if (!selectedVoice) {
       selectedVoice = russianVoices.find(v => v.localService) || russianVoices[0]
       if (selectedVoice) {
@@ -706,7 +706,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       // Обычный чат-запрос
       const apiMessages = conversationHistory
-        .filter(msg => !msg.text.includes('Прив��т! Я ДЖАРВчиС, ваш AI-пом��щник!'))
+        .filter(msg => !msg.text.includes('Прив��т! Я ДЖА��ВчиС, ваш AI-пом��щник!'))
         .map(msg => ({
           role: msg.isUser ? 'user' : 'assistant' as const,
           content: msg.text
@@ -742,7 +742,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, произошла ошибка. Попробуйте переформулировать вопрос. ����'
+        return 'Извините, произошла ошибка. Попробуйте перефо��мулировать вопрос. ����'
       }
 
       return data.message || 'Извините, не могу ответить на это�� вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
@@ -775,7 +775,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       const lowerMessage = message.toLowerCase()
       const words = lowerMessage.split(' ')
 
-      // Анализируем тип вопроса
+      // Анал��зируем тип вопроса
       const isQuestion = message.includes('?') || words.some(w => ['люак', 'что', 'где', 'когда', '����очему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
       const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
@@ -914,7 +914,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         console.log('🎤 🚀 МГНОВЕННЫЙ запуск озвучивания (handleVoiceAutoSend):', response.substring(0, 50) + '...')
         // Запускаем озвучивание параллельно, не блокируя UI
         speakText(response).catch(error => {
-          console.error('Ошибка озвучивания:', error)
+          console.error('Ошиб��а озвучивания:', error)
         })
       }
 
@@ -1186,7 +1186,43 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                       </div>
                     </div>
                   ) : (
-                    message.text
+                    <div>
+                      {/* Обрабатываем markdown изображения в тексте */}
+                      {message.text.includes('![') && message.text.includes('](') ? (
+                        <div>
+                          {message.text.split(/(\!\[.*?\]\(.*?\))/g).map((part, index) => {
+                            // Проверяем если это markdown изображение
+                            const imageMatch = part.match(/\!\[(.*?)\]\((.*?)\)/)
+                            if (imageMatch) {
+                              const [, altText, imageUrl] = imageMatch
+                              return (
+                                <div key={index} className="generated-image-container">
+                                  <img
+                                    src={imageUrl}
+                                    alt={altText}
+                                    className="generated-image"
+                                    style={{
+                                      maxWidth: '100%',
+                                      maxHeight: '400px',
+                                      borderRadius: '8px',
+                                      margin: '10px 0',
+                                      boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                                    }}
+                                    onError={(e) => {
+                                      console.error('Ошибка загрузки изображения:', imageUrl)
+                                      e.currentTarget.style.display = 'none'
+                                    }}
+                                  />
+                                </div>
+                              )
+                            }
+                            return part
+                          })}
+                        </div>
+                      ) : (
+                        message.text
+                      )}
+                    </div>
                   )}
                 </div>
                 {!message.isThinking && (
