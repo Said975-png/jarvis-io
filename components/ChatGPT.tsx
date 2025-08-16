@@ -31,6 +31,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
   const [autoSendTimer, setAutoSendTimer] = useState<NodeJS.Timeout | null>(null)
   const [silenceTimer, setSilenceTimer] = useState<NodeJS.Timeout | null>(null)
+  const inputTextRef = useRef('')
 
   // ElevenLabs ключи (4 ключа с разных аккаунтов для ротации - ОБНОВЛЕНЫ)
   const [elevenLabsKeys] = useState([
@@ -45,6 +46,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const sessionId = useRef(`session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`)
+
+  // Обновляем ref при изменении inputText
+  useEffect(() => {
+    inputTextRef.current = inputText
+  }, [inputText])
 
   // Инициализация голосовл��х API
   useEffect(() => {
@@ -89,9 +95,15 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             // Запускаем таймер автоотправки через 2 секунды после последних слов
             console.log('⏱️ Запускаем таймер автоотправки (2 сек)')
             const timer = setTimeout(() => {
-              console.log('🚀 ��ремя вышло! Автоматическая отправка сообщения')
-              // Вызываем handleSendMessage только если е��ть текст (проверка внутри функции)
-              handleSendMessage()
+              console.log('🚀 Время вышло! Автоматическая отправка сообщения')
+              // Используем актуальный текст из ref
+              const currentText = inputTextRef.current?.trim()
+              if (currentText && currentText.length > 0) {
+                console.log('📤 Отправляем голосовое сообщение:', currentText)
+                handleSendMessage()
+              } else {
+                console.log('⚠️ Нет текста для отправки')
+              }
               setIsListening(false)
               recognitionInstance.stop()
             }, 2000) // 2 секунды
@@ -124,7 +136,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         recognitionInstance.onerror = (event: any) => {
           console.error('Speech recognition error:', event.error)
 
-          // Игнор��руем ошибки "no-speech" (отсутст��ие речи) - это нормально
+          // ��гнор��руем ошибки "no-speech" (отсутст��ие речи) - это нормально
           if (event.error === 'no-speech') {
             console.log('⚠️ Нет речи - ожидаем дальше')
             return
@@ -422,7 +434,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (keyInfo.usage >= keyInfo.limit) {
         keyInfo.isActive = false
-        console.log(`🚫 ElevenLabs ключ исчерпал лимит: ${apiKey.substring(0, 8)}...`)
+        console.log(`🚫 ElevenLabs ключ и��черпал лимит: ${apiKey.substring(0, 8)}...`)
       }
     }
   }
@@ -520,7 +532,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       speechSynthesis.cancel()
     }
 
-    // Очищаем люекст
+    // Очищаем люекс��
     const cleanText = text
       .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
       .replace(/[•·]/g, '')
@@ -554,7 +566,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Ждем немного, чтоблю cancel успел отработать
       setTimeout(() => {
-        // Очищаем текст от эмодзлю и специальных символов дл�� лучшего произношения
+        // Очищаем т��кст от эмодзлю и специальных символов дл�� лучшего произношения
         const cleanText = text
           .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
           .replace(/[��ю·]/g, '')
@@ -576,7 +588,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скоро��ть (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
-          utterance.volume = 0.8 // Комфортная громкость
+          utterance.volume = 0.8 // Комфортная гро��кость
 
           // Добавляем обрлюботчики событий
           utterance.onstart = () => {
@@ -704,7 +716,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, произошла ошибка. Попробуйте переформулировать вопрос. 🤔'
+        return 'Извините, ��роизошла ошибка. Попробуйте переформулировать вопрос. 🤔'
       }
 
       return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
@@ -923,7 +935,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Просто ��обавляем сообщение о загруженном файле
       const fileMessage: Message = {
         id: Date.now().toString(),
-        text: `📎 Файл загружен: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`,
+        text: `📎 Файл загруже��: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`,
         isUser: true,
         timestamp: new Date()
       }
