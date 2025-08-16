@@ -46,7 +46,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const sessionId = useRef(`session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`)
 
-  // Инициализация голосовлюх API
+  // Инициализация голосовл��х API
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // Speech Recognition API
@@ -243,7 +243,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     } catch (error) {
       console.error('Error saving interaction for learning:', error)
       // ��е блокируем польз��вательский люнтерфейс при ошиб��ах сохранения
-      // Это не клюитично для работы чата
+      // Это не клю��тично для работы чата
     }
   }
 
@@ -259,19 +259,38 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return commonTags.filter(tag => lowerText.includes(tag))
   }
 
-  // Функция для запуска гол��сового ввода
+  // Функция для запуска голосового ввода
   const startListening = () => {
     if (recognition && !isListening) {
+      console.log('🎙️ Запуск голосового ввода с автоотправкой')
+      setInputText('') // Очищаем поле ввода для новой записи
       setIsListening(true)
-      recognition.start()
+
+      try {
+        recognition.start()
+      } catch (error) {
+        console.error('Ошибка запуска распознавания:', error)
+        setIsListening(false)
+      }
     }
   }
 
   // Функция для остановки голосового ввода
   const stopListening = () => {
     if (recognition && isListening) {
+      console.log('⏹️ Остановка голосового ввода')
       recognition.stop()
       setIsListening(false)
+
+      // Очищаем все таймеры
+      if (autoSendTimer) {
+        clearTimeout(autoSendTimer)
+        setAutoSendTimer(null)
+      }
+      if (silenceTimer) {
+        clearTimeout(silenceTimer)
+        setSilenceTimer(null)
+      }
     }
   }
 
@@ -288,11 +307,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     // ПРИОРИТЕТ 1: Самые качественные мужлюкие голоса (менее роботичные)
     const premiumMaleVoices = [
-      'Google русский (Россия)', // ��амый качественный если есть
+      'Google русский (Россия)', // ��амый качественный если ест��
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
       'Google русский',
       'Pavel (Enhanced)', // Если есть улучшенная чиерсия
-      'Yuri (Natural)', // Естественный вариант
+      'Yuri (Natural)', // Естественны�� вариант
       'Microsoft Pavel',
       'Pavel',
       'Yuri'
@@ -866,7 +885,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     setIsUploadingFile(true)
 
     try {
-      // Просто добавляем сообщение о загруженном файле
+      // Просто ��обавляем сообщение о загруженном файле
       const fileMessage: Message = {
         id: Date.now().toString(),
         text: `📎 Файл загружен: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`,
