@@ -124,8 +124,12 @@ export default function CodeProtection() {
 
     // Отключаем функции печати
     const disablePrint = () => {
-      window.print = () => {
-        return false
+      try {
+        window.print = () => {
+          return false
+        }
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
       }
     }
 
@@ -149,8 +153,19 @@ export default function CodeProtection() {
       // Отключаем контекстное меню через разные методы
       document.addEventListener('contextmenu', disableRightClick, true)
       document.addEventListener('contextmenu', disableContextMenu, true)
-      document.oncontextmenu = disableRightClick
-      window.oncontextmenu = disableRightClick
+
+      // Безопасное присвоение oncontextmenu
+      try {
+        document.oncontextmenu = disableRightClick
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
+      }
+
+      try {
+        window.oncontextmenu = disableRightClick
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
+      }
       
       // Отключаем клавиатурные сокращения
       document.addEventListener('keydown', disableKeyboardShortcuts, true)
@@ -168,14 +183,28 @@ export default function CodeProtection() {
       document.addEventListener('dragover', disableDrag, true)
       
       // Отключаем выделение
-      document.onselectstart = () => false
-      document.ondragstart = () => false
-      document.ondrop = () => false
+      try {
+        document.onselectstart = () => false
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
+      }
+
+      try {
+        document.ondragstart = () => false
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
+      }
+
+      try {
+        document.ondrop = () => false
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
+      }
       
       // Применяем стили для отключения выделения
       disableTextSelection()
       
-      // Отключаем печать
+      // Отклю��аем печать
       disablePrint()
       
       // Запускаем детекцию DevTools
