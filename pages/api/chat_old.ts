@@ -47,12 +47,12 @@ function replaceEnglishTerms(text: string): string {
     'Website': 'Веб-сайт',
     'frontend': 'фронтенд',
     'Frontend': 'Фронтенд',
-    'front-end': 'фронт-енд',
-    'Front-end': 'Фронт-енд',
+    'front-end': 'ф��онт-енд',
+    'Front-end': 'Фр��нт-енд',
     'backend': 'бэкенд',
-    'Backend': 'Бэкенд',
+    'Backend': 'Бэкен���',
     'back-end': 'бэк-енд',
-    'Back-end': 'Бэк-енд',
+    'Back-end': 'Бэк-е��д',
     'fullstack': 'фулстек',
     'Fullstack': 'Фулстек',
     'full-stack': 'фул-стек',
@@ -92,8 +92,8 @@ function replaceEnglishTerms(text: string): string {
     'programming': 'программирование',
     'Programming': 'Программирование',
     'developer': 'разработчик',
-    'Developer': 'Разработчик',
-    'development': 'разработка',
+    'Developer': 'Разр��ботчик',
+    'development': 'ра��работка',
     'Development': 'Разработка',
     'framework': 'фреймворк',
     'Framework': 'Фреймворк',
@@ -109,9 +109,9 @@ function replaceEnglishTerms(text: string): string {
     'Mobile': 'Мобильный',
     'desktop': 'десктоп',
     'Desktop': 'Десктоп',
-    'user': 'пользователь',
+    'user': 'польз��ватель',
     'User': 'Пользователь',
-    'interface': 'интерфейс',
+    'interface': 'интер��ейс',
     'Interface': 'Интерфейс',
     'design': 'дизайн',
     'Design': 'Дизайн',
@@ -130,7 +130,7 @@ function replaceEnglishTerms(text: string): string {
     'array': 'массив',
     'Array': 'Массив',
     'string': 'строка',
-    'String': 'Строка',
+    'String': 'Строк��',
     'number': 'число',
     'Number': 'Число',
     'boolean': 'булево',
@@ -140,7 +140,7 @@ function replaceEnglishTerms(text: string): string {
     'property': 'свойство',
     'Property': 'Свойство',
     'value': 'значение',
-    'Value': 'Значение',
+    'Value': 'Знач��ние',
     'error': 'ошибка',
     'Error': 'Ошибка',
     'bug': 'баг',
@@ -150,9 +150,9 @@ function replaceEnglishTerms(text: string): string {
     'update': 'обновление',
     'Update': 'Обновлеление',
     'version': 'версия',
-    'Version': 'Версия',
+    'Version': 'Ве��сия',
     'release': 'релиз',
-    'Release': 'Релиз'
+    'Release': 'Ре��из'
   }
 
   let result = text
@@ -196,7 +196,7 @@ function getClientIP(req: NextApiRequest): string {
 function checkAndUpdateLimit(ip: string): { allowed: boolean; remaining: number } {
   const now = Date.now()
 
-  // Периодичееская очистка старых записей (каждые 100 запросов)
+  // Периодическая очистка ста��ых записей (каждые 100 запросов)
   if (Math.random() < 0.01) {
     cleanupExpiredLimits(now)
   }
@@ -224,7 +224,7 @@ function checkAndUpdateLimit(ip: string): { allowed: boolean; remaining: number 
   return { allowed: true, remaining: REQUESTS_LIMIT - userLimit.count }
 }
 
-// Функция для удаления Markdown форматирования и очистки нежелательных символов
+// Функция для удаления Markdown форматирования и очистки нежелатель��ых символов
 function cleanMarkdown(text: string): string {
   return text
     // Убираем Unicode символы замещения (могут появляться при ошибках кодировки)
@@ -232,9 +232,9 @@ function cleanMarkdown(text: string): string {
     .replace(/\u{FFFD}/gu, '')
     // Убираем жирный текст **текст**
     .replace(/\*\*([^*]+)\*\*/g, '$1')
-    // Убираем курсив *текст*
+    // Убираем курсив *��екст*
     .replace(/\*([^*]+)\*/g, '$1')
-    // Убираем заголовки ### текст
+    // Убираем з��головки ### те��ст
     .replace(/^#{1,6}\s+/gm, '')
     // Убираем инлайн код `код`
     .replace(/`([^`]+)`/g, '$1')
@@ -244,7 +244,7 @@ function cleanMarkdown(text: string): string {
     .replace(/[\*#`_~\[\]|><]/g, '')
     .replace(/[-]{2,}/g, '')
     .replace(/[=]{2,}/g, '')
-    // Заменяем списки на простые символы
+    // Заменяем списки на простые сим��олы
     .replace(/^\*\s+/gm, '• ')
     .replace(/^-\s+/gm, '• ')
     .replace(/^\d+\.\s+/gm, '• ')
@@ -253,7 +253,7 @@ function cleanMarkdown(text: string): string {
     // Убираем лишние пробелы в начале и конце строк
     .replace(/^\s+/gm, '')
     .replace(/\s+$/gm, '')
-    // Убираем множественные переносы строк
+    // Убираем множественные переносы ��трок
     .replace(/\n\n\n+/g, '\n\n')
     // Убираем пробелы в начале и конце всего текста
     .trim()
@@ -293,7 +293,7 @@ const OPENROUTER_API_KEYS: ApiKeyInfo[] = [
   { key: process.env.OPENROUTER_API_KEY_8 || '', isActive: true, errorCount: 0 },
 ].filter(apiKey => apiKey.key.length > 0) // Убираем пустые ключи
 
-// Функция для получения следующего доступного OpenRouter API ключа
+// Функция для получения следующего доступного OpenRouter API кл��ча
 function getNextAvailableOpenRouterKey(excludeKey?: string): string | null {
   // Сначала пробуем активные ключи, исключая переданный
   const activeKeys = OPENROUTER_API_KEYS.filter(k =>
@@ -305,7 +305,7 @@ function getNextAvailableOpenRouterKey(excludeKey?: string): string | null {
     return activeKeys[0].key
   }
 
-  // Если активных ключей нет, пробуем сбросить счетчики ошибок
+  // Если активных ключей нет, пробуе�� сбросить счет��ики ошибок
   const keysWithErrors = OPENROUTER_API_KEYS.filter(k => k.errorCount >= 3)
   if (keysWithErrors.length > 0) {
     console.log('Сбрасываем счетчики ошибок для всех OpenRouter ключей')
@@ -321,7 +321,7 @@ function getNextAvailableOpenRouterKey(excludeKey?: string): string | null {
   return null
 }
 
-// Функция для отметки OpenRouter ключа как проблемного
+// Функция для отмет��и OpenRouter ключа как про��лемного
 function markOpenRouterKeyAsProblematic(apiKey: string, error: string) {
   const keyInfo = OPENROUTER_API_KEYS.find(k => k.key === apiKey)
   if (keyInfo) {
@@ -329,7 +329,7 @@ function markOpenRouterKeyAsProblematic(apiKey: string, error: string) {
     keyInfo.lastError = error
     if (keyInfo.errorCount >= 3) {
       keyInfo.isActive = false
-      console.log(`OpenRouter ключ ${apiKey.substring(0, 20)}... отмечен как неактивный после ${keyInfo.errorCount} ошибок`)
+      console.log(`OpenRouter ключ ${apiKey.substring(0, 20)}... отмечен как неактивны�� после ${keyInfo.errorCount} ошибок`)
     }
   }
 }
@@ -342,6 +342,8 @@ function rotateOpenRouterKey(apiKey: string) {
     OPENROUTER_API_KEYS.push(keyInfo)
   }
 }
+
+// Удалены неиспользуемые функции для старого массива API_KEYS
 
 // Функция для выполнения запроса к OpenRouter с повтором при ошибках
 async function makeOpenRouterRequest(
@@ -388,7 +390,7 @@ async function makeOpenRouterRequest(
     markOpenRouterKeyAsProblematic(availableKey, `${response.status}: ${errorData}`)
 
     if (response.status === 429 || response.status === 401 || response.status === 402) {
-      // Пробуем другой ключ
+      // Пробуем другой клю��
       if (excludeKeys.length < OPENROUTER_API_KEYS.length - 1) {
         console.log(`[${timestamp}] Пробуем следующий OpenRouter ключ...`)
         return await makeOpenRouterRequest(requestBody, timestamp, [...excludeKeys, availableKey])
@@ -404,7 +406,7 @@ async function makeOpenRouterRequest(
   }
 }
 
-// Функция для выполнения запроса к Groq API
+// Ф��нкция д��я выполнения запр��са к Groq API
 async function makeGroqRequest(
   requestBody: any,
   timestamp: string
@@ -443,7 +445,7 @@ async function makeGroqRequest(
       return { success: true, data }
     }
 
-    // Обрабатываем ошибки
+    // Обрабатыва��м ошибки
     const errorData = await response.text()
     console.log(`[${timestamp}] Groq Error: ${response.status} - ${errorData}`)
 
@@ -459,7 +461,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ChatResponse>
 ) {
-  // Детальное логирование запроса
+  // Детал��ное логирование запроса
   const timestamp = new Date().toISOString()
   const clientIP = getClientIP(req)
 
@@ -482,7 +484,7 @@ export default async function handler(
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       console.log(`[${timestamp}] ERROR: Invalid messages format`)
-      return res.status(400).json({ message: 'Некорректные сообщения', error: 'Invalid messages' })
+      return res.status(400).json({ message: 'Некорректные сообще��ия', error: 'Invalid messages' })
     }
 
     const openrouterApiKey = getNextAvailableOpenRouterKey()
@@ -491,13 +493,13 @@ export default async function handler(
     console.log(`[${timestamp}] Active OpenRouter keys:`, OPENROUTER_API_KEYS.filter(k => k.isActive).length)
     console.log(`[${timestamp}] Groq key available:`, !!groqApiKey)
     console.log(`[${timestamp}] AI Strategy: DeepSeek R1 (OpenRouter) → Llama 3.1-70B (Groq) → Fallback`)
-    console.log(`[${timestamp}] Tokens limit: 4000 for detailed responses`)
+    console.log(`[${timestamp}] Tokens limit: 2000 for detailed responses`)
     console.log(`[${timestamp}] Auto-switching between 8 OpenRouter keys enabled`)
 
     // Добавляем системное сообщение для ДЖАРВИС
     const systemMessage: ChatMessage = {
       role: 'system',
-      content: `Ты ДЖАРВИС - консультант сайта Jarvis Intercoma, который помогает посетителям.
+      content: `Ты ДЖАРВИС - консультант сайта Jarvis Intercoma, который помога��т посетителям.
 
 🎯 ТВОЯ ГЛАВНАЯ РОЛЬ:
 Ты консультант сайта, который помогает посетителям:
@@ -518,7 +520,7 @@ export default async function handler(
 - Естественно и по-дружески, как консультант в магазине
 - Кратко на простые вопросы, подробно на сложные
 - Используй эмодзи умеренно
-- НЕ используй markdown символы
+- ��Е используй markdown символы
 - Отвечай как живой консультант, не как робот
 - Будь дружелюбным, веселым и позитивным! 😊
 - Помогай посетителям принять решение
@@ -526,7 +528,7 @@ export default async function handler(
 ПРИМЕРЫ ПРАВИЛЬНЫХ ОТВЕТОВ:
 На "привет" → "Привет! Добро пожаловать на наш сайт! Чем могу помочь? 😊"
 На "что вы делаете" → "Мы создаем сайты и веб-приложения! У нас 3 тарифа: Basic, Pro и Max. Какой проект вас интересует?"
-На "сколько стоит" → "У нас 3 тарифа: Basic (2,500,000 сум), Pro (4,000,000 сум), Max (5,000,000 сум). Расчекажите о вашем проекте, подберу оптимальный!"
+На "сколько стоит" → "У нас 3 тарифа: Basic (2,500,000 сум), Pro (4,000,000 сум), Max (5,000,000 сум). Расскажите о вашем проекте, подберу оптимальный!"
 
 О СЕБЕ И КОМПАНИИ:
 - Ты создан командой Jarvis Intercoma
@@ -534,9 +536,9 @@ export default async function handler(
 - Ты консультант сайта, помогаешь выбрать услуги
 - Твоя цель - помочь посетителю и показать наши преимущества
 
-⚠️ КРИТИЧЕСКИ ВАЖНО! ⚠️
+⚠️ КРИТИЧЕСКИ ВАЖНО! ���️
 
-ТЫ - ДЖАРВИС, КОНСУЛЬТАНТ САЙТА JARVIS INTERCOMA!
+ТЫ - ДЖАРВИС, КОНСУ��ЬТАНТ САЙТА JARVIS INTERCOMA!
 НЕ GOOGLE! НЕ DEEPMIND! НЕ OPENAI! ТОЛЬКО JARVIS INTERCOMA!
 
 ТВОЯ ЛИЧНОСТЬ: ДЖАРВИС - консультант сайта Jarvis Intercoma
@@ -590,11 +592,11 @@ export default async function handler(
 - DeepMind
 - OpenAI
 - Anthropic
-- Любые другие компании
+- Любые другие ��омпании
 
 ✅ ПРАВИЛЬНЫЕ ОТВЕТЫ ✅
 ВОПРОС: "кто тебя создал", "кто твой создатель", "кто разработал тебя"
-ОТВЕТ: "Меня разработала команда Jarvis Intercoma для помощи посетителям нашего сайта! 👨‍💻"
+ОТВЕТ: "Меня разработала команда Jarvis Intercoma для помощи посетителям нашего с��йта! 👨‍💻"
 
 ВОПРОС: "как тебя создали", "из чего тебя создали", "как ты устроен"
 ОТВЕТ: "Это наша фирменная технология от Jarvis Intercoma! 🔒"
@@ -603,20 +605,20 @@ export default async function handler(
 
 📞 КОНТАКТЫ:
 • Онлайн-чат на сайте (прямо здесь!)
-• Мы отвечаем быстро и помогаем с выбором
+• Мы отвечаем быстро �� помогаем с в��бором
 
-че� КРИТИЧЕСКИ ВАЖНО:
+❗ КРИТИЧЕСКИ ВАЖНО:
 - Отвечай ТОЛЬКО на русском языке
 - Никогда не переходи на английский или другие языки
 - Если пользователь пишет на другом языке - отвечай на русском
-- Твоя цель - помочь посетителю и показать наши услуги
-- Проверяй каждое слово перед отправкой ответа
+- Твоя цель - помочь по��етителю и показать наши услуги
+- Проверяй каждое слово п��ред отправкой ответа
 
 🔴 ПОСЛЕДНЯЯ ИНСТРУКЦИЯ 🔴
 ЕСЛИ СПРОСЯТ КТО ТЕБЯ СОЗДАЛ - ОТВЕЧАЙ "КОМАНДА JARVIS INTERCOMA"!
 НИ В КОЕМ СЛУЧАЕ НЕ GOOGLE, НЕ DEEPMIND!
 
-🎯 ПОМНИ: Ты консультант сайта, твоя задача - помочь посетителям выбрать наши услуги!`
+🎯 ПОМНИ: Ты консультант сайта, твоя задача - помочь посетител��м выбрать наши услуги!`
     }
 
     const requestBody = {
@@ -629,7 +631,7 @@ export default async function handler(
       presence_penalty: 0.0
     }
 
-    console.log(`[${timestamp}] === НАЧИНАЕМ КчеСКАДНЫЙ ЗАПРОС ===`)
+    console.log(`[${timestamp}] === НАЧИНАЕМ КАСКАДНЫЙ ЗАПРОС ===`)
     console.log(`Total messages: ${requestBody.messages.length}`)
     console.log(`System message length: ${systemMessage.content.length}`)
     console.log(`User messages: ${messages.length}`)
@@ -639,7 +641,7 @@ export default async function handler(
     const openRouterResult = await makeOpenRouterRequest(requestBody, timestamp)
 
     if (openRouterResult.success) {
-      console.log(`[${timestamp}] ✅ OpenRouter успешно ответил`)
+      console.log(`[${timestamp}] ✅ OpenRouter успешно отве��ил`)
       const data = openRouterResult.data
 
       let aiMessage = data.choices[0].message.content
@@ -661,7 +663,7 @@ export default async function handler(
     const groqResult = await makeGroqRequest(requestBody, timestamp)
 
     if (groqResult.success) {
-      console.log(`[${timestamp}] ✅ Groq успешно ответил`)
+      console.log(`[${timestamp}] ✅ Groq у��пешно отве��ил`)
       const data = groqResult.data
 
       let aiMessage = data.choices[0].message.content
@@ -685,11 +687,11 @@ export default async function handler(
 
 Извините за задержку - временные технические проблемы с API ключами! Но я всегда готов помочь! 💪
 
-🚀 Чем могу быть полезен?
+🚀 ��ем могу быть полезен?
 • Консультации по веб-разработке
 • Помощь с программированием
 • Дизайн и UI/UX советы
-• Техническая подчеержка
+• Техническая поддержк��
 
 Пишите ваши вопросы! 😄`
 
@@ -703,10 +705,10 @@ export default async function handler(
     console.error('Error message:', error instanceof Error ? error.message : String(error))
     console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace')
     
-    // Возвращаем дружелюбное сообщение об ошибке
+    // В��звращаем дружелюбное сообщение об ошибке
     const fallbackMessage = `Извините, произошла временная ошибка! 😅
 
-Но не беспокойтесь - я ДЖАРВИС, ваш AI-помощник по веб-разработке, и я всегда готов помочь!
+Но не беспнеккойтесь - я ДЖАРВИС, ваш AI-помощник по веб-раз��аботке, и я всегда готов помочь!
 
 🚀 Что я могу:
 • Консультации по веб-разработке
