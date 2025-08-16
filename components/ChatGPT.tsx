@@ -86,7 +86,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           // Обрабатываем финальный текст и запускаем автоотправку
           if (finalTranscript) {
             console.log('📝 Получен финальный текст:', finalTranscript)
-            // Устанавливаем только финальный текст (не накапливаем)
+            // Устанавлива��м только финальный текст (не накапливаем)
             setInputText(finalTranscript.trim())
             inputTextRef.current = finalTranscript.trim()
 
@@ -270,7 +270,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     } catch (error) {
       console.error('Error saving interaction for learning:', error)
       // Не блокируем пользовательский интерфейс при ошибк��х сохранения
-      // Это не критично для работы чата
+      // Это не кри��ично для работы чата
     }
   }
 
@@ -303,7 +303,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         setIsListening(false)
       }
     } else {
-      console.log('⚠️ Не удалось запустить: recognition не готов или уже слушает')
+      console.log('⚠️ Не удалось запустить: recognition не готов или уж�� слушает')
     }
   }
 
@@ -337,7 +337,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
     console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
 
-    // ПРИОРИТЕТ 1: ����амые качественные мужские голоса (менее роботичные)
+    // ПРИОРИТЕТ 1: ����амые качественные мужс��ие голоса (менее роботичные)
     const premiumMaleVoices = [
       'Google русский (Россия)', // Самый качеств��нный если есть
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
@@ -530,9 +530,13 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для озвучивания т���к��чиа (теперь с ElevenLabs + fallback)
+  // Функция для озвучивания текста (теперь с ElevenLabs + fallback)
   const speakText = async (text: string) => {
-    if (voiceMode !== 'voice') return
+    console.log('🎵 speakText вызвана. voiceMode:', voiceMode, 'text:', text.substring(0, 30) + '...')
+    if (voiceMode !== 'voice') {
+      console.log('❌ Голосовой режим выключен, пропускаем озвучивание')
+      return
+    }
 
     // Останавливаем предыдущее воспроизведение
     if (speechSynthesis) {
@@ -711,7 +715,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (!response.ok) {
         if (response.status === 429) {
-          return 'Слишком много запро��ов. Пожалуйста, подождите немного перед следующим сообщением. ⏳'
+          return 'Слишком много запро��ов. Пожалуйста, подождите немного перед следующим со��бщением. ⏳'
         }
         
         const errorText = await response.text()
@@ -846,7 +850,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     await new Promise(resolve => setTimeout(resolve, 400))
   }
 
-  // Специальная функция для голосовой автоотправки (обходит проверку inputText)
+  // ��пециальная функция для голосовой автоотправки (обходит проверку inputText)
   const handleVoiceAutoSend = async (textToSend: string) => {
     if (!textToSend.trim() || isTyping) return
 
