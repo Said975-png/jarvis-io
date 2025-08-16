@@ -78,10 +78,10 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             // Очищаем существующий таймер
             if (autoSendTimer) {
               clearTimeout(autoSendTimer)
-              console.log('⏰ Очищен предыдущий таймер автоотп��авки')
+              console.log('⏰ Очищен предыдущий таймер автоотправки')
             }
 
-            // Запу��каем таймер автоотправки через 2 секунды после последних слов
+            // Запу���каем таймер автоотправки через 2 секунды после последних слов
             console.log('⏱️ Запускаем таймер автоотправки (2 сек)')
             const timer = setTimeout(() => {
               console.log('🚀 Время вышло! Автоматическая отправка сообщения')
@@ -372,9 +372,9 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return selectedVoice
   }
 
-  // Функция получения доступного ElevenLabs ключ�� (��истем�� р��тации как у OpenRouter)
+  // Функция получения доступного ElevenLabs ключ�� (��истем�� ротации как у OpenRouter)
   const getNextAvailableElevenLabsKey = () => {
-    // Ищем активные ключи с д��ступным лимитом
+    // Ищем активные ключи с доступным лимитом
     const availableKeys = elevenLabsKeys.filter(k =>
       k.isActive && k.key.length > 0 && k.usage < k.limit && k.errorCount < 3
     )
@@ -438,7 +438,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
 
     try {
-      console.log(`���� Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
+      console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
 
       // Используем качественный рус��кий мужской голос без акцента
       const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента)
@@ -506,7 +506,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
 
     } catch (error) {
-      console.error('💥 ElevenLabs ошибка се��и:', error)
+      console.error('💥 ElevenLabs ошибка сети:', error)
       markElevenLabsKeyAsProblematic(apiKey, error instanceof Error ? error.message : 'Network error')
       return false
     }
@@ -570,7 +570,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           if (selectedVoice) {
             utterance.voice = selectedVoice
-            console.log('🎤 Голос для озв��чки:', selectedVoice.name, selectedVoice.lang)
+            console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
           }
 
           // Настрой��и для более естественного чивучания (менелю роботично)
@@ -746,7 +746,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isGreeting) {
         return [
-          'Поль��оват��ллю поздоровался',
+          'Поль��овател��ю поздоровался',
           'Отвечу дружелюбно и ��редложу помощь'
         ]
       }
@@ -824,7 +824,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     }
 
-    // Фина����ная пауза
+    // Фина��ьн��я пауза
     await new Promise(resolve => setTimeout(resolve, 400))
   }
 
@@ -1161,7 +1161,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Ос��ановить запис�� (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
+                  title={isListening ? "Ос��ановить запись (сообщение отпра��ится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
