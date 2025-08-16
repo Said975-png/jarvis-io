@@ -166,7 +166,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           console.log('🛑 Распознавание остановлено')
           setIsListening(false)
 
-          // Очищаем ��аймеры при завершении
+          // Очищаем тай��еры при завершении
           if (autoSendTimer) {
             clearTimeout(autoSendTimer)
             setAutoSendTimer(null)
@@ -196,7 +196,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         const loadVoices = () => {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
-          console.log('🎤 Русские голо��а загружены:', russianVoices.length)
+          console.log('🎤 Русские голо���� загружены:', russianVoices.length)
           russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
         }
 
@@ -481,7 +481,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             stability: 0.90, // Максимальная стабильность для четкого русского произношения
             similarity_boost: 0.85, // ��лучше��ная похожесть на естественный голос
             style: 0.1, // Неб��льшая эмоциональность для естественности
-            use_speaker_boost: true // Усиление для лучш��го качества звука
+            use_speaker_boost: true // Усиление для луч����го качества звука
           }
         }),
         signal: controller.signal // Добавляем abort signal
@@ -613,7 +613,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
       } catch (error) {
-        console.error('💥 ElevenLabs критическая ошибка:', error)
+        console.error('💥 ElevenLabs критическая оши��ка:', error)
         retryCount++
         if (retryCount <= maxRetries) {
           const delay = Math.min(1000 * Math.pow(2, retryCount), 3000)
@@ -704,7 +704,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   }
 
 
-  // Функция ����ля тестирования голоса
+  // Функция ����ля тестирования гол��са
   const testVoice = () => {
     console.log('🧪 Тестиров��ние голоса JARVIS...')
     const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
@@ -1108,7 +1108,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       const errorMessage: Message = {
         id: Date.now().toString(),
-        text: 'люшилюка при загрузке файла. Попробуйте позже. люлю',
+        text: 'л��шилюка при загрузке файла. Попробуйте позже. люлю',
         isUser: false,
         timestamp: new Date()
       }
