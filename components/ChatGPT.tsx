@@ -30,7 +30,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
 
-  // ElevenLabs клю��и (8 ключей с разных аккаунтов для ротации)
+  // ElevenLabs ключии (8 ключей с разных аккаунтов для ротации)
   const [elevenLabsKeys] = useState([
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
@@ -89,7 +89,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           window.speechSynthesis.cancel()
         }
 
-        // Инициализируем голоса (некотор��е браузеры загружают их асинхронно)
+        // Инициализируем голоса (некоторчие браузеры загружают их асинхронно)
         const loadVoices = () => {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
@@ -215,7 +215,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       'Google русский (Россия)', // Самый качественный если есть
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
       'Google русский',
-      'Pavel (Enhanced)', // Если есть улучшенная ��ерсия
+      'Pavel (Enhanced)', // Если есть улучшенная чиерсия
       'Yuri (Natural)', // Естественный вариант
       'Microsoft Pavel',
       'Pavel',
@@ -314,7 +314,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (keyInfo.usage >= keyInfo.limit) {
         keyInfo.isActive = false
-        console.log(`🚫 ElevenLabs ключ исчерп��л лимит: ${apiKey.substring(0, 8)}...`)
+        console.log(`🚫 ElevenLabs ключ исчерпчил лимит: ${apiKey.substring(0, 8)}...`)
       }
     }
   }
@@ -403,7 +403,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для озвучивания текс��а (теперь с ElevenLabs + fallback)
+  // Функция для озвучивания тексчиа (теперь с ElevenLabs + fallback)
   const speakText = async (text: string) => {
     if (voiceMode !== 'voice') return
 
@@ -464,7 +464,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
           }
 
-          // Настройки для более естественного ��вучания (менелю роботично)
+          // Настройки для более естественного чивучания (менелю роботично)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скорость (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
@@ -563,7 +563,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       // Обычный чат-запрос
       const apiMessages = conversationHistory
-        .filter(msg => !msg.text.includes('Привет! Я ДЖАРВ��С, ваш AI-помощник!'))
+        .filter(msg => !msg.text.includes('Привет! Я ДЖАРВчиС, ваш AI-помощник!'))
         .map(msg => ({
           role: msg.isUser ? 'user' : 'assistant' as const,
           content: msg.text
