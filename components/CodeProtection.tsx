@@ -179,9 +179,23 @@ export default function CodeProtection() {
       document.addEventListener('dragover', disableDrag, true)
       
       // Отключаем выделение
-      document.onselectstart = () => false
-      document.ondragstart = () => false
-      document.ondrop = () => false
+      try {
+        document.onselectstart = () => false
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
+      }
+
+      try {
+        document.ondragstart = () => false
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
+      }
+
+      try {
+        document.ondrop = () => false
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
+      }
       
       // Применяем стили для отключения выделения
       disableTextSelection()
