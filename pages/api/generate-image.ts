@@ -62,9 +62,9 @@ export default async function handler(
     })
 
     if (!response.ok) {
-      const errorData = await response.text()
-      console.error(`❌ OpenAI API Error: ${response.status} - ${errorData}`)
-      
+      const errorText = await response.text()
+      console.error(`❌ OpenAI API Error: ${response.status} - ${errorText}`)
+
       if (response.status === 401) {
         return res.status(401).json({
           success: false,
@@ -77,9 +77,6 @@ export default async function handler(
         })
       } else if (response.status === 400) {
         // Проверяем специфичные ошибки биллинга
-        const errorText = await response.text()
-        console.log('Error response:', errorText)
-
         try {
           const errorData = JSON.parse(errorText)
           if (errorData.error?.code === 'billing_hard_limit_reached') {
@@ -105,10 +102,10 @@ export default async function handler(
           error: 'Некорректный запрос или параметры генерации'
         })
       }
-      
-      return res.status(500).json({ 
-        success: false, 
-        error: `OpenAI API error: ${response.status}` 
+
+      return res.status(500).json({
+        success: false,
+        error: `OpenAI API error: ${response.status}`
       })
     }
 
