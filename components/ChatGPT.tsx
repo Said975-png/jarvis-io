@@ -81,7 +81,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               console.log('⏰ Очищен предыдущий таймер автоотправки')
             }
 
-            // Запускаем таймер автоотправки через 2 секунды после последних слов
+            // Запускаем таймер ��втоотправки через 2 секунды после последних слов
             console.log('⏱️ Запускаем таймер автоотправки (2 сек)')
             const timer = setTimeout(() => {
               console.log('🚀 Время вышло! Автоматическая отправка сообщения')
@@ -169,7 +169,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         // Форсируем загрузку голосов (работает в большинстве браузеров)
         const forceLoadVoices = () => {
-          // Создаем пустое выска��ывание чтобы актлювир��вать голоса
+          // Создаем пустое высказывание чтобы актлювир��вать голоса
           const utterance = new SpeechSynthesisUtterance('')
           window.speechSynthesis.speak(utterance)
           window.speechSynthesis.cancel()
@@ -229,7 +229,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           userMessage,
           botResponse,
           sessionId: sessionId.current,
-          context: messages.slice(-3).map(m => m.text), // Последние 3 сообщения как контекс��
+          context: messages.slice(-3).map(m => m.text), // Последние 3 сообщения как контекст
           tags: extractTags(userMessage + ' ' + botResponse)
         }),
         signal: controller.signal
@@ -262,7 +262,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const commonTags = [
       'веб-разработка', 'дизайн', 'программирование', 'ai', 'технологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
-      'html', 'api', 'база данных', 'сеть', 'безопаснос��ь', 'ui', 'ux'
+      'html', 'api', 'база данных', 'сеть', 'безопасность', 'ui', 'ux'
     ]
 
     const lowerText = text.toLowerCase()
@@ -292,7 +292,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Функция для остановки голосового ввода
   const stopListening = () => {
     if (recognition && isListening) {
-      console.log('⏹️ Остановка голосового ввод��')
+      console.log('⏹️ Остановка голосового ввода')
       recognition.stop()
       setIsListening(false)
 
@@ -499,7 +499,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         if (response.status === 401) {
           console.log('🔑 Неверный ключ ElevenLabs, пробуем следующий...')
         } else if (response.status === 429) {
-          console.log('⏰ Лимит ElevenLabs превышен, пробуем следующий ключ...')
+          console.log('⏰ Лимит ElevenLabs пре��ышен, пробуем следующий ключ...')
         }
 
         return false
@@ -530,7 +530,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     if (!cleanText) return
 
-    console.log('���� === НАЧИНАЕМ ��ЗВУЧИВАНИЕ ===')
+    console.log('���� === НАЧИНАЕМ ОЗВУЧИВАНИЕ ===')
     console.log(`📝 Тек��т: ${cleanText.substring(0, 50)}...`)
 
     // ЭТАП 1: Пробуем ElevenLabs (премиум качество)
@@ -622,7 +622,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Функция для тестирования голоса
   const testVoice = () => {
     console.log('🧪 Тестирование голоса JARVIS...')
-    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего новог�� голоса через ElevenLabs API.'
+    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
     speakText(testPhrase)
   }
 
@@ -747,7 +747,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isGreeting) {
         return [
           'Поль��ователлю поздоровался',
-          'Отвечу дружелюбно и ��редложу помощь'
+          '��твечу дружелюбно и ��редложу помощь'
         ]
       }
 
@@ -933,7 +933,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожаленилю, обралюотка фай��ов пока находится в разработке. Но вы можете описать содер��имое файла текстом, и я п��слюараю��ь помочь! 📝`,
+        text: `✅ Файл "${file.name}" получен! К сожаленилю, обралюотка фай��ов пока находится в разработке. Но вы можете описать содер��имое файла текстом, и я послюараю��ь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
