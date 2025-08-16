@@ -75,7 +75,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('🔄 Промежуточный текст:', interimTranscript)
           }
 
-          // Обрабатываем финальный текст и запускаем автоотправку
+          // Обр��батываем финальный текст и запускаем автоотправку
           if (finalTranscript) {
             console.log('📝 Получен финальный текст:', finalTranscript)
             setInputText(prev => prev + finalTranscript)
@@ -126,7 +126,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           // Игнор��руем ошибки "no-speech" (отсутст��ие речи) - это нормально
           if (event.error === 'no-speech') {
-            console.log('⚠️ Нет речи - ожидаем дальше')
+            console.log('��️ Нет речи - ожидаем дальше')
             return
           }
 
@@ -704,7 +704,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, произошллю ошибка. Попрлюбуйте переформулировать вопролю. ���'
+        return 'Извините, произошла ошибка. Попробуйте переформулировать вопрос. 🤔'
       }
 
       return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить ��то-то дрлюгое! 🤷‍♂️'
@@ -859,7 +859,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const response = await generateJarvisResponse(userMessage, messages)
 
-      // Удаляе�� блок thinking перед показом ответа
+      // Удаляе�� блок thinking перед показ��м ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
       // Небольшая пауза перед показом ответа
