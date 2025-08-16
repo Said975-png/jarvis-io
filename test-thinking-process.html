@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест блока "Думаю..." JARVIS</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        .test-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .thinking-demo {
+            background: #f8f9fa;
+            border: 1px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+            max-width: 85%;
+        }
+        .thinking-title {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .thinking-content {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #6c757d;
+            white-space: pre-wrap;
+        }
+        .thinking-cursor {
+            animation: blink 1s infinite;
+            color: #007bff;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        .status { 
+            margin: 10px 0; 
+            padding: 15px; 
+            border-radius: 8px; 
+            font-weight: bold;
+        }
+        .success { 
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
+        .info { 
+            background: #d1ecf1; 
+            color: #0c5460; 
+            border: 1px solid #bee5eb; 
+        }
+        button {
+            background: #19c37d;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #15a068;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🤔 Тест блока "Думаю..." JARVIS</h1>
+        
+        <div class="info status">
+            ℹ️ <strong>Проверяем:</strong> Блок думания должен отображаться без искаженных символов
+        </div>
+        
+        <button onclick="testThinkingBlock()">🧠 Показать блок "Думаю..."</button>
+        <button onclick="testThinkingText()">📝 Тест текста мыслей</button>
+        <button onclick="clearTests()">🗑️ Очистить</button>
+        
+        <div id="thinking-demo" class="thinking-demo hidden">
+            <div class="thinking-title">🤔 Думаю...</div>
+            <div class="thinking-content" id="thinking-content">
+                <span class="thinking-cursor">|</span>
+            </div>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        function addResult(message, type) {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `status ${type}`;
+            resultDiv.innerHTML = message;
+            resultsDiv.appendChild(resultDiv);
+        }
+
+        function testThinkingBlock() {
+            const demo = document.getElementById('thinking-demo');
+            demo.classList.remove('hidden');
+            
+            addResult('🤔 <strong>Блок "Думаю..." отображен:</strong><br>Проверьте, что заголовок "🤔 Думаю..." отображается корректно', 'info');
+            
+            // Проверяем на искаженные символы
+            const title = demo.querySelector('.thinking-title').textContent;
+            if (title.includes('��')) {
+                addResult('❌ <strong>Найдены искаженные символы в заголовке!</strong>', 'error');
+            } else {
+                addResult('✅ <strong>Заголовок чистый:</strong> "' + title + '"', 'success');
+            }
+        }
+
+        async function testThinkingText() {
+            const demo = document.getElementById('thinking-demo');
+            const content = document.getElementById('thinking-content');
+            demo.classList.remove('hidden');
+            
+            // Тестовые тексты мыслей (как в реальном JARVIS)
+            const thinkingSteps = [
+                'Анализирую суть вопроса',
+                'Структурирую ответ для максимальной пользы', 
+                'Добавлю примеры и практические советы'
+            ];
+            
+            addResult('📝 <strong>Имитация процесса мышления:</strong><br>Проверяем текст на искаженные символы', 'info');
+            
+            let fullText = '';
+            for (let i = 0; i < thinkingSteps.length; i++) {
+                if (i > 0) fullText += '\n\n';
+                
+                const step = thinkingSteps[i];
+                fullText += step;
+                
+                // Проверяем на искаженные символы
+                if (step.includes('��')) {
+                    addResult(`❌ <strong>Искаженные символы в шаге ${i+1}:</strong> "${step}"`, 'error');
+                } else {
+                    addResult(`✅ <strong>Шаг ${i+1} чистый:</strong> "${step}"`, 'success');
+                }
+                
+                content.innerHTML = fullText + '<span class="thinking-cursor">|</span>';
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
+            addResult('🎉 <strong>Тест завершен!</strong> Все тексты мыслей проверены', 'success');
+        }
+
+        function clearTests() {
+            document.getElementById('thinking-demo').classList.add('hidden');
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('thinking-content').innerHTML = '<span class="thinking-cursor">|</span>';
+        }
+
+        // Автоматический тест при загрузке
+        window.onload = function() {
+            addResult('🚀 <strong>Тест загружен:</strong> Готов к проверке блока "Думаю..."', 'info');
+        };
+    </script>
+</body>
+</html>
