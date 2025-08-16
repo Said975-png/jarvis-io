@@ -123,7 +123,7 @@ export default function JarvisChatEnhanced({ isOpen, onClose }: JarvisChatProps)
       console.error('Error calling AI API:', error)
       
       const fallbackResponses = [
-        'Извините, у меня временные проблемы с подключением к AI-серверу. Попробуйте еще раз через несколько секунд.',
+        'Извините, у меня временные проблемы с подключени��м к AI-серверу. Попробуйте еще раз через несколько секунд.',
         'Сейчас испытываю технические трудности, но я ДЖАРВИС и готов помочь! Попробуйте переформулировать вопрос.',
         'Произошла ошибка связи, но не волнуйтесь - я здесь. Напишите мне в Telegram  для прямой связи.',
       ]
@@ -881,6 +881,23 @@ export default function JarvisChatEnhanced({ isOpen, onClose }: JarvisChatProps)
 
           .message {
             max-width: 85%;
+          }
+
+          /* Hide avatar on mobile for more space */
+          .message-avatar {
+            display: none;
+          }
+
+          .message-content {
+            max-width: 95%;
+          }
+
+          .user-message .message-content {
+            margin-left: auto;
+          }
+
+          .ai-message .message-content {
+            margin-right: auto;
           }
         }
 
