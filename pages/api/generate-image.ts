@@ -44,15 +44,17 @@ export default async function handler(
   try {
     console.log(`🎨 Генерация изображения через DeepAI: "${prompt.substring(0, 50)}..."`)
 
-    const formData = new FormData()
-    formData.append('text', prompt)
+    // Используем URLSearchParams для правильной отправки form data
+    const formParams = new URLSearchParams()
+    formParams.append('text', prompt)
 
     const response = await fetch('https://api.deepai.org/api/text2img', {
       method: 'POST',
       headers: {
-        'api-key': deepaiApiKey
+        'api-key': deepaiApiKey,
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: formData
+      body: formParams.toString()
     })
 
     if (!response.ok) {
@@ -78,6 +80,7 @@ export default async function handler(
     }
 
     const data = await response.json()
+    console.log('DeepAI Response:', data)
     
     if (data.output_url) {
       console.log('✅ Изображение успешно сгенерировано через DeepAI')
