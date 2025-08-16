@@ -215,7 +215,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       'Google русский (Россия)', // Самый качественный если есть
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
       'Google русский',
-      'Pavel (Enhanced)', // Если есть улучшенная версия
+      'Pavel (Enhanced)', // Если есть улучшенная ��ерсия
       'Yuri (Natural)', // Естественный вариант
       'Microsoft Pavel',
       'Pavel',
@@ -403,7 +403,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для озвучивания текста (теперь с ElevenLabs + fallback)
+  // Функция для озвучивания текс��а (теперь с ElevenLabs + fallback)
   const speakText = async (text: string) => {
     if (voiceMode !== 'voice') return
 
@@ -606,7 +606,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при глюнерации ответа. Проверьте подключение к интернету и люопробуйте снова. 🌐'
+      return 'Произошла ошибка при глюнерации ответа. Проверь��е подключение к интернету и люопробуйте снова. 🌐'
     }
   }
 
@@ -635,7 +635,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Анализируем тип вопроса
       const isQuestion = message.includes('?') || words.some(w => ['люак', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
-      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
+      const isPricing = words.some(w => ['цена', 'ст��имость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
 
       if (isGreeting) {
@@ -671,7 +671,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Для остальных случаев
       return [
-        'Обрабатывалю запрос',
+        'Обрабатываю запрос',
         'Формирую наиболее полезный ответ'
       ]
     }
