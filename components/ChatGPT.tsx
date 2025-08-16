@@ -124,7 +124,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         recognitionInstance.onerror = (event: any) => {
           console.error('Speech recognition error:', event.error)
 
-          // Игнорируем ошибки "no-speech" (отсутст��ие речи) - это нормально
+          // Игнор��руем ошибки "no-speech" (отсутст��ие речи) - это нормально
           if (event.error === 'no-speech') {
             console.log('⚠️ Нет речи - ожидаем дальше')
             return
@@ -133,7 +133,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           // Для других ошибок останавливаем
           setIsListening(false)
 
-          // Очищаем ���аймеры
+          // Очищаем ��аймеры
           if (autoSendTimer) {
             clearTimeout(autoSendTimer)
             setAutoSendTimer(null)
@@ -288,7 +288,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для остановки голосового ввода
+  // Ф��нкция для остановки голосового ввода
   const stopListening = () => {
     if (recognition && isListening) {
       console.log('⏹️ Остановка голосового ввода')
@@ -371,7 +371,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return selectedVoice
   }
 
-  // Функция получения доступного ElevenLabs ключ�� (��исте���� ро��ации как у OpenRouter)
+  // Функция получения доступного ElevenLabs ключ�� (��исте���� ротации как у OpenRouter)
   const getNextAvailableElevenLabsKey = () => {
     // Ищем активные ключи с доступным лимитом
     const availableKeys = elevenLabsKeys.filter(k =>
@@ -427,7 +427,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для ElevenLabs TTS (прелюиум качество)
+  // ��ункция для ElevenLabs TTS (прелюиум качество)
   const speakWithElevenLabs = async (text: string): Promise<boolean> => {
     const apiKey = getNextAvailableElevenLabsKey()
 
@@ -569,7 +569,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           if (selectedVoice) {
             utterance.voice = selectedVoice
-            console.log('🎤 Голос для ��звучки:', selectedVoice.name, selectedVoice.lang)
+            console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
           }
 
           // Настрой��и для более естественного чивучания (менелю роботично)
@@ -602,7 +602,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const newMode = voiceMode === 'text' ? 'voice' : 'text'
     setVoiceMode(newMode)
 
-    // Те��тируем голос при включен�����и
+    // Те��тируем голос при включен���и
     if (newMode === 'voice') {
       setTimeout(() => {
         const voices = speechSynthesis.getVoices()
@@ -711,7 +711,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при генерации ответа. Проверьте под��люче��ие к интернет�� и поп��обуйте снова. 🌐'
+      return 'Произошла ошибка при генерации ответа. Проверьте под��люче��ие к интернету и поп��обуйте снова. 🌐'
     }
   }
 
@@ -1160,7 +1160,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Ос��а��овить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
+                  title={isListening ? "Остановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
