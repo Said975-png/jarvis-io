@@ -104,7 +104,9 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                 console.log('📤 Отправляем голосовое сообщение:', currentText)
                 handleSendMessage()
               } else {
-                console.log('⚠️ Нет текста для отправки')
+                console.log('⚠️ Нет текста для отправки, очищаем поле')
+                setInputText('')
+                inputTextRef.current = ''
               }
               setIsListening(false)
               recognitionInstance.stop()
@@ -282,7 +284,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return commonTags.filter(tag => lowerText.includes(tag))
   }
 
-  // Функция д��я запуска голосового ввода
+  // Функция для запуска голосового ввода
   const startListening = () => {
     if (recognition && !isListening) {
       console.log('🎙️ ЗАПУСК голосового вво��а с автоотправкой')
@@ -305,7 +307,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Ф��нкция для остановки голосового ��вода
   const stopListening = () => {
     if (recognition && isListening) {
-      console.log('⏹️ Остановка голосового ввода')
+      console.log('⏹�� Остановка голосового ввода')
       recognition.stop()
       setIsListening(false)
 
@@ -338,7 +340,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
       'Google русский',
       'Pavel (Enhanced)', // Если е��ть улучшенная версия
-      'Yuri (Natural)', // Естественный вариант
+      'Yuri (Natural)', // Естественный ��ариант
       'Microsoft Pavel',
       'Pavel',
       'Yuri'
@@ -468,7 +470,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           model_id: 'eleven_multilingual_v2', // Лучше для русского языка
           voice_settings: {
             stability: 0.90, // Максимальная стабильность для четкого русского произношения
-            similarity_boost: 0.85, // Улучшенная похожесть на естественный голос
+            similarity_boost: 0.85, // ��лучшенная похожесть на естественный голос
             style: 0.1, // Небольшая эмоциональность для естественности
             use_speaker_boost: true // Усиление для лучшего качества звука
           }
@@ -721,7 +723,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return 'Извините, произошла ошибка. Попробуйте переформулировать вопрос. 🤔'
       }
 
-      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
+      return data.message || 'Извините, не могу ответить на это�� вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
 
     } catch (error) {
       console.error('Error generating response:', error)
@@ -752,7 +754,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       const words = lowerMessage.split(' ')
 
       // Анализируем тип вопроса
-      const isQuestion = message.includes('?') || words.some(w => ['люак', 'что', 'где', 'когда', '��очему', 'зачем', 'кто'].includes(w))
+      const isQuestion = message.includes('?') || words.some(w => ['люак', 'что', 'где', 'когда', '����очему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
       const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
@@ -873,7 +875,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const response = await generateJarvisResponse(userMessage, messages)
 
-      // Удаляе�� блок thinking перед показ��м ответа
+      // Удаляе�� блок thinking перед показом ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
       // Небольшая пауза перед показом ответа
@@ -1140,7 +1142,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={isListening ? "Говорит��..." : "Напишите сообщение..."}
+              placeholder={isListening ? "Говорите..." : "Напишите сообщение..."}
               className="jarvis-message-input"
               rows={1}
               disabled={isTyping}
