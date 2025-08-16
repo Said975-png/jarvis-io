@@ -149,8 +149,19 @@ export default function CodeProtection() {
       // Отключаем контекстное меню через разные методы
       document.addEventListener('contextmenu', disableRightClick, true)
       document.addEventListener('contextmenu', disableContextMenu, true)
-      document.oncontextmenu = disableRightClick
-      window.oncontextmenu = disableRightClick
+
+      // Безопасное присвоение oncontextmenu
+      try {
+        document.oncontextmenu = disableRightClick
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
+      }
+
+      try {
+        window.oncontextmenu = disableRightClick
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
+      }
       
       // Отключаем клавиатурные сокращения
       document.addEventListener('keydown', disableKeyboardShortcuts, true)
