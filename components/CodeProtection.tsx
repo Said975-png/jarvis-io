@@ -124,8 +124,12 @@ export default function CodeProtection() {
 
     // Отключаем функции печати
     const disablePrint = () => {
-      window.print = () => {
-        return false
+      try {
+        window.print = () => {
+          return false
+        }
+      } catch (e) {
+        // Игнорируем ошибку если свойство read-only
       }
     }
 
@@ -200,7 +204,7 @@ export default function CodeProtection() {
       // Применяем стили для отключения выделения
       disableTextSelection()
       
-      // Отключаем печать
+      // Отклю��аем печать
       disablePrint()
       
       // Запускаем детекцию DevTools
