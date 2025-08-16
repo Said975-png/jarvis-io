@@ -75,7 +75,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('🔄 Промежуточный текст:', interimTranscript)
           }
 
-          // Обрабатываем фин��льный текст и запускаем автоотправку
+          // Обрабатываем финальный текст и запускаем автоотправку
           if (finalTranscript) {
             console.log('📝 Получен финальный текст:', finalTranscript)
             setInputText(prev => prev + finalTranscript)
@@ -260,7 +260,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const extractTags = (text: string): string[] => {
     const commonTags = [
       'веб-разработка', 'дизай��', 'программирование', 'ai', 'технологии',
-      'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
+      'фронтенд', 'бэк��нд', 'react', 'javascript', 'typescript', 'css',
       'html', 'api', 'база данных', 'сеть', 'безопасность', 'ui', 'ux'
     ]
 
@@ -364,7 +364,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     if (!selectedVoice) {
       selectedVoice = russianVoices.find(v => v.localService) || russianVoices[0]
       if (selectedVoice) {
-        console.log('⚠️ Используем резервный ��олос:', selectedVoice.name)
+        console.log('⚠️ Ис��ользуем резервный ��олос:', selectedVoice.name)
       }
     }
 
@@ -498,7 +498,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         if (response.status === 401) {
           console.log('🔑 Н��верный ключ ElevenLabs, пробуем следующий...')
         } else if (response.status === 429) {
-          console.log('⏰ Л��мит ElevenLabs превышен, пробуем следующий ключ...')
+          console.log('⏰ Лимит ElevenLabs превышен, пробуем следующий ключ...')
         }
 
         return false
@@ -711,7 +711,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при генерации ответа. Проверьте под��люче��ие к интернету и поп��обуйте снова. 🌐'
+      return 'Произошла ошибка при генерации ответа. Проверьте подключение к интернету и попробуйте снова. 🌐'
     }
   }
 
@@ -739,7 +739,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Анализируем тип вопроса
       const isQuestion = message.includes('?') || words.some(w => ['люак', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
-      const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
+      const isTechnical = words.some(w => ['код', 'прог��амм', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
       const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'опл��та'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
 
@@ -859,7 +859,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const response = await generateJarvisResponse(userMessage, messages)
 
-      // Удаляе�� блок thinking перед показом ответа
+      // Удаляе�� блок thinking перед показом от��ета
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
       // Небольшая пауза перед показом ответа
@@ -876,7 +876,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Озвучиваем ответ бота если включен голосовой режим
       if (voiceMode === 'voice') {
-        setTimeout(() => speakText(response), 500) // Небольша�� задержка для плавности
+        setTimeout(() => speakText(response), 500) // Небольшая задержка для плавности
       }
 
       // Сохраняем взаимодействие для обучения
