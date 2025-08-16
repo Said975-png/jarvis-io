@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! ����\n\nПомогу выбрать услуги, расскажу о тарифа�� и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! ����\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }
@@ -146,7 +146,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         recognitionInstance.onend = () => {
-          console.log('🛑 Распознавание оста��овлено')
+          console.log('🛑 Распознавание остановлено')
           setIsListening(false)
 
           // Очищаем таймеры при завершении
@@ -313,7 +313,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const voices = speechSynthesis.getVoices()
     let selectedVoice = null
 
-    console.log('🔍 Поиск ��олосов. Всего доступно:', voices.length)
+    console.log('🔍 Поиск голосов. Всего доступно:', voices.length)
 
     // Логируем все русские голоса для отладки
     const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
@@ -336,7 +336,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         v.name.toLowerCase().includes(premiumVoice.toLowerCase())
       )
       if (selectedVoice) {
-        console.log('✅ Найден ка��ественный голос:', selectedVoice.name)
+        console.log('✅ Найден качественный голос:', selectedVoice.name)
         break
       }
     }
@@ -380,7 +380,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     )
 
     if (availableKeys.length > 0) {
-      console.log(`🔑 Доступн�� ElevenLabs ключей: ${availableKeys.length}`)
+      console.log(`🔑 Доступно ElevenLabs ключей: ${availableKeys.length}`)
       return availableKeys[0].key
     }
 
@@ -414,7 +414,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Увеличить счетчик использова��ия ключа
+  // Увеличить счетчик использования ключа
   const updateElevenLabsUsage = (apiKey: string, charactersUsed: number) => {
     const keyInfo = elevenLabsKeys.find(k => k.key === apiKey)
     if (keyInfo) {
@@ -576,7 +576,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           // Настрой��и для более естественного чивучания (менелю роботично)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скоро��ть (не замедленная)
-          utterance.pitch = 0.95 // Бл��зко к естественному (не слишком низко)
+          utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
           utterance.volume = 0.8 // Комфортная громкость
 
           // Добавляем обрлюботчики событий
@@ -603,7 +603,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const newMode = voiceMode === 'text' ? 'voice' : 'text'
     setVoiceMode(newMode)
 
-    // Те��тируем голос при включен��и
+    // Т����тируем голос при включен��и
     if (newMode === 'voice') {
       setTimeout(() => {
         const voices = speechSynthesis.getVoices()
@@ -733,7 +733,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   }
 
   const showThinkingProcess = async (userMessage: string) => {
-    // Более умная генер��ция мыслей на основе анализа вопрос��
+    // Более умная генерация мыслей на основе анализа вопрос��
     const generateThinking = (message: string) => {
       const lowerMessage = message.toLowerCase()
       const words = lowerMessage.split(' ')
@@ -741,7 +741,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Анализируем тип вопроса
       const isQuestion = message.includes('?') || words.some(w => ['люак', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
-      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'опл��та'].includes(w))
+      const isPricing = words.some(w => ['цена', 'ст��имость', 'тариф', 'план', 'подписка', 'опл��та'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
 
       if (isGreeting) {
@@ -778,7 +778,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Для остальных случаев
       return [
         'Обрабатываю запрос',
-        'Формирую наиболее полезный ответ'
+        'Формирую наиболее полезн��й ответ'
       ]
     }
 
