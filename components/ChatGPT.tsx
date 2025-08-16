@@ -26,7 +26,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
   // Голосовые функции
   const [isListening, setIsListening] = useState(false)
-  const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('text') // 'text' = только текст, 'voice' = текст + голос
+  const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('text') // 'text' = тол��ко текст, 'voice' = текст + голос
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
 
@@ -116,7 +116,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }, [])
 
-  // Функция для сохралюения взаимодействия в базе знаний
+  // Функция для сохралюения ��заимодействия в базе знаний
   const saveInteractionToLearning = async (userMessage: string, botResponse: string, userMessageId: string) => {
     try {
       console.log('=== SAVING INTERACTION TO LEARNING ===')
@@ -313,7 +313,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для ElevenLabs TTS (прелюиум качество)
+  // Функция для ElevenLabs TTS (прелюиум кач��ство)
   const speakWithElevenLabs = async (text: string): Promise<boolean> => {
     const apiKey = getNextAvailableElevenLabsKey()
 
@@ -325,8 +325,8 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
 
-      // Используем качественный мужской голос ElevenLabs
-      const voiceId = 'pNInz6obpgDQGcFmaJgB' // Adam (мужской голос)
+      // Используем качественный русский мужской голос без акцента
+      const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента)
 
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
         method: 'POST',
@@ -522,7 +522,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Функция для тестирования голоса
   const testVoice = () => {
     console.log('🧪 Тестирование голоса JARVIS...')
-    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
+    const testPhrase = 'Привет! Я ДЖАРВИС. Э��о тест моего нового голоса через ElevenLabs API.'
     speakText(testPhrase)
   }
 
@@ -659,7 +659,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Анализирую суть вопроса',
           'Структурирую ответ для максимальной пользы',
-          'Добавлю плюимеры и практические советы'
+          'Доб��влю плюимеры и практические советы'
         ]
       }
 
