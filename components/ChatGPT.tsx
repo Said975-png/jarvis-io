@@ -70,21 +70,15 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             }
           }
 
-          // Обновляем текст в поле ввода
+          // Показываем промежуточные результаты для лучшего UX (в реальном времени)
+          if (interimTranscript) {
+            console.log('🔄 Промежуточный текст:', interimTranscript)
+          }
+
+          // Обрабатываем финальный текст и запускаем автоотправку
           if (finalTranscript) {
             console.log('📝 Получен финальный текст:', finalTranscript)
             setInputText(prev => prev + finalTranscript)
-          }
-
-          // Показываем промежуточные результаты для лучшего UX
-          if (interimTranscript) {
-            console.log('🔄 Промежуточный текст:', interimTranscript)
-            // Обновляем поле ввода с промежуточным текстом
-            const baseText = textareaRef.current?.value || ''
-            setInputText(baseText + interimTranscript)
-          }
-
-          if (finalTranscript) {
 
             // Очищаем существующий таймер
             if (autoSendTimer) {
@@ -136,7 +130,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         recognitionInstance.onerror = (event: any) => {
           console.error('Speech recognition error:', event.error)
 
-          // Игнорируем ошибки "no-speech" (отсутствие речи) - это нормально
+          // Игнорируем ошибки "no-speech" (отсутст��ие речи) - это нормально
           if (event.error === 'no-speech') {
             console.log('⚠️ Нет речи - ожидаем дальше')
             return
@@ -271,7 +265,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Извлечение тегов из текста
   const extractTags = (text: string): string[] => {
     const commonTags = [
-      'веб-разработка', 'дизайн', 'программирование', 'ai', 'технологии',
+      'веб-разработка', 'дизай��', 'программирование', 'ai', 'технологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
       'html', 'api', 'база данных', 'сеть', 'безопасность', 'ui', 'ux'
     ]
@@ -335,7 +329,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       'Google русский (Россия)', // Самый качественный если есть
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
       'Google русский',
-      'Pavel (Enhanced)', // Если есть улучшенная версия
+      'Pavel (Enhanced)', // Если е��ть улучшенная версия
       'Yuri (Natural)', // Естественный вариант
       'Microsoft Pavel',
       'Pavel',
@@ -508,7 +502,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         markElevenLabsKeyAsProblematic(apiKey, errorMessage)
 
         if (response.status === 401) {
-          console.log('🔑 Неверный ключ ElevenLabs, пробуем следующий...')
+          console.log('🔑 Н��верный ключ ElevenLabs, пробуем следующий...')
         } else if (response.status === 429) {
           console.log('⏰ Лимит ElevenLabs превышен, пробуем следующий ключ...')
         }
@@ -570,7 +564,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         const cleanText = text
           .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
           .replace(/[��ю·]/g, '')
-          .replace(/\n+/g, '. ') // Заменяем переносы на пауз��
+          .replace(/\n+/g, '. ') // Заменяем переносы на пауз����
           .trim()
 
         if (cleanText) {
@@ -782,7 +776,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Анализирую суть вопроса',
           'Ст��уктур��рую ответ для максимальной пользы',
-          'Добавлю плюимеры и практические советы'
+          'Доб��влю плюимеры и практические советы'
         ]
       }
 
