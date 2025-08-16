@@ -88,7 +88,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
           console.log('🎤 Русские голоса загружены:', russianVoices.length)
-          russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
+          russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Ло��альный]' : '[Онлайн]'}`))
         }
 
         // Попытка 1: загрузка сразу
@@ -606,7 +606,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   }
 
   const showThinkingProcess = async (userMessage: string) => {
-    // Более умная генерация мыслей на основе анализа вопрос��
+    // Более умная ге��ерация мыслей на основе анализа вопрос��
     const generateThinking = (message: string) => {
       const lowerMessage = message.toLowerCase()
       const words = lowerMessage.split(' ')
@@ -628,7 +628,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Запрос о ценах и тарифах',
           'Проанализирую потребности пользователя',
-          'Подберлю оптимальный тарифный п��ан'
+          'Подберлю оп��имальный тарифный п��ан'
         ]
       }
 
@@ -1191,7 +1191,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .dark-theme .voice-mode-btn,
         .dark-theme .test-voice-btn,
-        .dark-theme .setup-elevenlabs-btn,
         .dark-theme .clear-chat-btn,
         .dark-theme .close-btn {
           color: #cccccc;
@@ -1561,7 +1560,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           background: #555555;
         }
 
-        /* Стили для сообщений мыш��ения */
+        /* Стили для сообщений мы����ения */
         .thinking-message {
           opacity: 0.8;
         }
