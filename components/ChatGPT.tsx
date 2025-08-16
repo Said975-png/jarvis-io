@@ -35,7 +35,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // ElevenLabs ключии (8 ключей с разных аккаунтов для ротации)
   const [elevenLabsKeys] = useState([
     { key: 'sk_1df0aad8b96f47707c32565c8a91421e994da2f1858563f1', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
-    { key: 'sk_5db328d5ec7cec7e73430d76b064cfb0c883cbc757497b22', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Клю�� 2
+    { key: 'sk_5db328d5ec7cec7e73430d76b064cfb0c883cbc757497b22', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
     { key: 'sk_069e38bd4f02f37b61dce186ba7147400b62b49ba5ce2a6b', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 3
     { key: 'sk_461e30f29ff6c05c74b34778cb0933a05b641f27bf766ab0', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 4
   ])
@@ -89,7 +89,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             // Запускаем таймер автоотправки через 2 секунды после последних слов
             console.log('⏱️ Запускаем таймер автоотправки (2 сек)')
             const timer = setTimeout(() => {
-              console.log('🚀 Время вышло! Автоматическая отправка сообщения')
+              console.log('🚀 Время вышло! Автоматическа�� отправка сообщения')
               // Вызываем handleSendMessage только если есть текст (проверка внутри функции)
               handleSendMessage()
               setIsListening(false)
@@ -148,7 +148,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           console.log('🛑 Распознавание остановлено')
           setIsListening(false)
 
-          // Очищаем таймеры при завер��ении
+          // Очищаем таймеры при завершении
           if (autoSendTimer) {
             clearTimeout(autoSendTimer)
             setAutoSendTimer(null)
@@ -251,7 +251,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     } catch (error) {
       console.error('Error saving interaction for learning:', error)
-      // Не блокируем пользовательский интерфейс при ошибках сохранения
+      // Не блокируем пользовательский интерфейс при ош��бках сохранения
       // Это не критично для работы чата
     }
   }
@@ -481,7 +481,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         // Обновляем счетчик испо��ьзования
         updateElevenLabsUsage(apiKey, text.length)
 
-        console.log('🎵 ElevenLabs TTS успешно воспрои��веден')
+        console.log('🎵 ElevenLabs TTS успешно воспроизведен')
         return true
 
       } else {
@@ -611,7 +611,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         if (russianVoices.length === 0) {
           speakText('Внимание! Русские голос�� не найдены. Качество речи может быть низким.')
         } else {
-          speakText('Голосовой режим вк��ючен. Если голос звучит роботично, это ограничение браузера.')
+          speakText('Голосовой режим включен. Если голос звучит роботично, это ограничение браузера.')
         }
       }, 300)
     }
@@ -876,7 +876,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Озвучиваем ответ бота если включен голосовой режим
       if (voiceMode === 'voice') {
-        setTimeout(() => speakText(response), 500) // Небольшая задержка для п��авности
+        setTimeout(() => speakText(response), 500) // Небольшая задержка для плавности
       }
 
       // Сохраняем взаимодействие для обучения
@@ -920,7 +920,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     setIsUploadingFile(true)
 
     try {
-      // Просто ��обавляем со��бщение о загруженном файле
+      // Просто ��обавляем сообщение о загруженном файле
       const fileMessage: Message = {
         id: Date.now().toString(),
         text: `📎 Файл загружен: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`,
@@ -961,7 +961,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const clearChat = () => {
     setMessages([{
       id: '1',
-      text: 'Привет! Я ДЖАРВ��С - консулюьтант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }])
@@ -1117,7 +1117,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         <div className="jarvis-chat-input">
           {isListening && (
             <div className="auto-send-indicator">
-              🎤 Слушаю... Сообщение отправится автоматически через 2 сек после окончания речи
+              🎤 Слушаю... Сообщение отправится автоматически чере�� 2 сек после окончания речи
             </div>
           )}
           <div className="input-container">
@@ -1144,7 +1144,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                 className={`jarvis-attachment-btn ${isUploadingFile ? 'uploading' : ''}`}
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploadingFile}
-                title="Прикреп��ть файл"
+                title="Прикрепить файл"
               >
                 {isUploadingFile ? (
                   <div className="loading-spinner"></div>
