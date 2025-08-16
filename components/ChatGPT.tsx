@@ -81,7 +81,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               console.log('⏰ Очищен предыдущий таймер автоотправки')
             }
 
-            // Запускаем таймер ��втоотправки через 2 секунды после последних слов
+            // Запу��каем таймер автоотправки через 2 секунды после последних слов
             console.log('⏱️ Запускаем таймер автоотправки (2 сек)')
             const timer = setTimeout(() => {
               console.log('🚀 Время вышло! Автоматическая отправка сообщения')
@@ -308,7 +308,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для получения лучшег�� мужского гололю��
+  // Функция для получения лучшего мужского голоса
   const getBestMaleVoice = () => {
     const voices = speechSynthesis.getVoices()
     let selectedVoice = null
@@ -365,7 +365,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     if (!selectedVoice) {
       selectedVoice = russianVoices.find(v => v.localService) || russianVoices[0]
       if (selectedVoice) {
-        console.log('⚠️ Используем резервный голос:', selectedVoice.name)
+        console.log('⚠️ Используем резервный ��олос:', selectedVoice.name)
       }
     }
 
@@ -499,7 +499,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         if (response.status === 401) {
           console.log('🔑 Неверный ключ ElevenLabs, пробуем следующий...')
         } else if (response.status === 429) {
-          console.log('⏰ Лимит ElevenLabs пре��ышен, пробуем следующий ключ...')
+          console.log('⏰ Лимит ElevenLabs превышен, пробуем следующий ключ...')
         }
 
         return false
@@ -747,7 +747,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isGreeting) {
         return [
           'Поль��ователлю поздоровался',
-          '��твечу дружелюбно и ��редложу помощь'
+          'Отвечу дружелюбно и ��редложу помощь'
         ]
       }
 
