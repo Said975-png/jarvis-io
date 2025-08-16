@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! �� ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тари��ах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тари��ах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }
@@ -33,7 +33,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [silenceTimer, setSilenceTimer] = useState<NodeJS.Timeout | null>(null)
   const inputTextRef = useRef('')
 
-  // ElevenLabs ключи (4 ключа с разных аккаунтов для ротации - ОБНОВЛЕНЫ С ВАШИМИ КЛЮЧАМИ)
+  // ElevenLabs ключи (4 кл��ча с разных аккаунтов для ротации - ОБНОВЛЕНЫ С ВАШИМИ КЛЮЧАМИ)
   const [elevenLabsKeys] = useState([
     { key: 'sk_1df0aad8b96f47707c32565c8a91421e994da2f1858563f1', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
     { key: 'sk_5db328d5ec7cec7e73430d76b064cfb0c883cbc757497b22', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
@@ -132,7 +132,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           console.log('🔇 Конец речи, ��апускаем таймер тишины (3 сек)')
           // Запускаем таймер тишины
           const timer = setTimeout(() => {
-            console.log('😴 Длительная тишин�� обнаружена, останавливаем распознавание')
+            console.log('😴 Длительная тишина обнаружена, останавливаем распознавание')
             setIsListening(false)
             recognitionInstance.stop()
           }, 3000) // 3 секунды тишины
@@ -196,7 +196,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         const loadVoices = () => {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
-          console.log('🎤 Русские голо���� загружены:', russianVoices.length)
+          console.log('🎤 Русские голо������ загружены:', russianVoices.length)
           russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
         }
 
@@ -333,7 +333,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     console.log('🔍 Поиск голосов. Всего доступно:', voices.length)
 
-    // Логируем все русские голоса для отла��ки
+    // Логируем все русские голоса для отла���ки
     const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
     console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
 
@@ -481,7 +481,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             stability: 0.95, // Максимальная стабильность для четкого русского произношения
             similarity_boost: 0.90, // Улучшенная похожесть на естественный голос
             style: 0.05, // Минимальная эмоциональность для четкого произношения русского
-            use_speaker_boost: true // Усиление для лучшего к��чества звука
+            use_speaker_boost: true // Усиление для лучшего качества звука
           }
         }),
         signal: controller.signal // Добавляем abort signal
@@ -697,14 +697,14 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         if (russianVoices.length === 0) {
           speakText('Внимание! Русски�� голос�� не найдены. Качество речи может быть низким.')
         } else {
-          speakText('Гол��совой режим включе��. Если голос звучит роботично, это огран��чение браузера.')
+          speakText('Голосовой режим включе��. Если голос звучит роботично, это огран��чение браузера.')
         }
       }, 300)
     }
   }
 
 
-  // Функция ����ля тестирования гол��са
+  // Функция ������ля тестирования гол��са
   const testVoice = () => {
     console.log('🧪 Тестиров��ние голоса JARVIS...')
     const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
@@ -818,7 +818,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   }
 
   const showThinkingProcess = async (userMessage: string) => {
-    // Более умная генерация мыслей на основе анализа вопрос��
+    // Более умная генерация мысл��й на основе анализа вопроса
     const generateThinking = (message: string) => {
       const lowerMessage = message.toLowerCase()
       const words = lowerMessage.split(' ')
@@ -840,7 +840,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Запрос о ценах и тарифах',
           'Проанализирую потребности пользователя',
-          'Подберу оптимальный тарифный план'
+          'Подберу оптимальный тарифны�� план'
         ]
       }
 
@@ -917,7 +917,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const handleVoiceAutoSend = async (textToSend: string) => {
     if (!textToSend.trim() || isTyping) return
 
-    // ��чищаем все голосовые таймеры п��и отправке сообщения
+    // ��чищаем все голосовые таймеры п��и отправк�� сообщения
     if (autoSendTimer) {
       clearTimeout(autoSendTimer)
       setAutoSendTimer(null)
@@ -960,7 +960,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // 🚀 ЗАПУСКАЕМ ГОЛОС СРАЗУ, БЕЗ ЗАДЕ��ЖЕК!
       if (voiceMode === 'voice') {
         console.log('🎤 🚀 МГНО��ЕННЫЙ запуск озвучивания (handleVoiceAutoSend):', response.substring(0, 50) + '...')
-        // З��пускаем ��звучивание параллельно, не блокируя UI
+        // Запускаем ��звучивание параллельно, не блокируя UI
         speakText(response).catch(error => {
           console.error('Ошиб��а озвучивания:', error)
         })
@@ -1229,7 +1229,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                     <div>
                       <div className="thinking-title">🤔 Думаю...</div>
                       <div className="thinking-content">
-                        {message.text.replace('Thinking...\n\n', '')}
+                        {message.text.replace('Thinking...\n\n', '').replace(/[�]/g, '')}
                         <span className="thinking-cursor">|</span>
                       </div>
                     </div>
