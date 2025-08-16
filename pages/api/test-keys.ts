@@ -33,7 +33,7 @@ export default async function handler(
           'X-Title': 'JARVIS AI Web Test'
         },
         body: JSON.stringify({
-          model: 'meta-llama/llama-3.1-8b-instruct:free',
+          model: 'deepseek/deepseek-r1:free',
           messages: [{ role: 'user', content: 'Привет! Ты работаешь?' }],
           max_tokens: 50
         })
