@@ -76,7 +76,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             }
           }
 
-          // Показываем промежуточные результаты для лучшего UX (в реальном в��емени)
+          // Показываем промежуточные результаты для лучшего UX (в реальном времени)
           if (interimTranscript) {
             console.log('🔄 Промежуточный текст:', interimTranscript)
             // Обновляем поле ввода только промежуточным текстом (заменяем, не добавляем)
@@ -104,7 +104,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               const currentText = inputTextRef.current?.trim()
               if (currentText && currentText.length > 0) {
                 console.log('📤 Отправляем голосовое сообщение:', currentText)
-                handleSendMessage()
+                handleVoiceAutoSend(currentText)
               } else {
                 console.log('⚠️ Нет текста для отправки, очищаем поле')
                 setInputText('')
@@ -225,7 +225,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }, [])
 
-  // ��ункция для сохранения взаимодействия в базе знаний
+  // Функция для сохранения взаимодействия в базе знаний
   const saveInteractionToLearning = async (userMessage: string, botResponse: string, userMessageId: string) => {
     try {
       console.log('=== SAVING INTERACTION TO LEARNING ===')
@@ -257,7 +257,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (response.ok) {
         const data = await response.json()
         if (data.success) {
-          // Сохраняем ID взлюимодействия для с��язи с сообщениелю
+          // Сохраняем ID взлюимодействия для связи с сообщениелю
           setInteractionIds(prev => ({
             ...prev,
             [userMessageId]: data.data.interactionId
@@ -342,7 +342,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       'Google русский (Россия)', // Самый качеств��нный если есть
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
       'Google русский',
-      'Pavel (Enhanced)', // Если е��ть улучшенная версия
+      'Pavel (Enhanced)', // Если е����ь улучшенная версия
       'Yuri (Natural)', // Естественный ��ариант
       'Microsoft Pavel',
       'Pavel',
@@ -456,7 +456,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
 
     try {
-      console.log(`🎤 Исп��льзуем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
+      console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
 
       // Используем качественный русский мужской голос без акцента (лучший для русского языка)
       const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента, оптимизирован для русского)
@@ -475,7 +475,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             stability: 0.90, // Максимальная стабильность для четкого русского произношения
             similarity_boost: 0.85, // ��лучше��ная похожесть на естественный голос
             style: 0.1, // Небольшая эмоциональность для естественности
-            use_speaker_boost: true // Усиление для лучшего качества ��вука
+            use_speaker_boost: true // Усиление для лучшего качества звука
           }
         })
       })
@@ -515,7 +515,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         markElevenLabsKeyAsProblematic(apiKey, errorMessage)
 
         if (response.status === 401) {
-          console.log('🔑 Н���верный ключ ElevenLabs, пробуем след��ющий...')
+          console.log('🔑 Н���верный ключ ElevenLabs, пробуем следующий...')
         } else if (response.status === 429) {
           console.log('⏰ Лимит ElevenLabs превышен, пробуем следующий ключ...')
         }
@@ -723,7 +723,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, произошла ошибка. Попробуйте переформулировать вопрос. 🤔'
+        return 'Извините, произошла ошибка. Попробуйте переформулировать вопрос. ����'
       }
 
       return data.message || 'Извините, не могу ответить на это�� вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
@@ -781,7 +781,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Технический вопрос - анализирую детали',
           'Подготовлю практические решения',
-          'Учту лучшие практики разработки'
+          '��чту лучшие практики разработки'
         ]
       }
 
@@ -944,7 +944,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const response = await generateJarvisResponse(userMessage, messages)
 
-      // Удаляе�� блок thinking перед показом ответа
+      // Уда��яе�� блок thinking перед показом ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
       // Небольшая пауза перед показом ответа
