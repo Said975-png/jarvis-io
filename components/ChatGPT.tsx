@@ -24,7 +24,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [isUploadingFile, setIsUploadingFile] = useState(false)
   const [interactionIds, setInteractionIds] = useState<{[messageId: string]: string}>({})
 
-  // Голосов��е функции
+  // Голосовые функции
   const [isListening, setIsListening] = useState(false)
   const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('voice') // 'text' = только текст, 'voice' = текст + голос
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
@@ -79,7 +79,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           // Показываем промежуточные результаты для лучшего UX (в реальном времени)
           if (interimTranscript) {
             console.log('🔄 Промежуточный текст:', interimTranscript)
-            // Обновляем поле ввода только промежуточным текстом (заменяем, не добавляем)
+            // Обновляем поле ввода только промежуточным текстом (заменяем, ��е добавляем)
             setInputText(interimTranscript)
           }
 
@@ -93,7 +93,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             // Очищаем существующий таймер
             if (autoSendTimer) {
               clearTimeout(autoSendTimer)
-              console.log('⏰ Очищен предыдущий т��ймер автоотправки')
+              console.log('⏰ Очищен предыдущий таймер автоотправки')
             }
 
             // Запускаем таймер автоотправки через 2 секунды после последних слов
@@ -186,7 +186,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         // Форсируем загрузку голос��в (работае�� в большинс��ве браузеров)
         const forceLoadVoices = () => {
-          // Создаем пуст��е высказывани�� чтобы актлювир��ват�� голоса
+          // Создаем пуст��е высказывание чтобы актлювир��ват�� голоса
           const utterance = new SpeechSynthesisUtterance('')
           window.speechSynthesis.speak(utterance)
           window.speechSynthesis.cancel()
@@ -246,7 +246,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           userMessage,
           botResponse,
           sessionId: sessionId.current,
-          context: messages.slice(-3).map(m => m.text), // Последние 3 сообщен��я как контекст
+          context: messages.slice(-3).map(m => m.text), // Последние 3 сообщения как контекст
           tags: extractTags(userMessage + ' ' + botResponse)
         }),
         signal: controller.signal
@@ -314,7 +314,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       recognition.stop()
       setIsListening(false)
 
-      // Очища��м все таймеры
+      // Очищаем все таймеры
       if (autoSendTimer) {
         clearTimeout(autoSendTimer)
         setAutoSendTimer(null)
@@ -333,7 +333,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     console.log('🔍 Поиск голосов. Всего доступно:', voices.length)
 
-    // Логируем все русские голоса для отла��ки
+    // Логируем все русские ��олоса для отла��ки
     const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
     console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
 
@@ -446,7 +446,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // ���ункция для ElevenLabs TTS (пре��юиум качество)
+  // ��ункция для ElevenLabs TTS (пре��юиум качество)
   const speakWithElevenLabs = async (text: string): Promise<boolean> => {
     const apiKey = getNextAvailableElevenLabsKey()
 
@@ -683,7 +683,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Переключение ре��има люолоса
+  // Переключение режима люолоса
   const toggleVoiceMode = () => {
     const newMode = voiceMode === 'text' ? 'voice' : 'text'
     setVoiceMode(newMode)
@@ -783,7 +783,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         
         const errorText = await response.text()
         console.error('Chat API error:', errorText)
-        return 'Извините, произошла ошибк�� пр�� обработк�� запроса. Попробуйте позже. 😔'
+        return 'Извините, произошла ошибк�� пр�� обработк��� запроса. Попробуйте позже. 😔'
       }
 
       const data = await response.json()
@@ -826,7 +826,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Анализируем тип вопроса
       const isQuestion = message.includes('?') || words.some(w => ['как', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
-      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'под��иска', 'оплата'].includes(w))
+      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
 
       if (isGreeting) {
@@ -839,7 +839,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isPricing) {
         return [
           'Запрос о ценах и тарифах',
-          'Проанализирую потребности пользователя',
+          'Проанализирую потребности по��ьзователя',
           'Подберу оптимальный тарифный план'
         ]
       }
@@ -1360,7 +1360,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Остановить запись (сообщение отправится автоматически ч��рез 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
+                  title={isListening ? "Остановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
