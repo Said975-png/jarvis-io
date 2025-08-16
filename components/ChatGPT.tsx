@@ -166,7 +166,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           console.log('🛑 Распознавание остановлено')
           setIsListening(false)
 
-          // Очищаем таймеры при завершении
+          // Очищаем ��аймеры при завершении
           if (autoSendTimer) {
             clearTimeout(autoSendTimer)
             setAutoSendTimer(null)
@@ -196,7 +196,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         const loadVoices = () => {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
-          console.log('🎤 Русские голоса загружены:', russianVoices.length)
+          console.log('🎤 Русские голо��а загружены:', russianVoices.length)
           russianVoices.forEach(v => console.log(`  - ${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
         }
 
@@ -333,7 +333,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     console.log('🔍 Поиск голосов. Всего доступно:', voices.length)
 
-    // Логируем все русские голоса для отладки
+    // Логируем все русские голоса для отла��ки
     const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
     console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
 
@@ -481,7 +481,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             stability: 0.90, // Максимальная стабильность для четкого русского произношения
             similarity_boost: 0.85, // ��лучше��ная похожесть на естественный голос
             style: 0.1, // Неб��льшая эмоциональность для естественности
-            use_speaker_boost: true // Усиление для лучшего качества звука
+            use_speaker_boost: true // Усиление для лучш��го качества звука
           }
         }),
         signal: controller.signal // Добавляем abort signal
@@ -801,7 +801,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Эффект печатания д��я thinking
+  // Эффект печатания для thinking
   const typeText = async (text: string, speed: number = 30) => {
     return new Promise<void>((resolve) => {
       let i = 0
@@ -884,7 +884,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     setCurrentThinkingText('')
     await new Promise(resolve => setTimeout(resolve, 200))
 
-    // Печатаем каждую мысль с эффектом печатания
+    // Пе��атаем каждую мысль с эффектом печатания
     let fullThought = ''
     for (let i = 0; i < thinkingSteps.length; i++) {
       if (i > 0) {
@@ -960,7 +960,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // 🚀 ЗАПУСКАЕМ ГОЛОС СРАЗУ, БЕЗ ЗАДЕРЖЕК!
       if (voiceMode === 'voice') {
         console.log('🎤 🚀 МГНО��ЕННЫЙ запуск озвучивания (handleVoiceAutoSend):', response.substring(0, 50) + '...')
-        // Запускаем озвучивание параллельно, не блокируя UI
+        // Запускаем ��звучивание параллельно, не блокируя UI
         speakText(response).catch(error => {
           console.error('Ошиб��а озвучивания:', error)
         })
@@ -1150,7 +1150,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             </div>
             <div className="header-text">
               <h3>ДЖАРВИС</h3>
-              <span className="status">AI Помощник Онлайн</span>
+              <span className="status">AI Помощни�� Онлайн</span>
             </div>
           </div>
           <div className="header-actions">
