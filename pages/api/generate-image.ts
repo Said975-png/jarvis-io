@@ -77,8 +77,11 @@ export default async function handler(
         })
       } else if (response.status === 400) {
         // Проверяем специфичные ошибки биллинга
+        const errorText = await response.text()
+        console.log('Error response:', errorText)
+
         try {
-          const errorData = await response.json()
+          const errorData = JSON.parse(errorText)
           if (errorData.error?.code === 'billing_hard_limit_reached') {
             return res.status(400).json({
               success: false,
@@ -86,7 +89,15 @@ export default async function handler(
             })
           }
         } catch (e) {
-          // Игнорируем ошибки парсинга JSON
+          console.log('Failed to parse error JSON:', e)
+        }
+
+        // Проверяем текстом тоже
+        if (errorText.includes('billing_hard_limit_reached') || errorText.includes('hard limit')) {
+          return res.status(400).json({
+            success: false,
+            error: 'Лимит генерации изображений исчерпан'
+          })
         }
 
         return res.status(400).json({
