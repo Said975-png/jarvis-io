@@ -468,6 +468,44 @@
   max-width: 300px;
 }
 
+/* Generated Images Styles */
+.generated-image-container {
+  margin: 12px 0;
+  text-align: center;
+}
+
+.generated-image {
+  max-width: 100% !important;
+  max-height: 400px !important;
+  height: auto;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border: 2px solid rgba(102, 126, 234, 0.2);
+}
+
+.generated-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(102, 126, 234, 0.4);
+}
+
+.generated-image:active {
+  transform: scale(0.98);
+}
+
+/* Dark theme support for generated images */
+.dark-theme .generated-image {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark-theme .generated-image:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
 /* User Image Preview in Chat */
 .user-image-preview {
   position: relative;

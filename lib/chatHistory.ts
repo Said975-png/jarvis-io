@@ -5,6 +5,8 @@ export interface Message {
   timestamp: Date
   isThinking?: boolean
   isThinkingHeader?: boolean
+  hasImage?: boolean
+  imageUrl?: string
 }
 
 export interface ChatSession {
