@@ -89,7 +89,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             // Запускаем таймер автоотправки через 2 секунды после последних слов
             console.log('⏱️ Запускаем таймер автоотправки (2 сек)')
             const timer = setTimeout(() => {
-              console.log('🚀 Время вышло! Автоматическа�� отправка сообщения')
+              console.log('🚀 Время вышло! Автоматическая отправка сообщения')
               // Вызываем handleSendMessage только если есть текст (проверка внутри функции)
               handleSendMessage()
               setIsListening(false)
@@ -133,7 +133,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           // Для других ошибок останавливаем
           setIsListening(false)
 
-          // Очищаем ��аймеры
+          // Очищаем ���аймеры
           if (autoSendTimer) {
             clearTimeout(autoSendTimer)
             setAutoSendTimer(null)
@@ -251,7 +251,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     } catch (error) {
       console.error('Error saving interaction for learning:', error)
-      // Не блокируем пользовательский интерфейс при ош��бках сохранения
+      // Не блокируем пользовательский интерфейс при ошибках сохранения
       // Это не критично для работы чата
     }
   }
@@ -371,7 +371,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return selectedVoice
   }
 
-  // Функция получения доступного ElevenLabs ключ�� (��исте���� ротации как у OpenRouter)
+  // Функция получения доступного ElevenLabs ключ�� (��исте���� ро��ации как у OpenRouter)
   const getNextAvailableElevenLabsKey = () => {
     // Ищем активные ключи с доступным лимитом
     const availableKeys = elevenLabsKeys.filter(k =>
@@ -569,7 +569,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           if (selectedVoice) {
             utterance.voice = selectedVoice
-            console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
+            console.log('🎤 Голос для ��звучки:', selectedVoice.name, selectedVoice.lang)
           }
 
           // Настрой��и для более естественного чивучания (менелю роботично)
@@ -602,7 +602,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const newMode = voiceMode === 'text' ? 'voice' : 'text'
     setVoiceMode(newMode)
 
-    // Те��тируем голос при включен���и
+    // Те��тируем голос при включен�����и
     if (newMode === 'voice') {
       setTimeout(() => {
         const voices = speechSynthesis.getVoices()
@@ -711,7 +711,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при генерации ответа. Проверьте под��люче��ие к интернету и поп��обуйте снова. 🌐'
+      return 'Произошла ошибка при генерации ответа. Проверьте под��люче��ие к интернет�� и поп��обуйте снова. 🌐'
     }
   }
 
@@ -1117,7 +1117,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         <div className="jarvis-chat-input">
           {isListening && (
             <div className="auto-send-indicator">
-              🎤 Слушаю... Сообщение отправится автоматически чере�� 2 сек после окончания речи
+              🎤 Слушаю... Сообщение отправится автоматически через 2 сек после окончания речи
             </div>
           )}
           <div className="input-container">
@@ -1126,7 +1126,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={isListening ? "Говорите..." : "Н��пишите сообщение..."}
+              placeholder={isListening ? "Говорите..." : "Напишите сообщение..."}
               className="jarvis-message-input"
               rows={1}
               disabled={isTyping}
@@ -1160,7 +1160,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Ос��ановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
+                  title={isListening ? "Ос��а��овить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
