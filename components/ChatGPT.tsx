@@ -76,7 +76,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             }
           }
 
-          // Показываем промежуточные результаты для лучшего UX (в реальном времени)
+          // Показываем промежуточные результаты для лучшего UX (в реальном в��емени)
           if (interimTranscript) {
             console.log('🔄 Промежуточный текст:', interimTranscript)
             // Обновляем поле ввода только промежуточным текстом (заменяем, не добавляем)
@@ -225,7 +225,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }, [])
 
-  // Функция для сохранения взаимодействия в базе знаний
+  // ��ункция для сохранения взаимодействия в базе знаний
   const saveInteractionToLearning = async (userMessage: string, botResponse: string, userMessageId: string) => {
     try {
       console.log('=== SAVING INTERACTION TO LEARNING ===')
@@ -257,7 +257,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (response.ok) {
         const data = await response.json()
         if (data.success) {
-          // Сохраняем ID взлюимодействия для связи с сообщениелю
+          // Сохраняем ID взлюимодействия для с��язи с сообщениелю
           setInteractionIds(prev => ({
             ...prev,
             [userMessageId]: data.data.interactionId
@@ -456,7 +456,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
 
     try {
-      console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
+      console.log(`🎤 Исп��льзуем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
 
       // Используем качественный русский мужской голос без акцента (лучший для русского языка)
       const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента, оптимизирован для русского)
@@ -475,7 +475,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             stability: 0.90, // Максимальная стабильность для четкого русского произношения
             similarity_boost: 0.85, // ��лучше��ная похожесть на естественный голос
             style: 0.1, // Небольшая эмоциональность для естественности
-            use_speaker_boost: true // Усиление для лучшего качества звука
+            use_speaker_boost: true // Усиление для лучшего качества ��вука
           }
         })
       })
@@ -515,7 +515,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         markElevenLabsKeyAsProblematic(apiKey, errorMessage)
 
         if (response.status === 401) {
-          console.log('🔑 Н���верный ключ ElevenLabs, пробуем следующий...')
+          console.log('🔑 Н���верный ключ ElevenLabs, пробуем след��ющий...')
         } else if (response.status === 429) {
           console.log('⏰ Лимит ElevenLabs превышен, пробуем следующий ключ...')
         }
@@ -844,6 +844,72 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     // Фина��ьная пауза
     await new Promise(resolve => setTimeout(resolve, 400))
+  }
+
+  // Специальная функция для голосовой автоотправки (обходит проверку inputText)
+  const handleVoiceAutoSend = async (textToSend: string) => {
+    if (!textToSend.trim() || isTyping) return
+
+    const userMessage = textToSend.trim()
+    const userMessageId = Date.now().toString()
+    const newUserMessage: Message = {
+      id: userMessageId,
+      text: userMessage,
+      isUser: true,
+      timestamp: new Date()
+    }
+
+    setMessages(prev => [...prev, newUserMessage])
+    setInputText('')
+    inputTextRef.current = ''
+    setIsTyping(true)
+
+    try {
+      // Показываем процесс мышления
+      await showThinkingProcess(userMessage)
+
+      const response = await generateJarvisResponse(userMessage, messages)
+
+      // Удаляем блок thinking перед показом ответа
+      setMessages(prev => prev.filter(msg => !msg.isThinking))
+
+      // Небольшая пауза перед показом ответа
+      await new Promise(resolve => setTimeout(resolve, 300))
+
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: response,
+        isUser: false,
+        timestamp: new Date()
+      }
+
+      setMessages(prev => [...prev, botMessage])
+
+      // Озвучиваем ответ бота если включен голосовой режим
+      if (voiceMode === 'voice') {
+        setTimeout(() => speakText(response), 500) // Небольшая задержка для плавности
+      }
+
+      // Сохраняем взаимодействие для обучения
+      await saveInteractionToLearning(userMessage, response, userMessageId)
+
+    } catch (error) {
+      console.error('Error in handleVoiceAutoSend:', error)
+
+      // Удаляем блок thinking при ошибке
+      setMessages(prev => prev.filter(msg => !msg.isThinking))
+
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: 'Извините, произошла ошибка. Попробуйте позже. 😔',
+        isUser: false,
+        timestamp: new Date()
+      }
+
+      setMessages(prev => [...prev, errorMessage])
+    } finally {
+      setIsTyping(false)
+    }
   }
 
   const handleSendMessage = async () => {
