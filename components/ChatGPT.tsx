@@ -170,7 +170,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           window.speechSynthesis.cancel()
         }
 
-        // Инициализируем голоса (некоторчие б��аузеры загружают их асинхронно)
+        // Инициализируем голоса (некоторчие браузеры загружают их асинхронно)
         const loadVoices = () => {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
@@ -235,7 +235,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (response.ok) {
         const data = await response.json()
         if (data.success) {
-          // Сохраняем ID взлюим��действия для связи с сообщениелю
+          // Сохраняем ID взлюимодействия для связи с сообщениелю
           setInteractionIds(prev => ({
             ...prev,
             [userMessageId]: data.data.interactionId
@@ -264,7 +264,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return commonTags.filter(tag => lowerText.includes(tag))
   }
 
-  // Функция для запуска голосового в��ода
+  // Функция для запуска голосового ввода
   const startListening = () => {
     if (recognition && !isListening) {
       console.log('🎙️ ЗАПУСК голосового ввода с автоотправкой')
@@ -274,10 +274,13 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       try {
         recognition.start()
+        console.log('✅ Speech Recognition успешно запущен')
       } catch (error) {
-        console.error('Ошибка запуска распознавания:', error)
+        console.error('❌ Ошибка запуска распознавания:', error)
         setIsListening(false)
       }
+    } else {
+      console.log('⚠️ Не удалось запустить: recognition не готов или уже слушает')
     }
   }
 
@@ -402,7 +405,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         keyInfo.isActive = false
         console.log(`❌ ElevenLabs ключ отключен после 3 ошибок: ${apiKey.substring(0, 8)}...`)
       }
-      console.log(`⚠️ ElevenLabs о��ибка (${keyInfo.errorCount}/3): ${error}`)
+      console.log(`⚠️ ElevenLabs ошибка (${keyInfo.errorCount}/3): ${error}`)
     }
   }
 
@@ -542,7 +545,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     console.log('📱 ЭТАП 2: BROWSER TTS FALLBACK')
 
     if (speechSynthesis) {
-      // О��танавливаем предыдущее воспроизвед��ние
+      // Останавливаем предыдущее воспроизвед��ние
       speechSynthesis.cancel()
 
       // Ждем немного, чтоблю cancel успел отработать
@@ -567,7 +570,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           // Настрой��и для более естественного чивучания (менелю роботично)
           utterance.lang = 'ru-RU'
-          utterance.rate = 1.0   // Н��рмальная скоро��ть (не замедленная)
+          utterance.rate = 1.0   // Нормальная скоро��ть (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
           utterance.volume = 0.8 // Комфортная громкость
 
@@ -595,14 +598,14 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const newMode = voiceMode === 'text' ? 'voice' : 'text'
     setVoiceMode(newMode)
 
-    // Тестируем голос при включен��и
+    // Те��тируем голос при включен��и
     if (newMode === 'voice') {
       setTimeout(() => {
         const voices = speechSynthesis.getVoices()
         const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
 
         if (russianVoices.length === 0) {
-          speakText('Вни��ание! Русские голос�� не найдены. Качество речи может быть низким.')
+          speakText('Внимание! Русские голос�� не найдены. Качество речи может быть низким.')
         } else {
           speakText('Голосовой режим включен. Если голос звучит роботично, это ограничение браузера.')
         }
@@ -704,7 +707,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при генерации ответа. Проверьте подключение к интернету и попробуйте снова. 🌐'
+      return 'Произошла ошибка при генерации ответа. Проверьте подключе��ие к интернету и попробуйте снова. 🌐'
     }
   }
 
@@ -738,7 +741,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isGreeting) {
         return [
-          'Пользователлю поздоровался',
+          'Поль��ователлю поздоровался',
           'Отвечу дружелюбно и ��редложу помощь'
         ]
       }
@@ -746,7 +749,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isPricing) {
         return [
           'Запрос о ценах и тарифах',
-          'Проанализирую потре��ности польз��в��т��л��',
+          'Проанализирую потре��ности польз��ват��л��',
           'Подберлю оптимальный тарифный п��ан'
         ]
       }
@@ -816,7 +819,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     }
 
-    // Финальная пауза
+    // Фина��ьная пауза
     await new Promise(resolve => setTimeout(resolve, 400))
   }
 
@@ -1153,7 +1156,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Остановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
+                  title={isListening ? "Ос��ановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
