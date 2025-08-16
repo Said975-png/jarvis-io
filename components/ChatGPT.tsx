@@ -225,7 +225,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }, [])
 
-  // Функция для сохранения взаимодействия в базе знаний
+  // Функция для с��хранения взаимодействия в базе знаний
   const saveInteractionToLearning = async (userMessage: string, botResponse: string, userMessageId: string) => {
     try {
       console.log('=== SAVING INTERACTION TO LEARNING ===')
@@ -257,7 +257,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (response.ok) {
         const data = await response.json()
         if (data.success) {
-          // Сохраняем ID взлюимодействия для связи с сообщениелю
+          // Сохраняем ID взлюимодействия для связи с сообще��иелю
           setInteractionIds(prev => ({
             ...prev,
             [userMessageId]: data.data.interactionId
@@ -419,7 +419,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return null
   }
 
-  // Отметить ключ как проблемный
+  // Отметить ключ ��ак проблемный
   const markElevenLabsKeyAsProblematic = (apiKey: string, error: string) => {
     const keyInfo = elevenLabsKeys.find(k => k.key === apiKey)
     if (keyInfo) {
@@ -458,6 +458,12 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
 
+      // Создаем AbortController для timeout контроля
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => {
+        controller.abort()
+      }, 15000) // 15 секунд timeout
+
       // Используем качественный русский мужской голос без акцента (лучший для русского языка)
       const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента, оптимизирован для русского)
 
@@ -477,8 +483,12 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             style: 0.1, // Небольшая эмоциональность для естественности
             use_speaker_boost: true // Усиление для лучшего качества звука
           }
-        })
+        }),
+        signal: controller.signal // Добавляем abort signal
       })
+
+      // Очищаем timeout при успешном ответе
+      clearTimeout(timeoutId)
 
       if (response.ok) {
         const audioBlob = await response.blob()
@@ -598,7 +608,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           console.log('🎯 Создаем utterance для текста:', cleanText.substring(0, 30) + '...')
           const utterance = new SpeechSynthesisUtterance(cleanText)
 
-          // Получ��ем лучший голос
+          // Получ��ем лучши�� голос
           const selectedVoice = getBestMaleVoice()
 
           if (selectedVoice) {
@@ -742,7 +752,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, п��оизошла ошибка. Попробуйте перефо��мулировать вопрос. ����'
+        return 'Извините, п��оизошла ошиб��а. Попробуйте перефо��мулировать вопрос. ����'
       }
 
       return data.message || 'Извините, не могу ответить на это�� вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
@@ -798,7 +808,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isTechnical) {
         return [
-          'Технический вопрос - ан��лизирую детали',
+          'Технический вопрос - ан��лизирую де��али',
           'Подготовлю практические решения',
           '��чту лучшие практики разработки'
         ]
