@@ -198,7 +198,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }, [])
 
-  // Функция для сохралюения взаимодействия в базе знаний
+  // Функция для сохралюения взаимодействия в ��азе знаний
   const saveInteractionToLearning = async (userMessage: string, botResponse: string, userMessageId: string) => {
     try {
       console.log('=== SAVING INTERACTION TO LEARNING ===')
@@ -262,7 +262,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Функция для запуска голосового ввода
   const startListening = () => {
     if (recognition && !isListening) {
-      console.log('🎙️ Запуск голосового ввода с автоотправкой')
+      console.log('����️ Запуск голосового ввода с автоотправкой')
       setInputText('') // Очищаем поле ввода для новой записи
       setIsListening(true)
 
@@ -639,6 +639,18 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }, [isOpen])
 
+  // Очистка таймеров при размонтировании
+  useEffect(() => {
+    return () => {
+      if (autoSendTimer) {
+        clearTimeout(autoSendTimer)
+      }
+      if (silenceTimer) {
+        clearTimeout(silenceTimer)
+      }
+    }
+  }, [])
+
   const generateJarvisResponse = async (userMessage: string, conversationHistory: Message[]): Promise<string> => {
     try {
       // Обычный чат-запрос
@@ -672,7 +684,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         
         const errorText = await response.text()
         console.error('Chat API error:', errorText)
-        return 'Извините, произошла ошибка при обработк�� запроса. Попробуйте позже. 😔'
+        return 'Извините, произошла ошибка пр�� обработк�� запроса. Попробуйте позже. 😔'
       }
 
       const data = await response.json()
@@ -728,7 +740,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isPricing) {
         return [
           'Запрос о ценах и тарифах',
-          'Проанализирую потребности польз��ват��л��',
+          'Проанализирую потре��ности польз��ват��л��',
           'Подберлю оптимальный тарифный п��ан'
         ]
       }
