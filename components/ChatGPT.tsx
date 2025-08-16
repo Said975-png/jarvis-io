@@ -305,7 +305,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
     console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
 
-    // ПРИОРИТЕТ 1: Самые качественные мужлюкие голоса (менее роботичные)
+    // ПРИОРИТЕТ 1: Самые к��чественные мужлюкие голоса (менее роботичные)
     const premiumMaleVoices = [
       'Google русский (Россия)', // ��амый качественный если ест��
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
@@ -373,7 +373,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     // Если все ключи исчерпали лимит, сбрасываем счетчики (новый месяц)
     const keysWithLimitReached = elevenLabsKeys.filter(k => k.usage >= k.limit)
     if (keysWithLimitReached.length > 0) {
-      console.log('🔄 Сброс лимитов ElevenLabs ключей (новый месяц)')
+      console.log('🔄 Сброс лимитов ElevenLabs кл��чей (новый месяц)')
       keysWithLimitReached.forEach(k => {
         k.usage = 0
         k.errorCount = 0
@@ -655,7 +655,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       // Обычный чат-запрос
       const apiMessages = conversationHistory
-        .filter(msg => !msg.text.includes('Привет! Я ДЖАРВчиС, ваш AI-помощник!'))
+        .filter(msg => !msg.text.includes('Прив��т! Я ДЖАРВчиС, ваш AI-помощник!'))
         .map(msg => ({
           role: msg.isUser ? 'user' : 'assistant' as const,
           content: msg.text
@@ -748,7 +748,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isTechnical) {
         return [
           'Технический ��опрос - анализирую детали',
-          'Подготовлю практические решения',
+          'Подготовлю пр��ктические решения',
           'Учту лучшие практики раз��аботки'
         ]
       }
@@ -756,7 +756,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isQuestion) {
         return [
           'Анализирую суть вопроса',
-          'Структурирую ответ для максимальной пользы',
+          'Структур��рую ответ для максимальной пользы',
           'Добавлю плюимеры и практические советы'
         ]
       }
@@ -1142,7 +1142,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Остановить запись" : "Голосовой ввод"}
+                  title={isListening ? "Остановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
