@@ -91,7 +91,7 @@ export default function AdvancedProtection() {
         return false;
       }, true);
       
-      // Блокируем вырезание
+      // Блокируем ��ырезание
       document.addEventListener('cut', function(e) {
         e.preventDefault();
         return false;
@@ -150,7 +150,7 @@ export default function AdvancedProtection() {
       
       // Cleanup function
       return () => {
-        clearInterval(devtoolsInterval);
+        // devtoolsInterval больше не используется
         window.removeEventListener('beforeunload', beforeUnloadHandler);
       };
     })();
