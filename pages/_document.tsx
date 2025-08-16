@@ -5,8 +5,8 @@ export default function Document() {
     <Html lang="ru">
       <Head>
 
-        {/* Временно отключена защита для отладки */}
-        {/* <script src="/protection.js" /> */}
+        {/* Защита от открытия консоли и DevTools */}
+        <script src="/protection.js" />
         
         {/* Мета теги для защиты */}
         <meta name="referrer" content="no-referrer" />
