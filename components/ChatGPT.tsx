@@ -97,19 +97,20 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         recognitionInstance.onspeechstart = () => {
-          console.log('🎤 Начало речи')
+          console.log('🎤 Начало речи обнаружено')
           // Очищаем таймер тишины при начале речи
           if (silenceTimer) {
             clearTimeout(silenceTimer)
             setSilenceTimer(null)
+            console.log('🔇 Таймер тишины очищен (речь возобновилась)')
           }
         }
 
         recognitionInstance.onspeechend = () => {
-          console.log('🔇 Конец речи, запускаем таймер тишины')
+          console.log('🔇 Конец речи, запускаем таймер тишины (3 сек)')
           // Запускаем таймер тишины
           const timer = setTimeout(() => {
-            console.log('😴 Тишина обнаружена, останавливаем распознавание')
+            console.log('😴 Длительная тишина обнаружена, останавливаем распознавание')
             setIsListening(false)
             recognitionInstance.stop()
           }, 3000) // 3 секунды тишины
@@ -119,7 +120,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         recognitionInstance.onerror = (event: any) => {
           console.error('Speech recognition error:', event.error)
 
-          // Игнорируем ошибки "no-speech" (отсутствие речи) - эт�� нормально
+          // Игнорируем ошибки "no-speech" (отсутствие речи) - это нормально
           if (event.error === 'no-speech') {
             console.log('⚠️ Нет речи - ожидаем дальше')
             return
@@ -161,9 +162,9 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (window.speechSynthesis) {
         setSpeechSynthesis(window.speechSynthesis)
 
-        // Форсируем загрузку голосов (работает в бол��шинстве браузеров)
+        // Форсируем загрузку голосов (работает в большинстве браузеров)
         const forceLoadVoices = () => {
-          // Создаем пустое высказывание чтобы актлювировать голоса
+          // Создаем пустое высказывание чтобы актлювир��вать голоса
           const utterance = new SpeechSynthesisUtterance('')
           window.speechSynthesis.speak(utterance)
           window.speechSynthesis.cancel()
@@ -191,7 +192,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           loadVoices()
         }
 
-        // Попытка 4: дополлюительная загрузка через секунду
+        // Попытка 4: дополлюи��ельная загрузка через секунду
         setTimeout(() => {
           if (window.speechSynthesis.getVoices().length === 0) {
             forceLoadVoices()
@@ -563,7 +564,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
           }
 
-          // Настройки для более естественного чивучания (менелю роботично)
+          // Настрой��и для более естественного чивучания (менелю роботично)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скоро��ть (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
@@ -737,7 +738,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isGreeting) {
         return [
           'Пользователлю поздоровался',
-          'Отвечу дружелюбно и предложу помощь'
+          'Отвечу дружелюбно и ��редложу помощь'
         ]
       }
 
