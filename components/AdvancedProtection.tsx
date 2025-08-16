@@ -108,27 +108,9 @@ export default function AdvancedProtection() {
       document.oncontextmenu = function() { return false; };
       document.ondragstart = function() { return false; };
       
-      // Обнаружение DevTools (только для десктопа)
-      let devtools = false;
-      const devtoolsInterval = setInterval(function() {
-        // Проверяем, что это не мобильное устройство
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                        window.innerWidth <= 768 ||
-                        ('ontouchstart' in window);
-
-        if (isMobile) return; // Не проверяем DevTools на мобильных
-
-        if (window.outerHeight - window.innerHeight > 200 ||
-            window.outerWidth - window.innerWidth > 200) {
-          if (!devtools) {
-            devtools = true;
-            alert('Доступ запрещен!');
-            window.location.href = 'about:blank';
-          }
-        } else {
-          devtools = false;
-        }
-      }, 100);
+      // ВРЕМЕННО ОТКЛЮЧЕНА детекция DevTools по размеру окна
+      // Оставляем только блокировку горячих клавиш для базовой защиты
+      console.log('🛡️ AdvancedProtection: только горячие клавиши');
       
       // Переопределяем console
       if (typeof console !== 'undefined') {
@@ -155,7 +137,7 @@ export default function AdvancedProtection() {
       };
       window.addEventListener('beforeunload', beforeUnloadHandler);
       
-      // Дополнительная защита для мобильных (убрано - мешало использованию)
+      // Дополнительн��я защита для мобильных (убрано - мешало использованию)
       // document.addEventListener('touchstart', function(e) {
       //   if (e.touches.length > 1) {
       //     e.preventDefault();
