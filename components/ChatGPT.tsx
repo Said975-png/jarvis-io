@@ -81,7 +81,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               console.log('⏰ Очищен предыдущий таймер автоотправки')
             }
 
-            // Запу���каем таймер автоотправки через 2 секунды после последних слов
+            // Запу��каем таймер автоотправки через 2 секунды после последних слов
             console.log('⏱️ Запускаем таймер автоотправки (2 сек)')
             const timer = setTimeout(() => {
               console.log('🚀 Время вышло! Автоматическая отправка сообщения')
@@ -134,7 +134,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           // Для других ошибок останавливаем
           setIsListening(false)
 
-          // Очищаем таймеры
+          // Очищаем ��аймеры
           if (autoSendTimer) {
             clearTimeout(autoSendTimer)
             setAutoSendTimer(null)
@@ -372,7 +372,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return selectedVoice
   }
 
-  // Функция получения доступного ElevenLabs ключ�� (��истем�� ротации как у OpenRouter)
+  // Функция получения доступного ElevenLabs ключ�� (��исте���� ротации как у OpenRouter)
   const getNextAvailableElevenLabsKey = () => {
     // Ищем активные ключи с доступным лимитом
     const availableKeys = elevenLabsKeys.filter(k =>
@@ -423,7 +423,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (keyInfo.usage >= keyInfo.limit) {
         keyInfo.isActive = false
-        console.log(`🚫 ElevenLabs ключ исчерпчил лимит: ${apiKey.substring(0, 8)}...`)
+        console.log(`🚫 ElevenLabs ключ исчерпал лимит: ${apiKey.substring(0, 8)}...`)
       }
     }
   }
@@ -603,7 +603,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const newMode = voiceMode === 'text' ? 'voice' : 'text'
     setVoiceMode(newMode)
 
-    // Те��тируем голос при включен��и
+    // Те��тируем голос при включен���и
     if (newMode === 'voice') {
       setTimeout(() => {
         const voices = speechSynthesis.getVoices()
@@ -712,7 +712,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при генерации ответа. Проверьте подключе��ие к интернету и попробуйте снова. 🌐'
+      return 'Произошла ошибка при генерации ответа. Проверьте подключе��ие к интернету и поп��обуйте снова. 🌐'
     }
   }
 
@@ -746,7 +746,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isGreeting) {
         return [
-          'Поль��овател��ю поздоровался',
+          'Поль��ователлю поздоровался',
           'Отвечу дружелюбно и ��редложу помощь'
         ]
       }
@@ -824,7 +824,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     }
 
-    // Фина��ьн��я пауза
+    // Фина��ьная пауза
     await new Promise(resolve => setTimeout(resolve, 400))
   }
 
@@ -1127,7 +1127,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={isListening ? "Говорите..." : "Напишите сообщение..."}
+              placeholder={isListening ? "Говорите..." : "Н��пишите сообщение..."}
               className="jarvis-message-input"
               rows={1}
               disabled={isTyping}
@@ -1161,7 +1161,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Ос��ановить запись (сообщение отпра��ится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
+                  title={isListening ? "Ос��ановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
