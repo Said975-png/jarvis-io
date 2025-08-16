@@ -197,7 +197,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           loadVoices()
         }
 
-        // Попытка 4: дополлюи��ельная загрузка через секунду
+        // Попытка 4: дополнительная загрузка через секунду
         setTimeout(() => {
           if (window.speechSynthesis.getVoices().length === 0) {
             forceLoadVoices()
@@ -712,7 +712,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при генерации ответа. Проверьте подключе��ие к интернету и попробуйте снова. 🌐'
+      return 'Произошла ошибка при генерации ответа. Проверьте подключе��ие к интернету и попробуйте сн��ва. 🌐'
     }
   }
 
@@ -741,7 +741,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Анализируем тип вопроса
       const isQuestion = message.includes('?') || words.some(w => ['люак', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
-      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'опл��та'].includes(w))
+      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'опл����а'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
 
       if (isGreeting) {
@@ -775,7 +775,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         ]
       }
 
-      // Для остальных случаев
+      // Для остальных случ��ев
       return [
         'Обрабатываю запрос',
         'Формирую наиболее полезный ответ'
@@ -1161,7 +1161,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Ос��ановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
+                  title={isListening ? "Ос��ановить запись (сообщ��ние отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
