@@ -85,10 +85,15 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('⏱️ Запускаем таймер автоотправки (2 сек)')
             const timer = setTimeout(() => {
               console.log('🚀 Время вышло! Автоматическая отправка сообщения')
-              if (finalTranscript.trim()) {
+              // Проверяем текущий текст в поле ввода, а не только finalTranscript
+              const currentText = textareaRef.current?.value || ''
+              console.log('📄 Текущий текст для отправки:', currentText)
+              if (currentText.trim()) {
                 handleSendMessage()
                 setIsListening(false)
                 recognitionInstance.stop()
+              } else {
+                console.log('⚠️ Нет текста для отправки')
               }
             }, 2000) // 2 секунды
 
@@ -525,7 +530,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     if (!cleanText) return
 
-    console.log('🎵 === НАЧИНАЕМ ОЗВУЧИВАНИЕ ===')
+    console.log('���� === НАЧИНАЕМ ОЗВУЧИВАНИЕ ===')
     console.log(`📝 Тек��т: ${cleanText.substring(0, 50)}...`)
 
     // ЭТАП 1: Пробуем ElevenLabs (премиум качество)
@@ -553,7 +558,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         // Очищаем текст от эмодзлю и специальных символов дл�� лучшего произношения
         const cleanText = text
           .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
-          .replace(/[лю·]/g, '')
+          .replace(/[��ю·]/g, '')
           .replace(/\n+/g, '. ') // Заменяем переносы на пауз��
           .trim()
 
@@ -664,7 +669,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       // Обычный чат-запрос
       const apiMessages = conversationHistory
-        .filter(msg => !msg.text.includes('Прив��т! Я ДЖАРВчиС, ваш AI-помощник!'))
+        .filter(msg => !msg.text.includes('Прив��т! Я ДЖАРВчиС, ваш AI-пом��щник!'))
         .map(msg => ({
           role: msg.isUser ? 'user' : 'assistant' as const,
           content: msg.text
@@ -700,7 +705,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, произошллю ошибка. Попрлюбуйте переформулировать вопролю. 🤔'
+        return 'Извините, произошллю ошибка. Попрлюбуйте переформулировать вопролю. ���'
       }
 
       return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то дрлюгое! 🤷‍♂️'
@@ -765,7 +770,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isQuestion) {
         return [
           'Анализирую суть вопроса',
-          'Структур��рую ответ для максимальной пользы',
+          'Ст��уктур��рую ответ для максимальной пользы',
           'Добавлю плюимеры и практические советы'
         ]
       }
