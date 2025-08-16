@@ -177,7 +177,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return commonTags.filter(tag => lowerText.includes(tag))
   }
 
-  // Функция для запуска голосового ввода
+  // Функция для запуска гол��сового ввода
   const startListening = () => {
     if (recognition && !isListening) {
       setIsListening(true)
@@ -503,21 +503,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для установки ключей ElevenLabs
-  const setElevenLabsKeys = (keys: string[]) => {
-    keys.forEach((key, index) => {
-      if (index < elevenLabsKeys.length && key.trim()) {
-        elevenLabsKeys[index].key = key.trim()
-        elevenLabsKeys[index].isActive = true
-        elevenLabsKeys[index].usage = 0
-        elevenLabsKeys[index].errorCount = 0
-      }
-    })
-
-    const validKeys = elevenLabsKeys.filter(k => k.key.length > 0)
-    console.log(`🔑 Установлено ElevenLabs ключей: ${validKeys.length}`)
-    console.log('🎤 ElevenLabs TTS активирован!')
-  }
 
   // Функция для тестирования голоса
   const testVoice = () => {
@@ -792,7 +777,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     if (!file) return
 
     if (file.size > 5 * 1024 * 1024) { // 5MB
-      alert('Файл слишком большой. Максимальнылю размер: 5MB')
+      alert('Файл слишком большой. Максима��ьнылю размер: 5MB')
       return
     }
 
