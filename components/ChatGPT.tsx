@@ -90,7 +90,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             setInputText(finalTranscript.trim())
             inputTextRef.current = finalTranscript.trim()
 
-            // Очищаем суще��твующий таймер
+            // Очищаем суще��твующ��й таймер
             if (autoSendTimer) {
               clearTimeout(autoSendTimer)
               console.log('⏰ Очищен пре��ыдущий таймер автоотправки')
@@ -112,7 +112,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               }
               setIsListening(false)
               recognitionInstance.stop()
-            }, 2000) // 2 секунды
+            }, 2000) // 2 секунд��
 
             setAutoSendTimer(timer)
           }
@@ -142,7 +142,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         recognitionInstance.onerror = (event: any) => {
           console.error('Speech recognition error:', event.error)
 
-          // Игнор��руем ошибки "no-speech" (отсутст��ие речи) - это нормально
+          // Игнор��руем ошибки "no-speech" (отсутст��ие речи) - это норм��льно
           if (event.error === 'no-speech') {
             console.log('⚠️ Нет речи - ожид��ем дальше')
             return
@@ -209,7 +209,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           setTimeout(loadVoices, 100)
         }
 
-        // Попытка 3: подписываемс�� на событие загрузки голосов
+        // Попытка 3: подписываемс���� на событие загрузки голосов
         window.speechSynthesis.onvoiceschanged = () => {
           loadVoices()
         }
@@ -470,7 +470,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         },
         body: JSON.stringify({
           text: text,
-          model_id: 'eleven_multilingual_v2', // Лучше для русского языка
+          model_id: 'eleven_multilingual_v2', // Лучше для русского яз��ка
           voice_settings: {
             stability: 0.90, // Максимальная стабильность для четкого русского произношения
             similarity_boost: 0.85, // ��лучше��ная похожесть на естественный голос
@@ -616,7 +616,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           // Добавляем обрлюботчики событий
           utterance.onstart = () => {
-            console.log('🎵 Начало люзвучивания')
+            console.log('🎵 Начало люз��учивания')
           }
 
           utterance.onend = () => {
@@ -624,7 +624,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           }
 
           utterance.onerror = (event) => {
-            console.error('❌ Ошибка озвучивания:', event.error)
+            console.error('❌ Ошибка озвучива��ия:', event.error)
           }
 
           console.log('🚀 Запускаем speechSynthesis.speak()')
@@ -742,7 +742,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, произошла ошибка. Попробуйте перефо��мулировать вопрос. ����'
+        return 'Извините, п��оизошла ошибка. Попробуйте перефо��мулировать вопрос. ����'
       }
 
       return data.message || 'Извините, не могу ответить на это�� вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
@@ -798,7 +798,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isTechnical) {
         return [
-          'Технический вопрос - анализирую детали',
+          'Технический вопрос - ан��лизирую детали',
           'Подготовлю практические решения',
           '��чту лучшие практики разработки'
         ]
@@ -988,7 +988,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         })
       }
 
-      // Показываем текст ОДНОВРЕМЕННО с голосом (без пауз)
+      // Показываем текст ОДНОВРЕМЕННО �� голосом (без пауз)
       setMessages(prev => [...prev, botMessage])
 
       if (voiceMode !== 'voice') {
@@ -1929,6 +1929,139 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .dark-theme .thinking-cursor {
           color: #8b9dd4;
+        }
+
+        /* ================================
+           MOBILE RESPONSIVE FIXES
+           ================================ */
+        @media (max-width: 768px) {
+          .jarvis-chat-messages {
+            padding: 12px;
+            gap: 6px;
+          }
+
+          .message {
+            max-width: 100%;
+            gap: 6px;
+            margin-bottom: 8px;
+          }
+
+          /* Hide avatar on mobile for more space */
+          .message-avatar {
+            display: none;
+          }
+
+          .message-content {
+            max-width: 95%;
+          }
+
+          .user-message .message-content {
+            max-width: 85%;
+            margin-left: auto;
+          }
+
+          .bot-message .message-content {
+            max-width: 85%;
+            margin-right: auto;
+          }
+
+          .message-text {
+            padding: 10px 12px;
+            font-size: 14px;
+            line-height: 1.4;
+            border-radius: 16px;
+            max-width: 100%;
+          }
+
+          .user-message .message-text {
+            background: #007bff;
+            color: #ffffff;
+            border-radius: 16px 16px 4px 16px;
+          }
+
+          .bot-message .message-text {
+            background: #f1f3f4;
+            color: #374151;
+            border-radius: 16px 16px 16px 4px;
+            border: 1px solid #e5e7eb;
+          }
+
+          .dark-theme .bot-message .message-text {
+            background: #2f2f2f;
+            color: #ececec;
+            border: 1px solid #404040;
+          }
+
+          .message-time {
+            font-size: 10px;
+            padding: 0 8px;
+            margin-top: 2px;
+          }
+
+          .user-message .message-time {
+            text-align: right;
+          }
+
+          .bot-message .message-time {
+            text-align: left;
+          }
+
+          .typing-indicator {
+            padding: 10px 12px;
+            border-radius: 16px 16px 16px 4px;
+            background: #f1f3f4;
+          }
+
+          .dark-theme .typing-indicator {
+            background: #2f2f2f;
+          }
+
+          /* Thinking message mobile styles */
+          .thinking-text {
+            max-width: 95% !important;
+            font-size: 11px !important;
+            padding: 8px 12px !important;
+          }
+
+          /* Generated image styles for mobile */
+          .generated-image-container {
+            margin: 8px 0;
+          }
+
+          .generated-image {
+            max-width: 100% !important;
+            max-height: 250px !important;
+            border-radius: 12px !important;
+          }
+        }
+
+        /* Extra small mobile devices */
+        @media (max-width: 480px) {
+          .message-content {
+            max-width: 98%;
+          }
+
+          .user-message .message-content {
+            max-width: 90%;
+          }
+
+          .bot-message .message-content {
+            max-width: 90%;
+          }
+
+          .message-text {
+            padding: 8px 10px;
+            font-size: 13px;
+          }
+
+          .thinking-text {
+            max-width: 98% !important;
+            font-size: 10px !important;
+          }
+
+          .generated-image {
+            max-height: 200px !important;
+          }
         }
 
       `}</style>
