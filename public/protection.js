@@ -1,4 +1,4 @@
-// Максимальная защита от открытия консоли и DevTools
+// Макси��альная защита от открытия консоли и DevTools
 (function() {
   'use strict';
   
@@ -173,13 +173,20 @@
     return false;
   };
 
-  // Мониторинг DevTools по размеру окна
+  // Мониторинг DevTools по размеру окна (только для десктопа)
   let devtoolsOpen = false;
   const checkDevTools = () => {
+    // Проверяем, что это не мобильное устройство
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                    window.innerWidth <= 768 ||
+                    ('ontouchstart' in window);
+
+    if (isMobile) return; // Не проверяем DevTools на мобильных
+
     const threshold = 160;
     const heightThreshold = window.outerHeight - window.innerHeight > threshold;
     const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-    
+
     if ((heightThreshold || widthThreshold) && !devtoolsOpen) {
       devtoolsOpen = true;
       alert('Доступ к инструментам разработчика запрещен!');
