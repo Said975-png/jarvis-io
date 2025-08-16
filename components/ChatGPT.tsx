@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу �� тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }
@@ -59,7 +59,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
       if (SpeechRecognition) {
         const recognitionInstance = new SpeechRecognition()
-        recognitionInstance.continuous = true // Включаем непрерывное распозн��ва��ие
+        recognitionInstance.continuous = true // Включаем неп��ерывное распозн��ва��ие
         recognitionInstance.interimResults = true // Включаем пром��жуточн��е результаты
         recognitionInstance.lang = 'ru-RU'
 
@@ -225,7 +225,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }, [])
 
-  // Функция для с��хранения взаимодействия в базе знаний
+  // Функция для сохранения взаимодействия в базе знаний
   const saveInteractionToLearning = async (userMessage: string, botResponse: string, userMessageId: string) => {
     try {
       console.log('=== SAVING INTERACTION TO LEARNING ===')
@@ -257,7 +257,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (response.ok) {
         const data = await response.json()
         if (data.success) {
-          // Сохраняем ID взлюимодействия для связи с сообще��иелю
+          // Сохраняем ID взлюимодействия для связи с сообщениелю
           setInteractionIds(prev => ({
             ...prev,
             [userMessageId]: data.data.interactionId
@@ -419,7 +419,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return null
   }
 
-  // Отметить ключ ��ак проблемный
+  // Отметить ключ как проблемный
   const markElevenLabsKeyAsProblematic = (apiKey: string, error: string) => {
     const keyInfo = elevenLabsKeys.find(k => k.key === apiKey)
     if (keyInfo) {
@@ -543,8 +543,24 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
 
     } catch (error) {
-      console.error('💥 ElevenLabs ошибка сети:', error)
-      markElevenLabsKeyAsProblematic(apiKey, error instanceof Error ? error.message : 'Network error')
+      let errorMessage = 'Network error'
+
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          errorMessage = 'Request timeout (15s)'
+          console.error('⏰ ElevenLabs timeout после 15 секунд')
+        } else if (error.message.includes('Failed to fetch')) {
+          errorMessage = 'Network connectivity issue'
+          console.error('🌐 ElevenLabs сетевая ошибка: проблемы подключения')
+        } else {
+          errorMessage = error.message
+          console.error('💥 ElevenLabs ошибка сети:', error.message)
+        }
+      } else {
+        console.error('💥 ElevenLabs неизвестная ошибка:', error)
+      }
+
+      markElevenLabsKeyAsProblematic(apiKey, errorMessage)
       return false
     }
   }
@@ -608,7 +624,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           console.log('🎯 Создаем utterance для текста:', cleanText.substring(0, 30) + '...')
           const utterance = new SpeechSynthesisUtterance(cleanText)
 
-          // Получ��ем лучши�� голос
+          // Получ��ем лучший голос
           const selectedVoice = getBestMaleVoice()
 
           if (selectedVoice) {
@@ -666,7 +682,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   }
 
 
-  // Функция ��ля тестирования голоса
+  // Функция ����ля тестирования голоса
   const testVoice = () => {
     console.log('🧪 Тестиров��ние голоса JARVIS...')
     const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
@@ -752,7 +768,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, п��оизошла ошиб��а. Попробуйте перефо��мулировать вопрос. ����'
+        return 'Извините, п��оизошла ошибка. Попробуйте перефо��мулировать вопрос. ����'
       }
 
       return data.message || 'Извините, не могу ответить на это�� вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
@@ -802,13 +818,13 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Запрос о ценах и тарифах',
           'П��оанализирую потребности пользователя',
-          'Подберу оптимальный тарифный план'
+          'Подберу оптималь��ый тарифный план'
         ]
       }
 
       if (isTechnical) {
         return [
-          'Технический вопрос - ан��лизирую де��али',
+          'Технический вопрос - ан��лизирую детали',
           'Подготовлю практические решения',
           '��чту лучшие практики разработки'
         ]
@@ -879,7 +895,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const handleVoiceAutoSend = async (textToSend: string) => {
     if (!textToSend.trim() || isTyping) return
 
-    // Очищаем все голосовые таймеры при отправке сообщения
+    // Очищаем все голосовые таймеры п��и отправке сообщения
     if (autoSendTimer) {
       clearTimeout(autoSendTimer)
       setAutoSendTimer(null)
