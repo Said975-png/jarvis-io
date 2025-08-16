@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! 😊\n\nПомогу выбрать услуги, расскажу �� тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }
@@ -59,7 +59,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
       if (SpeechRecognition) {
         const recognitionInstance = new SpeechRecognition()
-        recognitionInstance.continuous = true // Включаем непрерывное распозн��ва��ие
+        recognitionInstance.continuous = true // Включаем неп��ерывное распозн��ва��ие
         recognitionInstance.interimResults = true // Включаем пром��жуточн��е результаты
         recognitionInstance.lang = 'ru-RU'
 
@@ -90,7 +90,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             setInputText(finalTranscript.trim())
             inputTextRef.current = finalTranscript.trim()
 
-            // Очищаем суще��твующий таймер
+            // Очищаем суще��твующ��й таймер
             if (autoSendTimer) {
               clearTimeout(autoSendTimer)
               console.log('⏰ Очищен пре��ыдущий таймер автоотправки')
@@ -112,7 +112,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               }
               setIsListening(false)
               recognitionInstance.stop()
-            }, 2000) // 2 секунды
+            }, 2000) // 2 секунд��
 
             setAutoSendTimer(timer)
           }
@@ -142,7 +142,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         recognitionInstance.onerror = (event: any) => {
           console.error('Speech recognition error:', event.error)
 
-          // Игнор��руем ошибки "no-speech" (отсутст��ие речи) - это нормально
+          // Игнор��руем ошибки "no-speech" (отсутст��ие речи) - это норм��льно
           if (event.error === 'no-speech') {
             console.log('⚠️ Нет речи - ожид��ем дальше')
             return
@@ -184,7 +184,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (window.speechSynthesis) {
         setSpeechSynthesis(window.speechSynthesis)
 
-        // Форсируем загрузку голосов (работае�� в большинс��ве браузеров)
+        // Форсируем загрузку голос��в (работае�� в большинс��ве браузеров)
         const forceLoadVoices = () => {
           // Создаем пуст��е высказывание чтобы актлювир��ват�� голоса
           const utterance = new SpeechSynthesisUtterance('')
@@ -209,7 +209,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           setTimeout(loadVoices, 100)
         }
 
-        // Попытка 3: подписываемс�� на событие загрузки голосов
+        // Попыт��а 3: подписываемс���� на событие загрузки голосов
         window.speechSynthesis.onvoiceschanged = () => {
           loadVoices()
         }
@@ -405,7 +405,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     // Если все ключи исчерпали лимит, сбрасываем счет��ик�� (новый месяц)
     const keysWithLimitReached = elevenLabsKeys.filter(k => k.usage >= k.limit)
     if (keysWithLimitReached.length > 0) {
-      console.log('🔄 Сброс лимитов ElevenLabs к����чей (новый месяц)')
+      console.log('🔄 Сброс лимитов ElevenLabs к�����чей (новый месяц)')
       keysWithLimitReached.forEach(k => {
         k.usage = 0
         k.errorCount = 0
@@ -458,6 +458,12 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
 
+      // Создаем AbortController для timeout контроля
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => {
+        controller.abort()
+      }, 15000) // 15 секунд timeout
+
       // Используем качественный русский мужской голос без акцента (лучший для русского языка)
       const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента, оптимизирован для русского)
 
@@ -470,15 +476,19 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         },
         body: JSON.stringify({
           text: text,
-          model_id: 'eleven_multilingual_v2', // Лучше для русского языка
+          model_id: 'eleven_multilingual_v2', // Лучше для русского яз��ка
           voice_settings: {
             stability: 0.90, // Максимальная стабильность для четкого русского произношения
             similarity_boost: 0.85, // ��лучше��ная похожесть на естественный голос
             style: 0.1, // Небольшая эмоциональность для естественности
             use_speaker_boost: true // Усиление для лучшего качества звука
           }
-        })
+        }),
+        signal: controller.signal // Добавляем abort signal
       })
+
+      // Очищаем timeout при успешном ответе
+      clearTimeout(timeoutId)
 
       if (response.ok) {
         const audioBlob = await response.blob()
@@ -533,13 +543,29 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
 
     } catch (error) {
-      console.error('💥 ElevenLabs ошибка сети:', error)
-      markElevenLabsKeyAsProblematic(apiKey, error instanceof Error ? error.message : 'Network error')
+      let errorMessage = 'Network error'
+
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          errorMessage = 'Request timeout (15s)'
+          console.error('⏰ ElevenLabs timeout после 15 секунд')
+        } else if (error.message.includes('Failed to fetch')) {
+          errorMessage = 'Network connectivity issue'
+          console.error('🌐 ElevenLabs сетевая ошибка: проблемы подключения')
+        } else {
+          errorMessage = error.message
+          console.error('💥 ElevenLabs ошибка сети:', error.message)
+        }
+      } else {
+        console.error('💥 ElevenLabs неизвестная ошибка:', error)
+      }
+
+      markElevenLabsKeyAsProblematic(apiKey, errorMessage)
       return false
     }
   }
 
-  // Функция для озвучивания текста (теперь �� ElevenLabs + fallback)
+  // Функция для озвучивания ��екста (теперь �� ElevenLabs + fallback)
   const speakText = async (text: string) => {
     console.log('🎵 speakText вызвана. voiceMode:', voiceMode, 'text:', text.substring(0, 30) + '...')
     if (voiceMode !== 'voice') {
@@ -564,18 +590,40 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     console.log('���� === НАЧИНАЕМ ОЗВУЧИВАНИЕ ===')
     console.log(`📝 Тек��т: ${cleanText.substring(0, 50)}...`)
 
-    // ЭТАП 1: Пробуем ElevenLabs (��ремиум качество)
-    try {
-      console.log('🔥 ЭТАП 1: ELEVENLABS TTS')
-      const elevenLabsSuccess = await speakWithElevenLabs(cleanText)
+    // ЭТАП 1: Пробуем ElevenLabs (премиум качество) с повторными попытками
+    const maxRetries = 2
+    let retryCount = 0
 
-      if (elevenLabsSuccess) {
-        console.log('✅ === SUCCESS VIA ELEVENLABS ===')
-        return
+    while (retryCount <= maxRetries) {
+      try {
+        console.log(`🔥 ЭТАП 1: ELEVENLABS TTS (попытка ${retryCount + 1}/${maxRetries + 1})`)
+        const elevenLabsSuccess = await speakWithElevenLabs(cleanText)
+
+        if (elevenLabsSuccess) {
+          console.log('✅ === SUCCESS VIA ELEVENLABS ===')
+          return
+        }
+
+        // Если не удалось, пробуем следующий ключ
+        retryCount++
+        if (retryCount <= maxRetries) {
+          const delay = Math.min(1000 * Math.pow(2, retryCount), 3000) // Exponential backoff до 3 сек
+          console.log(`⏳ Повторная попытка через ${delay}ms...`)
+          await new Promise(resolve => setTimeout(resolve, delay))
+        }
+
+      } catch (error) {
+        console.error('💥 ElevenLabs критическая ошибка:', error)
+        retryCount++
+        if (retryCount <= maxRetries) {
+          const delay = Math.min(1000 * Math.pow(2, retryCount), 3000)
+          console.log(`⏳ Повторная попытка после ошибки через ${delay}ms...`)
+          await new Promise(resolve => setTimeout(resolve, delay))
+        }
       }
-    } catch (error) {
-      console.error('💥 ElevenLabs критическая ошиб����а:', error)
     }
+
+    console.log('❌ ElevenLabs недоступен после всех попыток, переходим к fallback')
 
     // ЭТАП 2: Fallback на браузерный TTS
     console.log('📱 ЭТАП 2: BROWSER TTS FALLBACK')
@@ -608,7 +656,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('⚠️ Голос не найден, используем голос по умолчанию')
           }
 
-          // Настрой��и для более естественного чивучания (менелю роботично)
+          // Настрой��и для более естестве��ного чивучания (менелю роботично)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скоро��ть (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
@@ -616,7 +664,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           // Добавляем обрлюботчики событий
           utterance.onstart = () => {
-            console.log('🎵 Начало люзвучивания')
+            console.log('🎵 Начало люз��учивания')
           }
 
           utterance.onend = () => {
@@ -624,7 +672,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           }
 
           utterance.onerror = (event) => {
-            console.error('❌ Ошибка озвучивания:', event.error)
+            console.error('❌ Ошибка озвучива��ия:', event.error)
           }
 
           console.log('🚀 Запускаем speechSynthesis.speak()')
@@ -656,7 +704,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   }
 
 
-  // Функция ��ля тестирования голоса
+  // Функция ����ля тестирования голоса
   const testVoice = () => {
     console.log('🧪 Тестиров��ние голоса JARVIS...')
     const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
@@ -742,7 +790,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, произошла ошибка. Попробуйте перефо��мулировать вопрос. ����'
+        return 'Извините, п��оизошла ошибка. Попробуйте перефо��мулировать вопрос. ����'
       }
 
       return data.message || 'Извините, не могу ответить на это�� вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
@@ -792,13 +840,13 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Запрос о ценах и тарифах',
           'П��оанализирую потребности пользователя',
-          'Подберу оптимальный тарифный план'
+          'Подберу оптималь��ый тарифный план'
         ]
       }
 
       if (isTechnical) {
         return [
-          'Технический вопрос - анализирую детали',
+          'Технический вопрос - ан��лизирую детали',
           'Подготовлю практические решения',
           '��чту лучшие практики разработки'
         ]
@@ -869,7 +917,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const handleVoiceAutoSend = async (textToSend: string) => {
     if (!textToSend.trim() || isTyping) return
 
-    // Очищаем все голосовые таймеры при отправке сообщения
+    // Очищаем все голосовые таймеры п��и отправке сообщения
     if (autoSendTimer) {
       clearTimeout(autoSendTimer)
       setAutoSendTimer(null)
@@ -925,7 +973,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         console.log('🔇 Голосовой режим выключен')
       }
 
-      // Сохраняем взаимодействие для обуче��ия
+      // Сохраняем взаимодействие для обу��е��ия
       await saveInteractionToLearning(userMessage, response, userMessageId)
 
     } catch (error) {
@@ -988,7 +1036,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         })
       }
 
-      // Показываем текст ОДНОВРЕМЕННО с голосом (без пауз)
+      // Показываем текст ОДНОВРЕМЕННО �� голосом (без пауз)
       setMessages(prev => [...prev, botMessage])
 
       if (voiceMode !== 'voice') {
@@ -1048,7 +1096,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Фай�� "${file.name}" получен! К сожаленилю, обралюотка фай��ов пока находится в разработке. Но вы можете описать содер��имое файла текстом, и я послюараю��ь помочь! 📝`,
+        text: `✅ Фай�� "${file.name}" получен! К сожал��нилю, обралюотка фай��ов пока находится в разработке. Но вы можете описать содер��имое файла текстом, и я послюараю��ь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
@@ -1929,6 +1977,139 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .dark-theme .thinking-cursor {
           color: #8b9dd4;
+        }
+
+        /* ================================
+           MOBILE RESPONSIVE FIXES
+           ================================ */
+        @media (max-width: 768px) {
+          .jarvis-chat-messages {
+            padding: 12px;
+            gap: 6px;
+          }
+
+          .message {
+            max-width: 100%;
+            gap: 6px;
+            margin-bottom: 8px;
+          }
+
+          /* Hide avatar on mobile for more space */
+          .message-avatar {
+            display: none;
+          }
+
+          .message-content {
+            max-width: 95%;
+          }
+
+          .user-message .message-content {
+            max-width: 85%;
+            margin-left: auto;
+          }
+
+          .bot-message .message-content {
+            max-width: 85%;
+            margin-right: auto;
+          }
+
+          .message-text {
+            padding: 10px 12px;
+            font-size: 14px;
+            line-height: 1.4;
+            border-radius: 16px;
+            max-width: 100%;
+          }
+
+          .user-message .message-text {
+            background: #007bff;
+            color: #ffffff;
+            border-radius: 16px 16px 4px 16px;
+          }
+
+          .bot-message .message-text {
+            background: #f1f3f4;
+            color: #374151;
+            border-radius: 16px 16px 16px 4px;
+            border: 1px solid #e5e7eb;
+          }
+
+          .dark-theme .bot-message .message-text {
+            background: #2f2f2f;
+            color: #ececec;
+            border: 1px solid #404040;
+          }
+
+          .message-time {
+            font-size: 10px;
+            padding: 0 8px;
+            margin-top: 2px;
+          }
+
+          .user-message .message-time {
+            text-align: right;
+          }
+
+          .bot-message .message-time {
+            text-align: left;
+          }
+
+          .typing-indicator {
+            padding: 10px 12px;
+            border-radius: 16px 16px 16px 4px;
+            background: #f1f3f4;
+          }
+
+          .dark-theme .typing-indicator {
+            background: #2f2f2f;
+          }
+
+          /* Thinking message mobile styles */
+          .thinking-text {
+            max-width: 95% !important;
+            font-size: 11px !important;
+            padding: 8px 12px !important;
+          }
+
+          /* Generated image styles for mobile */
+          .generated-image-container {
+            margin: 8px 0;
+          }
+
+          .generated-image {
+            max-width: 100% !important;
+            max-height: 250px !important;
+            border-radius: 12px !important;
+          }
+        }
+
+        /* Extra small mobile devices */
+        @media (max-width: 480px) {
+          .message-content {
+            max-width: 98%;
+          }
+
+          .user-message .message-content {
+            max-width: 90%;
+          }
+
+          .bot-message .message-content {
+            max-width: 90%;
+          }
+
+          .message-text {
+            padding: 8px 10px;
+            font-size: 13px;
+          }
+
+          .thinking-text {
+            max-width: 98% !important;
+            font-size: 10px !important;
+          }
+
+          .generated-image {
+            max-height: 200px !important;
+          }
         }
 
       `}</style>

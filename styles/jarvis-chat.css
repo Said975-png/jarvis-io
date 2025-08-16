@@ -838,6 +838,23 @@
     max-width: 85%;
   }
 
+  /* Hide avatar on mobile for more space */
+  .message-avatar {
+    display: none;
+  }
+
+  .message-content {
+    max-width: 95%;
+  }
+
+  .user-message .message-content {
+    margin-left: auto;
+  }
+
+  .ai-message .message-content {
+    margin-right: auto;
+  }
+
   .chat-button-tooltip {
     display: none;
   }

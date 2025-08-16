@@ -2,9 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 interface ImageRequest {
   prompt: string
-  size?: '1024x1024' | '1792x1024' | '1024x1792'
-  quality?: 'standard' | 'hd'
-  style?: 'vivid' | 'natural'
+  size?: string
+  quality?: string
+  style?: string
 }
 
 interface ImageResponse {
@@ -22,7 +22,7 @@ export default async function handler(
     return res.status(405).json({ success: false, error: 'Method not allowed' })
   }
 
-  const { prompt, size = '1024x1024', quality = 'standard', style = 'vivid' }: ImageRequest = req.body
+  const { prompt }: ImageRequest = req.body
 
   if (!prompt || typeof prompt !== 'string') {
     return res.status(400).json({ 
@@ -31,97 +31,73 @@ export default async function handler(
     })
   }
 
-  const openaiApiKey = process.env.OPENAI_API_KEY
+  const deepaiApiKey = process.env.DEEPAI_API_KEY
 
-  if (!openaiApiKey) {
-    console.error('❌ OpenAI API key not found')
+  if (!deepaiApiKey) {
+    console.error('❌ DeepAI API key not found')
     return res.status(500).json({ 
       success: false, 
-      error: 'OpenAI API key not configured' 
+      error: 'DeepAI API key not configured' 
     })
   }
 
   try {
-    console.log(`🎨 Генерация изображения: "${prompt.substring(0, 50)}..."`)
-    console.log(`📐 Параметры: ${size}, ${quality}, ${style}`)
+    console.log(`🎨 Генерация изображения через DeepAI: "${prompt.substring(0, 50)}..."`)
 
-    const response = await fetch('https://api.openai.com/v1/images/generations', {
+    // Используем URLSearchParams для правильной отправки form data
+    const formParams = new URLSearchParams()
+    formParams.append('text', prompt)
+
+    const response = await fetch('https://api.deepai.org/api/text2img', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openaiApiKey}`,
-        'Content-Type': 'application/json'
+        'api-key': deepaiApiKey,
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: JSON.stringify({
-        model: 'dall-e-3',
-        prompt: prompt,
-        n: 1,
-        size: size,
-        quality: quality,
-        style: style
-      })
+      body: formParams.toString()
     })
 
     if (!response.ok) {
       const errorText = await response.text()
-      console.error(`❌ OpenAI API Error: ${response.status} - ${errorText}`)
+      console.error(`❌ DeepAI API Error: ${response.status} - ${errorText}`)
 
       if (response.status === 401) {
+        if (errorText.includes('Out of API credits')) {
+          return res.status(401).json({
+            success: false,
+            error: 'Лимит генерации изображений DeepAI исчерпан'
+          })
+        }
         return res.status(401).json({
           success: false,
-          error: 'Invalid OpenAI API key'
+          error: 'Invalid DeepAI API key'
         })
       } else if (response.status === 429) {
         return res.status(429).json({
           success: false,
           error: 'Rate limit exceeded. Please try again later.'
         })
-      } else if (response.status === 400) {
-        // Проверяем специфичные ошибки биллинга
-        try {
-          const errorData = JSON.parse(errorText)
-          if (errorData.error?.code === 'billing_hard_limit_reached') {
-            return res.status(400).json({
-              success: false,
-              error: 'Лимит генерации изображений исчерпан'
-            })
-          }
-        } catch (e) {
-          console.log('Failed to parse error JSON:', e)
-        }
-
-        // Проверяем текстом тоже
-        if (errorText.includes('billing_hard_limit_reached') || errorText.includes('hard limit')) {
-          return res.status(400).json({
-            success: false,
-            error: 'Лимит генерации изображений исчерпан'
-          })
-        }
-
-        return res.status(400).json({
-          success: false,
-          error: 'Некорректный запрос или параметры генерации'
-        })
       }
 
       return res.status(500).json({
         success: false,
-        error: `OpenAI API error: ${response.status}`
+        error: `DeepAI API error: ${response.status}`
       })
     }
 
     const data = await response.json()
+    console.log('DeepAI Response:', data)
     
-    if (data.data && data.data.length > 0) {
-      const imageUrl = data.data[0].url
-      console.log('✅ Изображение успешно сгенерировано')
+    if (data.output_url) {
+      console.log('✅ Изображение успешно сгенерировано через DeepAI')
       
       return res.status(200).json({ 
         success: true, 
-        imageUrl: imageUrl,
-        message: 'Изображение успешно сгенерировано!'
+        imageUrl: data.output_url,
+        message: 'Изображение успешно сгенерировано через DeepAI!'
       })
     } else {
-      console.error('❌ No image data returned from OpenAI')
+      console.error('❌ No image data returned from DeepAI')
       return res.status(500).json({ 
         success: false, 
         error: 'No image generated' 
@@ -129,7 +105,7 @@ export default async function handler(
     }
 
   } catch (error) {
-    console.error('💥 Error generating image:', error)
+    console.error('💥 Error generating image with DeepAI:', error)
     return res.status(500).json({ 
       success: false, 
       error: 'Internal server error while generating image' 
