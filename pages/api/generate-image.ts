@@ -82,7 +82,7 @@ export default async function handler(
           if (errorData.error?.code === 'billing_hard_limit_reached') {
             return res.status(400).json({
               success: false,
-              error: 'Лимит генерации изображений исчерпан. Обратитесь к администратору для пополнения баланса.'
+              error: 'Лимит генерации изображений исчерпан'
             })
           }
         } catch (e) {
