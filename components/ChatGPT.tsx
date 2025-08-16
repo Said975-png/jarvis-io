@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! ����\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - ��онсультант нашего сайта! ����\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }
@@ -252,7 +252,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const commonTags = [
       'веб-разработка', 'дизайн', 'программирование', 'ai', 'технологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
-      'html', 'api', 'база данных', 'сеть', 'безопаснос��ь', 'ui', 'ux'
+      'html', 'api', 'база данных', 'се��ь', 'безопаснос��ь', 'ui', 'ux'
     ]
 
     const lowerText = text.toLowerCase()
@@ -294,7 +294,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для получения лучшег�� мужского гололю��
+  // Функция д��я получения лучшег�� мужского гололю��
   const getBestMaleVoice = () => {
     const voices = speechSynthesis.getVoices()
     let selectedVoice = null
@@ -394,7 +394,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       keyInfo.errorCount++
       if (keyInfo.errorCount >= 3) {
         keyInfo.isActive = false
-        console.log(`❌ ElevenLabs ключ отключен после 3 ошибок: ${apiKey.substring(0, 8)}...`)
+        console.log(`❌ ElevenLabs ключ о��ключен после 3 ошибок: ${apiKey.substring(0, 8)}...`)
       }
       console.log(`⚠️ ElevenLabs ошибка (${keyInfo.errorCount}/3): ${error}`)
     }
@@ -426,7 +426,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
 
-      // Используем качественный рус��кий мужской голос без акцента
+      // Используем качественный рус���кий мужской голос без акцента
       const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента)
 
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
@@ -459,7 +459,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         audio.onerror = () => {
-          console.error('❌ Ошибка воспроизведения ElevenLabs ауди��')
+          console.error('❌ О��ибка воспроизведения ElevenLabs ауди��')
           URL.revokeObjectURL(audioUrl)
         }
 
@@ -559,7 +559,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
           }
 
-          // Настройки для более естественного чивучания (менелю роботично)
+          // Настройки для более естественного чивуч��ния (менелю роботично)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скоро��ть (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
@@ -1147,7 +1147,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Остановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
+                  title={isListening ? "Остановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек по��ле речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
@@ -1496,6 +1496,34 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         .dark-theme .jarvis-chat-input {
           background: #2d2d2d;
           border-top: 1px solid #404040;
+        }
+
+        .auto-send-indicator {
+          background: linear-gradient(135deg, #10b981, #059669);
+          color: #ffffff;
+          padding: 8px 16px;
+          border-radius: 12px;
+          font-size: 12px;
+          text-align: center;
+          margin-bottom: 12px;
+          box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+          animation: autosend-pulse 2s infinite;
+        }
+
+        @keyframes autosend-pulse {
+          0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+          }
+          50% {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+          }
+        }
+
+        .dark-theme .auto-send-indicator {
+          background: linear-gradient(135deg, #10b981, #059669);
+          box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
         }
 
         .input-container {
