@@ -173,29 +173,9 @@
     return false;
   };
 
-  // Мониторинг DevTools по размеру окна (только для десктопа)
-  let devtoolsOpen = false;
-  const checkDevTools = () => {
-    // Проверяем, что это не мобильное устройство
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                    window.innerWidth <= 768 ||
-                    ('ontouchstart' in window);
-
-    if (isMobile) return; // Не проверяем DevTools на мобильных
-
-    const threshold = 160;
-    const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-    const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-
-    if ((heightThreshold || widthThreshold) && !devtoolsOpen) {
-      devtoolsOpen = true;
-      alert('Доступ к инструментам разработчика запрещен!');
-      window.location.href = 'about:blank';
-    }
-  };
-
-  // Проверка каждую секунду
-  setInterval(checkDevTools, 1000);
+  // ВРЕМЕННО ОТКЛЮЧЕНА детекция DevTools по размеру окна из-за ложных срабатываний
+  // Оставляем только блокировку горячих клавиш для защиты
+  console.log('🛡️ DevTools блокировка: только горячие клавиши (размер окна отключен)');
 
   // Блокировка через console API
   if (typeof console !== 'undefined') {
