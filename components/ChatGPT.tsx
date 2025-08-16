@@ -257,7 +257,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return selectedVoice
   }
 
-  // Функция получения доступного ElevenLabs ключа (��истема ротации как у OpenRouter)
+  // Функция получения доступного ElevenLabs ключа (��истем�� ротации как у OpenRouter)
   const getNextAvailableElevenLabsKey = () => {
     // Ищем активные ключи с доступным лимитом
     const availableKeys = elevenLabsKeys.filter(k =>
@@ -397,7 +397,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для озвучивания тексчиа (теперь с ElevenLabs + fallback)
+  // Функция для озвучивания тек��чиа (теперь с ElevenLabs + fallback)
   const speakText = async (text: string) => {
     if (voiceMode !== 'voice') return
 
@@ -627,7 +627,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isPricing) {
         return [
           'Запрос о ценах и тарифах',
-          'Проанализирую потребности пользоват��ля',
+          'Проанализирую потребности пользоват��л��',
           'Подберлю оптимальный тарифный п��ан'
         ]
       }
@@ -1218,14 +1218,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           color: #93c5fd;
         }
 
-        .dark-theme .setup-elevenlabs-btn {
-          color: #fbbf24;
-        }
-
-        .dark-theme .setup-elevenlabs-btn:hover {
-          background: #451a03;
-          color: #fed7aa;
-        }
 
         .jarvis-chat-messages {
           flex: 1;
