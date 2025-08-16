@@ -160,7 +160,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     } catch (error) {
       console.error('Error saving interaction for learning:', error)
-      // Не блокируем пользовательский люнтерфейс при ошибках сохранения
+      // Не блокируем польз��вательский люнтерфейс при ошибках сохранения
       // Это не клюитично для работы чата
     }
   }
@@ -364,7 +364,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         await audio.play()
 
-        // Обновляем счетчик использования
+        // Обновляем счетчик испо��ьзования
         updateElevenLabsUsage(apiKey, text.length)
 
         console.log('🎵 ElevenLabs TTS успешно воспроизведен')
@@ -796,7 +796,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожаленилю, обралюотка файлов пока находится в разработке. Но вы можете описать содержимое файла текстом, и я послюараю��ь помочь! 📝`,
+        text: `✅ Файл "${file.name}" получен! К сожаленилю, обралюотка файлов пока находится в разработке. Но вы можете описать содер��имое файла текстом, и я послюараю��ь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
@@ -1148,7 +1148,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .voice-mode-btn,
         .test-voice-btn,
-        .setup-elevenlabs-btn,
         .clear-chat-btn,
         .close-btn {
           background: none;
