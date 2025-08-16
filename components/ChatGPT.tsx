@@ -84,7 +84,9 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           // Обрабатываем финальный текст и запускаем автоотправку
           if (finalTranscript) {
             console.log('📝 Получен финальный текст:', finalTranscript)
-            setInputText(prev => prev + finalTranscript)
+            const newText = (inputTextRef.current || '') + finalTranscript
+            setInputText(newText)
+            inputTextRef.current = newText
 
             // Очищаем суще��твующий таймер
             if (autoSendTimer) {
@@ -136,7 +138,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         recognitionInstance.onerror = (event: any) => {
           console.error('Speech recognition error:', event.error)
 
-          // ��гнор��руем ошибки "no-speech" (отсутст��ие речи) - это нормально
+          // Игнор��руем ошибки "no-speech" (отсутст��ие речи) - это нормально
           if (event.error === 'no-speech') {
             console.log('⚠️ Нет речи - ожидаем дальше')
             return
@@ -280,7 +282,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return commonTags.filter(tag => lowerText.includes(tag))
   }
 
-  // Функция для запуска голосового ввода
+  // Функция д��я запуска голосового ввода
   const startListening = () => {
     if (recognition && !isListening) {
       console.log('🎙️ ЗАПУСК голосового вво��а с автоотправкой')
@@ -434,7 +436,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (keyInfo.usage >= keyInfo.limit) {
         keyInfo.isActive = false
-        console.log(`🚫 ElevenLabs ключ и��черпал лимит: ${apiKey.substring(0, 8)}...`)
+        console.log(`🚫 ElevenLabs ключ исчерпал лимит: ${apiKey.substring(0, 8)}...`)
       }
     }
   }
@@ -532,7 +534,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       speechSynthesis.cancel()
     }
 
-    // Очищаем люекс��
+    // Очищаем люекст
     const cleanText = text
       .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
       .replace(/[•·]/g, '')
@@ -566,7 +568,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Ждем немного, чтоблю cancel успел отработать
       setTimeout(() => {
-        // Очищаем т��кст от эмодзлю и специальных символов дл�� лучшего произношения
+        // Очищаем текст от эмодзлю и специальных символов дл�� лучшего произношения
         const cleanText = text
           .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
           .replace(/[��ю·]/g, '')
@@ -588,7 +590,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скоро��ть (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
-          utterance.volume = 0.8 // Комфортная гро��кость
+          utterance.volume = 0.8 // Комфортная громкость
 
           // Добавляем обрлюботчики событий
           utterance.onstart = () => {
@@ -716,7 +718,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       
       if (data.error) {
         console.error('Chat API returned error:', data.error)
-        return 'Извините, ��роизошла ошибка. Попробуйте переформулировать вопрос. 🤔'
+        return 'Извините, произошла ошибка. Попробуйте переформулировать вопрос. 🤔'
       }
 
       return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
@@ -871,7 +873,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const response = await generateJarvisResponse(userMessage, messages)
 
-      // Удаляе�� блок thinking перед показом ответа
+      // Удаляе�� блок thinking перед показ��м ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
       // Небольшая пауза перед показом ответа
@@ -935,7 +937,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Просто ��обавляем сообщение о загруженном файле
       const fileMessage: Message = {
         id: Date.now().toString(),
-        text: `📎 Файл загруже��: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`,
+        text: `📎 Файл загружен: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`,
         isUser: true,
         timestamp: new Date()
       }
@@ -1138,7 +1140,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={isListening ? "Говорите..." : "Напишите сообщение..."}
+              placeholder={isListening ? "Говорит��..." : "Напишите сообщение..."}
               className="jarvis-message-input"
               rows={1}
               disabled={isTyping}
