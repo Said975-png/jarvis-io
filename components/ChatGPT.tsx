@@ -221,7 +221,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         v.name.toLowerCase().includes(premiumVoice.toLowerCase())
       )
       if (selectedVoice) {
-        console.log('✅ Найден качественный голос:', selectedVoice.name)
+        console.log('✅ Найден ка��ественный голос:', selectedVoice.name)
         break
       }
     }
@@ -435,7 +435,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     console.log('📱 ЭТАП 2: BROWSER TTS FALLBACK')
 
     if (speechSynthesis) {
-      // Останавливаем предыдущее воспроизведение
+      // Останавливаем предыдущее воспроизвед��ние
       speechSynthesis.cancel()
 
       // Ждем немного, чтоблю cancel успел отработать
@@ -1164,7 +1164,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .voice-mode-btn:hover,
         .test-voice-btn:hover,
-        .setup-elevenlabs-btn:hover,
         .clear-chat-btn:hover,
         .close-btn:hover {
           background: #f0f0f0;
