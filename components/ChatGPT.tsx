@@ -75,7 +75,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('🔄 Промежуточный текст:', interimTranscript)
           }
 
-          // Обр��батываем финальный текст и запускаем автоотправку
+          // Обрабатываем фин��льный текст и запускаем автоотправку
           if (finalTranscript) {
             console.log('📝 Получен финальный текст:', finalTranscript)
             setInputText(prev => prev + finalTranscript)
@@ -126,7 +126,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           // Игнор��руем ошибки "no-speech" (отсутст��ие речи) - это нормально
           if (event.error === 'no-speech') {
-            console.log('��️ Нет речи - ожидаем дальше')
+            console.log('⚠️ Нет речи - ожидаем дальше')
             return
           }
 
@@ -498,7 +498,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         if (response.status === 401) {
           console.log('🔑 Н��верный ключ ElevenLabs, пробуем следующий...')
         } else if (response.status === 429) {
-          console.log('⏰ Лимит ElevenLabs превышен, пробуем следующий ключ...')
+          console.log('⏰ Л��мит ElevenLabs превышен, пробуем следующий ключ...')
         }
 
         return false
@@ -707,7 +707,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return 'Извините, произошла ошибка. Попробуйте переформулировать вопрос. 🤔'
       }
 
-      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить ��то-то дрлюгое! 🤷‍♂️'
+      return data.message || 'Извините, не могу ответить на этот вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
 
     } catch (error) {
       console.error('Error generating response:', error)
@@ -859,7 +859,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const response = await generateJarvisResponse(userMessage, messages)
 
-      // Удаляе�� блок thinking перед показ��м ответа
+      // Удаляе�� блок thinking перед показом ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
       // Небольшая пауза перед показом ответа
@@ -876,7 +876,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Озвучиваем ответ бота если включен голосовой режим
       if (voiceMode === 'voice') {
-        setTimeout(() => speakText(response), 500) // Небольшая задержка для плавности
+        setTimeout(() => speakText(response), 500) // Небольша�� задержка для плавности
       }
 
       // Сохраняем взаимодействие для обучения
