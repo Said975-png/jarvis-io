@@ -66,19 +66,32 @@ export default async function handler(
       console.error(`❌ OpenAI API Error: ${response.status} - ${errorData}`)
       
       if (response.status === 401) {
-        return res.status(401).json({ 
-          success: false, 
-          error: 'Invalid OpenAI API key' 
+        return res.status(401).json({
+          success: false,
+          error: 'Invalid OpenAI API key'
         })
       } else if (response.status === 429) {
-        return res.status(429).json({ 
-          success: false, 
-          error: 'Rate limit exceeded. Please try again later.' 
+        return res.status(429).json({
+          success: false,
+          error: 'Rate limit exceeded. Please try again later.'
         })
       } else if (response.status === 400) {
-        return res.status(400).json({ 
-          success: false, 
-          error: 'Invalid prompt or parameters' 
+        // Проверяем специфичные ошибки биллинга
+        try {
+          const errorData = await response.json()
+          if (errorData.error?.code === 'billing_hard_limit_reached') {
+            return res.status(400).json({
+              success: false,
+              error: 'Лимит генерации изображений исчерпан. Обратитесь к администратору для пополнения баланса.'
+            })
+          }
+        } catch (e) {
+          // Игнорируем ошибки парсинга JSON
+        }
+
+        return res.status(400).json({
+          success: false,
+          error: 'Некорректный запрос или параметры генерации'
         })
       }
       
