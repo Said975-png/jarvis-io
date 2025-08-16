@@ -358,7 +358,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return selectedVoice
   }
 
-  // Функция получения доступного ElevenLabs ключа (��истем�� ротации как у OpenRouter)
+  // Функция получения доступного ElevenLabs ключ�� (��истем�� ротации как у OpenRouter)
   const getNextAvailableElevenLabsKey = () => {
     // Ищем активные ключи с д��ступным лимитом
     const availableKeys = elevenLabsKeys.filter(k =>
@@ -589,7 +589,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const newMode = voiceMode === 'text' ? 'voice' : 'text'
     setVoiceMode(newMode)
 
-    // Тестируем голос при включении
+    // Тестируем голос при включен��и
     if (newMode === 'voice') {
       setTimeout(() => {
         const voices = speechSynthesis.getVoices()
@@ -727,7 +727,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Анализируем тип вопроса
       const isQuestion = message.includes('?') || words.some(w => ['люак', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
-      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
+      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'опл��та'].includes(w))
       const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
 
       if (isGreeting) {
@@ -1102,13 +1102,18 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         </div>
 
         <div className="jarvis-chat-input">
+          {isListening && (
+            <div className="auto-send-indicator">
+              🎤 Слушаю... Сообщение отправится автоматически через 2 сек после окончания речи
+            </div>
+          )}
           <div className="input-container">
             <textarea
               ref={textareaRef}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Напишите сообщение..."
+              placeholder={isListening ? "Говорите..." : "Напишите сообщение..."}
               className="jarvis-message-input"
               rows={1}
               disabled={isTyping}
