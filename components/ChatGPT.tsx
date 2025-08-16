@@ -32,7 +32,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [autoSendTimer, setAutoSendTimer] = useState<NodeJS.Timeout | null>(null)
   const [silenceTimer, setSilenceTimer] = useState<NodeJS.Timeout | null>(null)
 
-  // ElevenLabs кл��чии (8 ключей с разных аккаунтов для ротации)
+  // ElevenLabs ключи (4 ключа с разных аккаунтов для ротации - ОБНОВЛЕНЫ)
   const [elevenLabsKeys] = useState([
     { key: 'sk_1df0aad8b96f47707c32565c8a91421e994da2f1858563f1', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
     { key: 'sk_5db328d5ec7cec7e73430d76b064cfb0c883cbc757497b22', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
@@ -53,7 +53,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
       if (SpeechRecognition) {
         const recognitionInstance = new SpeechRecognition()
-        recognitionInstance.continuous = true // Включаем непрерывное распознавание
+        recognitionInstance.continuous = true // Включаем непрерывное распозн��вание
         recognitionInstance.interimResults = true // Включаем пром��жуточн��е результаты
         recognitionInstance.lang = 'ru-RU'
 
@@ -439,7 +439,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       console.log(`🎤 Используем ElevenLabs ключ: ${apiKey.substring(0, 8)}...`)
 
-      // Ис��ользуем качественный рус��кий мужской голос без акцента
+      // Ис��ольз��ем качественный рус��кий мужской голос без акцента
       const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента)
 
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
@@ -542,7 +542,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return
       }
     } catch (error) {
-      console.error('💥 ElevenLabs критическая ошиб��а:', error)
+      console.error('💥 ElevenLabs критическая ошиб����а:', error)
     }
 
     // ЭТАП 2: Fallback на браузер��ый TTS
@@ -715,7 +715,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Эффект печатания для thinking
+  // Эффект печатания д��я thinking
   const typeText = async (text: string, speed: number = 30) => {
     return new Promise<void>((resolve) => {
       let i = 0
