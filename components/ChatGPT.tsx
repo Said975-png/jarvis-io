@@ -54,7 +54,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (SpeechRecognition) {
         const recognitionInstance = new SpeechRecognition()
         recognitionInstance.continuous = true // Включаем непрерывное распознавание
-        recognitionInstance.interimResults = true // Включаем промежуточн��е результаты
+        recognitionInstance.interimResults = true // Включаем пром��жуточн��е результаты
         recognitionInstance.lang = 'ru-RU'
 
         recognitionInstance.onresult = (event: any) => {
@@ -83,7 +83,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             // Очищаем суще��твующий таймер
             if (autoSendTimer) {
               clearTimeout(autoSendTimer)
-              console.log('⏰ Очищен предыдущий таймер автоотправки')
+              console.log('⏰ Очищен пре��ыдущий таймер автоотправки')
             }
 
             // Запускаем таймер автоотправки через 2 секунды после последних слов
@@ -271,7 +271,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Функция для запуска голосового ввода
   const startListening = () => {
     if (recognition && !isListening) {
-      console.log('🎙️ ЗАПУСК голосового ввода с автоотправкой')
+      console.log('🎙️ ЗАПУСК голосового вво��а с автоотправкой')
       console.log('🧹 Очищаем поле ввода для новой записи')
       setInputText('') // Очищаем поле ввода для новой записи
       setIsListening(true)
@@ -511,7 +511,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для озвучивания т��к��чиа (теперь с ElevenLabs + fallback)
+  // Функция для озвучивания т���к��чиа (теперь с ElevenLabs + fallback)
   const speakText = async (text: string) => {
     if (voiceMode !== 'voice') return
 
@@ -692,7 +692,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (!response.ok) {
         if (response.status === 429) {
-          return 'Слишком много запросов. Пожалуйста, подождите немного перед следующим сообщением. ⏳'
+          return 'Слишком много запро��ов. Пожалуйста, подождите немного перед следующим сообщением. ⏳'
         }
         
         const errorText = await response.text()
@@ -740,13 +740,13 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Анализируем тип вопроса
       const isQuestion = message.includes('?') || words.some(w => ['люак', 'что', 'где', 'когда', 'почему', 'зачем', 'кто'].includes(w))
       const isTechnical = words.some(w => ['код', 'программ', 'сайт', 'веб', 'javascript', 'react', 'css', 'html', 'api', 'база', 'данных'].includes(w))
-      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'опл��та'].includes(w))
-      const isGreeting = words.some(w => ['привет', 'з��равствуй', 'добро', 'hello', 'hi'].includes(w))
+      const isPricing = words.some(w => ['цена', 'стоимость', 'тариф', 'план', 'подписка', 'оплата'].includes(w))
+      const isGreeting = words.some(w => ['привет', 'здравствуй', 'добро', 'hello', 'hi'].includes(w))
 
       if (isGreeting) {
         return [
-          'Поль��ователлю поздоровался',
-          'Отвечу дружелюбно и ��редложу помощь'
+          'Пользователь поздоровался',
+          'Отвечу дружелюбно и предложу помощь'
         ]
       }
 
