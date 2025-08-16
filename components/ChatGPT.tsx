@@ -32,14 +32,8 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
   // ElevenLabs ключии (8 ключей с разных аккаунтов для ротации)
   const [elevenLabsKeys] = useState([
-    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
-    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
-    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 3
-    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 4
-    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 5
-    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 6
-    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Клююч 7
-    { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 8
+    { key: 'sk_1df0aad8b96f47707c32565c8a91421e994da2f1858563f1', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Основной ключ
+    { key: 'sk_5db328d5ec7cec7e73430d76b064cfb0c883cbc757497b22', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Резервный ключ
   ])
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -422,7 +416,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     if (!cleanText) return
 
     console.log('🎵 === НАЧИНАЕМ ОЗВУЧИВАНИЕ ===')
-    console.log(`📝 Текст: ${cleanText.substring(0, 50)}...`)
+    console.log(`📝 Тек��т: ${cleanText.substring(0, 50)}...`)
 
     // ЭТАП 1: Пробуем ElevenLabs (премиум качество)
     try {
@@ -450,7 +444,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         const cleanText = text
           .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
           .replace(/[лю·]/g, '')
-          .replace(/\n+/g, '. ') // Заменяем переносы на паузы
+          .replace(/\n+/g, '. ') // Заменяем переносы на пауз��
           .trim()
 
         if (cleanText) {
@@ -627,7 +621,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   }
 
   const showThinkingProcess = async (userMessage: string) => {
-    // Более умная генерация мыслей на основе анализа вопроса
+    // Более умная генерация мыслей на основе анализа вопрос��
     const generateThinking = (message: string) => {
       const lowerMessage = message.toLowerCase()
       const words = lowerMessage.split(' ')
