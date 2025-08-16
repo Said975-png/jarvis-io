@@ -26,7 +26,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
   // Го��осовые функции
   const [isListening, setIsListening] = useState(false)
-  const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('text') // 'text' = толь��о текст, 'voice' = текст + голос
+  const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('voice') // 'text' = толь��о текст, 'voice' = текст + голос
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
   const [autoSendTimer, setAutoSendTimer] = useState<NodeJS.Timeout | null>(null)
@@ -638,7 +638,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
 
         if (russianVoices.length === 0) {
-          speakText('Внимание! Русские голос�� не найдены. Качество речи может быть низким.')
+          speakText('Внимание! Русски�� голос�� не найдены. Качество речи может быть низким.')
         } else {
           speakText('Голосовой режим включен. Если голос звучит роботично, это ограничение браузера.')
         }
@@ -726,7 +726,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         
         const errorText = await response.text()
         console.error('Chat API error:', errorText)
-        return 'Извините, произошла ошибка пр�� обработк�� запроса. Попробуйте позже. 😔'
+        return 'Извините, произошла ошибк�� пр�� обработк�� запроса. Попробуйте позже. 😔'
       }
 
       const data = await response.json()
@@ -782,7 +782,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (isPricing) {
         return [
           'Запрос о ценах и тарифах',
-          'Проанализирую потребности пользователя',
+          'П��оанализирую потребности пользователя',
           'Подберу оптимальный тарифный план'
         ]
       }
@@ -973,7 +973,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       setMessages(prev => [...prev, botMessage])
 
-      // Озвучиваем ответ бота одновременно с текстом если включен голосовой режим
+      // Озвучиваем ответ бота одновременно с текстом если включен голосовой р��жим
       console.log('🏛️ Текущий голосовой режим:', voiceMode)
       if (voiceMode === 'voice') {
         console.log('🎤 Запускаем озвучивание ответа:', response.substring(0, 50) + '...')
