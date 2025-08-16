@@ -24,9 +24,9 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [isUploadingFile, setIsUploadingFile] = useState(false)
   const [interactionIds, setInteractionIds] = useState<{[messageId: string]: string}>({})
 
-  // Го��осовые функции
+  // Голосов��е функции
   const [isListening, setIsListening] = useState(false)
-  const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('voice') // 'text' = толь��о текст, 'voice' = текст + голос
+  const [voiceMode, setVoiceMode] = useState<'text' | 'voice'>('voice') // 'text' = только текст, 'voice' = текст + голос
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
   const [autoSendTimer, setAutoSendTimer] = useState<NodeJS.Timeout | null>(null)
@@ -52,15 +52,15 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     inputTextRef.current = inputText
   }, [inputText])
 
-  // Инициализация голосовл��х API
+  // Инициализация голосовых API
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // Speech Recognition API
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
       if (SpeechRecognition) {
         const recognitionInstance = new SpeechRecognition()
-        recognitionInstance.continuous = true // Включаем неп��ерывное распозн��ва��ие
-        recognitionInstance.interimResults = true // Включаем пром��жуточн��е результаты
+        recognitionInstance.continuous = true // Включаем непрерывное распознавание
+        recognitionInstance.interimResults = true // Включаем промежуточные результаты
         recognitionInstance.lang = 'ru-RU'
 
         recognitionInstance.onresult = (event: any) => {
@@ -86,17 +86,17 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           // Обрабатываем финальный текст и запускаем автоотправку
           if (finalTranscript) {
             console.log('📝 Получен финальный текст:', finalTranscript)
-            // Устанавлива��м только финальный текст (не накапливаем)
+            // Устанавливаем только финальный текст (не накапливаем)
             setInputText(finalTranscript.trim())
             inputTextRef.current = finalTranscript.trim()
 
-            // Очищаем суще��твующ��й таймер
+            // Очищаем существующий таймер
             if (autoSendTimer) {
               clearTimeout(autoSendTimer)
-              console.log('⏰ Очищен пре��ыдущий таймер автоотправки')
+              console.log('⏰ Очищен предыдущий таймер автоотправки')
             }
 
-            // Запускаем таймер автоо��правки через 2 секунды после последних слов
+            // Запускаем таймер автоотправки через 2 секунды после последних слов
             console.log('⏱️ Запускаем таймер автоотправки (2 сек)')
             const timer = setTimeout(() => {
               console.log('🚀 Время вышло! Автоматическая отправка сообщения')
@@ -112,7 +112,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               }
               setIsListening(false)
               recognitionInstance.stop()
-            }, 2000) // 2 секунд��
+            }, 2000) // 2 секунды
 
             setAutoSendTimer(timer)
           }
@@ -120,7 +120,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         recognitionInstance.onspeechstart = () => {
           console.log('🎤 Начало речи обнаружено')
-          // Очищаем таймер тишины при начале речи
+          // О��ищаем таймер тишины при начале речи
           if (silenceTimer) {
             clearTimeout(silenceTimer)
             setSilenceTimer(null)
@@ -214,7 +214,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           loadVoices()
         }
 
-        // Попытка 4: дополнит��льная загрузка через секунду
+        // Попытка 4: дополн��т��льная загрузка через секунду
         setTimeout(() => {
           if (window.speechSynthesis.getVoices().length === 0) {
             forceLoadVoices()
@@ -286,7 +286,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return commonTags.filter(tag => lowerText.includes(tag))
   }
 
-  // Функция для з��пуска голосового ввода
+  // Функ��ия для з��пуска голосового ввода
   const startListening = () => {
     if (recognition && !isListening) {
       console.log('🎙️ ЗАПУСК голосового ввода с автоотправкой')
@@ -635,7 +635,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Ждем немного, чтоблю cancel ус��ел отработать
       setTimeout(() => {
-        // Очищаем текст от эмодзлю и специальных символов дл�� лучшего произношения
+        // Очищаем текст от эмодзлю и специальных символов дл�� ��учшего произношения
         const cleanText = text
           .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
           .replace(/[��ю·]/g, '')
@@ -658,7 +658,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           // Настрой��и для более естестве��ного чивучания (менел�� роботично)
           utterance.lang = 'ru-RU'
-          utterance.rate = 1.0   // Нормальная скоро��ть (не замедленная)
+          utterance.rate = 1.0   // Нормальная скоро��ть (не замедл��нная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
           utterance.volume = 0.8 // Комфортная громкость
 
@@ -863,7 +863,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Для остальных случаев
       return [
         'Обрабатываю запрос',
-        'Формирую наиболее полезный ответ'
+        'Формирую наиболее полезный ��твет'
       ]
     }
 
