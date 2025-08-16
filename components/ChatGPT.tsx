@@ -30,7 +30,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [speechSynthesis, setSpeechSynthesis] = useState<SpeechSynthesis | null>(null)
 
-  // ElevenLabs ключи (8 ключей с разных аккаунтов для ротации)
+  // ElevenLabs клю��и (8 ключей с разных аккаунтов для ротации)
   const [elevenLabsKeys] = useState([
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
     { key: '', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
@@ -314,7 +314,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (keyInfo.usage >= keyInfo.limit) {
         keyInfo.isActive = false
-        console.log(`🚫 ElevenLabs ключ исчерпал лимит: ${apiKey.substring(0, 8)}...`)
+        console.log(`🚫 ElevenLabs ключ исчерп��л лимит: ${apiKey.substring(0, 8)}...`)
       }
     }
   }
@@ -563,7 +563,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     try {
       // Обычный чат-запрос
       const apiMessages = conversationHistory
-        .filter(msg => !msg.text.includes('Привет! Я ДЖАРВИС, ваш AI-помощник!'))
+        .filter(msg => !msg.text.includes('Привет! Я ДЖАРВ��С, ваш AI-помощник!'))
         .map(msg => ({
           role: msg.isUser ? 'user' : 'assistant' as const,
           content: msg.text
@@ -606,7 +606,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     } catch (error) {
       console.error('Error generating response:', error)
-      return 'Произошла ошибка при глюнерации ответа. Проверь��е подключение к интернету и люопробуйте снова. 🌐'
+      return 'Произошла ошибка при генерации ответа. Проверьте подключение к интернету и попробуйте снова. 🌐'
     }
   }
 
