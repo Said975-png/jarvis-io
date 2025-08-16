@@ -33,7 +33,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [silenceTimer, setSilenceTimer] = useState<NodeJS.Timeout | null>(null)
   const inputTextRef = useRef('')
 
-  // ElevenLabs ключи (4 ключа с разных аккаунтов для ротации - ОБНОВЛЕНЫ)
+  // ElevenLabs ключи (4 ключа с разных аккаунтов для ротации - ОБНОВЛЕНЫ С ВАШИМИ КЛЮЧАМИ)
   const [elevenLabsKeys] = useState([
     { key: 'sk_1df0aad8b96f47707c32565c8a91421e994da2f1858563f1', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
     { key: 'sk_5db328d5ec7cec7e73430d76b064cfb0c883cbc757497b22', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
@@ -354,7 +354,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         v.name.toLowerCase().includes(premiumVoice.toLowerCase())
       )
       if (selectedVoice) {
-        console.log('✅ Найден качественный голос:', selectedVoice.name)
+        console.log('✅ Найден ка��ественный голос:', selectedVoice.name)
         break
       }
     }
@@ -479,7 +479,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           model_id: 'eleven_multilingual_v2', // Лучше для русского яз��ка
           voice_settings: {
             stability: 0.90, // Максимальная стабильность для четкого русского произношения
-            similarity_boost: 0.85, // ��лучше��ная похожесть на естественный голос
+            similarity_boost: 0.85, // ��лучше��ная похожесть на естестве��ный голос
             style: 0.1, // Неб��льшая эмоциональность для естественности
             use_speaker_boost: true // Усиление для луч����го качества звука
           }
@@ -697,7 +697,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         if (russianVoices.length === 0) {
           speakText('Внимание! Русски�� голос�� не найдены. Качество речи может быть низким.')
         } else {
-          speakText('Голосовой режим включен. Если голос звучит роботично, это огран��чение браузера.')
+          speakText('Голосовой режим включе��. Если голос звучит роботично, это огран��чение браузера.')
         }
       }, 300)
     }
@@ -957,7 +957,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         timestamp: new Date()
       }
 
-      // 🚀 ЗАПУСКАЕМ ГОЛОС СРАЗУ, БЕЗ ЗАДЕРЖЕК!
+      // 🚀 ЗАПУСКАЕМ ГОЛОС СРАЗУ, БЕЗ ЗАДЕ��ЖЕК!
       if (voiceMode === 'voice') {
         console.log('🎤 🚀 МГНО��ЕННЫЙ запуск озвучивания (handleVoiceAutoSend):', response.substring(0, 50) + '...')
         // Запускаем ��звучивание параллельно, не блокируя UI
