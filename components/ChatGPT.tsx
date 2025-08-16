@@ -170,7 +170,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const commonTags = [
       'веб-разработка', 'дизайн', 'программирование', 'ai', 'технологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
-      'html', 'api', 'база данных', 'сеть', 'безопасность', 'ui', 'ux'
+      'html', 'api', 'база данных', 'сеть', 'безопаснос��ь', 'ui', 'ux'
     ]
 
     const lowerText = text.toLowerCase()
@@ -304,7 +304,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const keyInfo = elevenLabsKeys.find(k => k.key === apiKey)
     if (keyInfo) {
       keyInfo.usage += charactersUsed
-      console.log(`📊 ElevenLabs использование: ${keyInfo.usage}/${keyInfo.limit} символов`)
+      console.log(`📊 ElevenLabs использование: ${keyInfo.usage}/${keyInfo.limit} ��имволов`)
 
       if (keyInfo.usage >= keyInfo.limit) {
         keyInfo.isActive = false
@@ -903,21 +903,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                     <polygon points="11 5,6 9,2 9,2 15,6 15,11 19,11 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-                <button
-                  className="setup-elevenlabs-btn"
-                  onClick={() => {
-                    const keys = prompt('Введите ElevenLabs ключи через запятую:')
-                    if (keys) {
-                      setElevenLabsKeys(keys.split(','))
-                    }
-                  }}
-                  title="Настроить ElevenLabs ключи"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 15l-3-3h6l-3 3z" fill="currentColor"/>
-                    <path d="M17 8V7a5 5 0 0 0-10 0v1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2z" stroke="currentColor" strokeWidth="2"/>
                   </svg>
                 </button>
               </>
