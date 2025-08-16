@@ -277,7 +277,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Извлечение тегов из текста
   const extractTags = (text: string): string[] => {
     const commonTags = [
-      'веб-разработка', 'дизай��', 'программирование', 'ai', 'технологии',
+      'веб-разработк��', 'дизай��', 'программирование', 'ai', 'технологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
       'html', 'api', 'база данных', 'сеть', 'безопасность', 'ui', 'ux'
     ]
@@ -465,7 +465,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }, 15000) // 15 секунд timeout
 
       // Используем качественный русский мужской голос без акцента (лучший для русского языка)
-      const voiceId = 'bVMeCyTHy58xNoL34h3p' // Jeremy (русский мужской голос без акцента, оптимизирован для русского)
+      const voiceId = 'pNInz6obpgDQGcFmaJgB' // Adam (отличный английский голос, но хорошо произносит русский без акцента)
 
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
         method: 'POST',
@@ -677,7 +677,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           console.log('🚀 Запускаем speechSynthesis.speak()')
           speechSynthesis.speak(utterance)
-          console.log('��� speechSynthesis.speak() выполнен')
+          console.log('����� speechSynthesis.speak() выполнен')
         }
       }, 100)
     }
@@ -1360,7 +1360,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Остановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
+                  title={isListening ? "О��тановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
