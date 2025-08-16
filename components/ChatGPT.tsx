@@ -32,8 +32,10 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
   // ElevenLabs ключии (8 ключей с разных аккаунтов для ротации)
   const [elevenLabsKeys] = useState([
-    { key: 'sk_1df0aad8b96f47707c32565c8a91421e994da2f1858563f1', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Основной ключ
-    { key: 'sk_5db328d5ec7cec7e73430d76b064cfb0c883cbc757497b22', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Резервный ключ
+    { key: 'sk_1df0aad8b96f47707c32565c8a91421e994da2f1858563f1', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 1
+    { key: 'sk_5db328d5ec7cec7e73430d76b064cfb0c883cbc757497b22', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 2
+    { key: 'sk_069e38bd4f02f37b61dce186ba7147400b62b49ba5ce2a6b', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 3
+    { key: 'sk_461e30f29ff6c05c74b34778cb0933a05b641f27bf766ab0', isActive: true, usage: 0, limit: 10000, errorCount: 0 }, // Ключ 4
   ])
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -440,7 +442,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       // Ждем немного, чтоблю cancel успел отработать
       setTimeout(() => {
-        // Очищаем текст от эмодзлю и специальных символов для лучшего произношения
+        // Очищаем текст от эмодзлю и специальных символов дл�� лучшего произношения
         const cleanText = text
           .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
           .replace(/[лю·]/g, '')
@@ -636,7 +638,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return [
           'Технический вопрос - анализирую детали',
           'Подготовлю практические решения',
-          'Учту лучшие практики разработки'
+          'Учту лучшие практики раз��аботки'
         ]
       }
 
