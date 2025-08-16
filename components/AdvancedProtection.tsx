@@ -108,10 +108,17 @@ export default function AdvancedProtection() {
       document.oncontextmenu = function() { return false; };
       document.ondragstart = function() { return false; };
       
-      // Обнаружение DevTools
+      // Обнаружение DevTools (только для десктопа)
       let devtools = false;
       const devtoolsInterval = setInterval(function() {
-        if (window.outerHeight - window.innerHeight > 200 || 
+        // Проверяем, что это не мобильное устройство
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                        window.innerWidth <= 768 ||
+                        ('ontouchstart' in window);
+
+        if (isMobile) return; // Не проверяем DevTools на мобильных
+
+        if (window.outerHeight - window.innerHeight > 200 ||
             window.outerWidth - window.innerWidth > 200) {
           if (!devtools) {
             devtools = true;
@@ -133,8 +140,8 @@ export default function AdvancedProtection() {
         console.trace = function() {};
       }
       
-      // Блокируем alert, prompt, confirm для безопасности
-      window.alert = function() {};
+      // Оставляем alert для уведомлений о защите
+      // window.alert = function() {};
       window.prompt = function() { return null; };
       window.confirm = function() { return false; };
       
@@ -148,16 +155,16 @@ export default function AdvancedProtection() {
       };
       window.addEventListener('beforeunload', beforeUnloadHandler);
       
-      // Дополнительная защита для мобильных
-      document.addEventListener('touchstart', function(e) {
-        if (e.touches.length > 1) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-      
-      document.addEventListener('gesturestart', function(e) {
-        e.preventDefault();
-      });
+      // Дополнительная защита для мобильных (убрано - мешало использованию)
+      // document.addEventListener('touchstart', function(e) {
+      //   if (e.touches.length > 1) {
+      //     e.preventDefault();
+      //   }
+      // }, { passive: false });
+      //
+      // document.addEventListener('gesturestart', function(e) {
+      //   e.preventDefault();
+      // });
       
       // Cleanup function
       return () => {
