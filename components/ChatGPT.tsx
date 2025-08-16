@@ -169,7 +169,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         // Форсируем загрузку голосов (работает в большинстве браузеров)
         const forceLoadVoices = () => {
-          // Создаем пустое высказывание чтобы актлювир���вать голоса
+          // Создаем пустое выска��ывание чтобы актлювир��вать голоса
           const utterance = new SpeechSynthesisUtterance('')
           window.speechSynthesis.speak(utterance)
           window.speechSynthesis.cancel()
@@ -197,7 +197,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           loadVoices()
         }
 
-        // Попытка 4: дополнит��льная загрузка через секунду
+        // Попытка 4: дополнительная загрузка через секунду
         setTimeout(() => {
           if (window.speechSynthesis.getVoices().length === 0) {
             forceLoadVoices()
@@ -229,7 +229,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           userMessage,
           botResponse,
           sessionId: sessionId.current,
-          context: messages.slice(-3).map(m => m.text), // Последние 3 сообщения как контекст
+          context: messages.slice(-3).map(m => m.text), // Последние 3 сообщения как контекс��
           tags: extractTags(userMessage + ' ' + botResponse)
         }),
         signal: controller.signal
@@ -252,8 +252,8 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }
     } catch (error) {
       console.error('Error saving interaction for learning:', error)
-      // ��е блокируем польз��вательский люнтерфейс при ошиб��ах сохранения
-      // Это не клю��тично для работы чата
+      // Не блокируем пользовательский интерфейс при ошибках сохранения
+      // Это не критично для работы чата
     }
   }
 
@@ -262,7 +262,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const commonTags = [
       'веб-разработка', 'дизайн', 'программирование', 'ai', 'технологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
-      'html', 'api', 'баз�� данных', 'сеть', 'безопаснос��ь', 'ui', 'ux'
+      'html', 'api', 'база данных', 'сеть', 'безопаснос��ь', 'ui', 'ux'
     ]
 
     const lowerText = text.toLowerCase()
@@ -292,7 +292,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Функция для остановки голосового ввода
   const stopListening = () => {
     if (recognition && isListening) {
-      console.log('⏹️ Остановка голосового ввода')
+      console.log('⏹️ Остановка голосового ввод��')
       recognition.stop()
       setIsListening(false)
 
@@ -455,7 +455,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           model_id: 'eleven_multilingual_v2', // Лучше для русского языка
           voice_settings: {
             stability: 0.85, // Увели��иваем стабильность для русского
-            similarity_boost: 0.80, // Улу��шаем похожесть на оригинальный голос
+            similarity_boost: 0.80, // Улучшаем похожесть на оригинальный голос
             style: 0.0,
             use_speaker_boost: true
           }
@@ -530,7 +530,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
     if (!cleanText) return
 
-    console.log('���� === НАЧИНАЕМ ОЗВУЧИВАНИЕ ===')
+    console.log('���� === НАЧИНАЕМ ��ЗВУЧИВАНИЕ ===')
     console.log(`📝 Тек��т: ${cleanText.substring(0, 50)}...`)
 
     // ЭТАП 1: Пробуем ElevenLabs (премиум качество)
@@ -622,7 +622,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Функция для тестирования голоса
   const testVoice = () => {
     console.log('🧪 Тестирование голоса JARVIS...')
-    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего нового голоса через ElevenLabs API.'
+    const testPhrase = 'Привет! Я ДЖАРВИС. Это тест моего новог�� голоса через ElevenLabs API.'
     speakText(testPhrase)
   }
 
@@ -818,7 +818,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           : msg
       ))
 
-      // Короткая ��ауза мелюду мыслями
+      // Короткая пауза мелюду мыслями
       if (i < thinkingSteps.length - 1) {
         await new Promise(resolve => setTimeout(resolve, 300))
       }
@@ -933,7 +933,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Файл "${file.name}" получен! К сожаленилю, обралюотка фай��ов пока находится в разработке. Но вы можете описать содер��имое файла текстом, и я послюараю��ь помочь! 📝`,
+        text: `✅ Файл "${file.name}" получен! К сожаленилю, обралюотка фай��ов пока находится в разработке. Но вы можете описать содер��имое файла текстом, и я п��слюараю��ь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
