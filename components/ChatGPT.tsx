@@ -184,7 +184,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       if (window.speechSynthesis) {
         setSpeechSynthesis(window.speechSynthesis)
 
-        // Форсируем загрузку голосов (работае�� в большинс��ве браузеров)
+        // Форсируем загрузку голос��в (работае�� в большинс��ве браузеров)
         const forceLoadVoices = () => {
           // Создаем пуст��е высказывание чтобы актлювир��ват�� голоса
           const utterance = new SpeechSynthesisUtterance('')
@@ -209,7 +209,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           setTimeout(loadVoices, 100)
         }
 
-        // Попытка 3: подписываемс���� на событие загрузки голосов
+        // Попыт��а 3: подписываемс���� на событие загрузки голосов
         window.speechSynthesis.onvoiceschanged = () => {
           loadVoices()
         }
@@ -405,7 +405,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     // Если все ключи исчерпали лимит, сбрасываем счет��ик�� (новый месяц)
     const keysWithLimitReached = elevenLabsKeys.filter(k => k.usage >= k.limit)
     if (keysWithLimitReached.length > 0) {
-      console.log('🔄 Сброс лимитов ElevenLabs к����чей (новый месяц)')
+      console.log('🔄 Сброс лимитов ElevenLabs к�����чей (новый месяц)')
       keysWithLimitReached.forEach(k => {
         k.usage = 0
         k.errorCount = 0
@@ -565,7 +565,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для озвучивания текста (теперь �� ElevenLabs + fallback)
+  // Функция для озвучивания ��екста (теперь �� ElevenLabs + fallback)
   const speakText = async (text: string) => {
     console.log('🎵 speakText вызвана. voiceMode:', voiceMode, 'text:', text.substring(0, 30) + '...')
     if (voiceMode !== 'voice') {
@@ -590,18 +590,40 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     console.log('���� === НАЧИНАЕМ ОЗВУЧИВАНИЕ ===')
     console.log(`📝 Тек��т: ${cleanText.substring(0, 50)}...`)
 
-    // ЭТАП 1: Пробуем ElevenLabs (��ремиум качество)
-    try {
-      console.log('🔥 ЭТАП 1: ELEVENLABS TTS')
-      const elevenLabsSuccess = await speakWithElevenLabs(cleanText)
+    // ЭТАП 1: Пробуем ElevenLabs (премиум качество) с повторными попытками
+    const maxRetries = 2
+    let retryCount = 0
 
-      if (elevenLabsSuccess) {
-        console.log('✅ === SUCCESS VIA ELEVENLABS ===')
-        return
+    while (retryCount <= maxRetries) {
+      try {
+        console.log(`🔥 ЭТАП 1: ELEVENLABS TTS (попытка ${retryCount + 1}/${maxRetries + 1})`)
+        const elevenLabsSuccess = await speakWithElevenLabs(cleanText)
+
+        if (elevenLabsSuccess) {
+          console.log('✅ === SUCCESS VIA ELEVENLABS ===')
+          return
+        }
+
+        // Если не удалось, пробуем следующий ключ
+        retryCount++
+        if (retryCount <= maxRetries) {
+          const delay = Math.min(1000 * Math.pow(2, retryCount), 3000) // Exponential backoff до 3 сек
+          console.log(`⏳ Повторная попытка через ${delay}ms...`)
+          await new Promise(resolve => setTimeout(resolve, delay))
+        }
+
+      } catch (error) {
+        console.error('💥 ElevenLabs критическая ошибка:', error)
+        retryCount++
+        if (retryCount <= maxRetries) {
+          const delay = Math.min(1000 * Math.pow(2, retryCount), 3000)
+          console.log(`⏳ Повторная попытка после ошибки через ${delay}ms...`)
+          await new Promise(resolve => setTimeout(resolve, delay))
+        }
       }
-    } catch (error) {
-      console.error('💥 ElevenLabs критическая ошиб����а:', error)
     }
+
+    console.log('❌ ElevenLabs недоступен после всех попыток, переходим к fallback')
 
     // ЭТАП 2: Fallback на браузерный TTS
     console.log('📱 ЭТАП 2: BROWSER TTS FALLBACK')
@@ -634,7 +656,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             console.log('⚠️ Голос не найден, используем голос по умолчанию')
           }
 
-          // Настрой��и для более естественного чивучания (менелю роботично)
+          // Настрой��и для более естестве��ного чивучания (менелю роботично)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скоро��ть (не замедленная)
           utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
@@ -951,7 +973,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         console.log('🔇 Голосовой режим выключен')
       }
 
-      // Сохраняем взаимодействие для обуче��ия
+      // Сохраняем взаимодействие для обу��е��ия
       await saveInteractionToLearning(userMessage, response, userMessageId)
 
     } catch (error) {
@@ -1074,7 +1096,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Фай�� "${file.name}" получен! К сожаленилю, обралюотка фай��ов пока находится в разработке. Но вы можете описать содер��имое файла текстом, и я послюараю��ь помочь! 📝`,
+        text: `✅ Фай�� "${file.name}" получен! К сожал��нилю, обралюотка фай��ов пока находится в разработке. Но вы можете описать содер��имое файла текстом, и я послюараю��ь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
