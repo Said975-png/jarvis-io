@@ -13,7 +13,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! ����\n\nПомогу выбрать услуги, расскажу о тарифах и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
+      text: 'Привет! Я ДЖАРВИС - консультант нашего сайта! ����\n\nПомогу выбрать услуги, расскажу о тарифа�� и отвечу на ваши вопросы\n\nЧем могу быть полезен?',
       isUser: false,
       timestamp: new Date()
     }
@@ -146,7 +146,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         recognitionInstance.onend = () => {
-          console.log('🛑 Распознавание остановлено')
+          console.log('🛑 Распознавание оста��овлено')
           setIsListening(false)
 
           // Очищаем таймеры при завершении
@@ -313,19 +313,19 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     const voices = speechSynthesis.getVoices()
     let selectedVoice = null
 
-    console.log('🔍 Поиск голосов. Всего доступно:', voices.length)
+    console.log('🔍 Поиск ��олосов. Всего доступно:', voices.length)
 
     // Логируем все русские голоса для отладки
     const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
     console.log('🇷🇺 Русские голоса:', russianVoices.map(v => `${v.name} (${v.lang}) ${v.localService ? '[Локальный]' : '[Онлайн]'}`))
 
-    // ПРИОРИТЕТ 1: Самые к��чественные мужлюкие голоса (менее роботичные)
+    // ПРИОРИТЕТ 1: Самые качественные мужские голоса (менее роботичные)
     const premiumMaleVoices = [
-      'Google русский (Россия)', // ��амый качественный если ест��
+      'Google русский (Россия)', // Самый качественный если есть
       'Microsoft Pavel - Russian (Russia)', // MS Neural голос
       'Google русский',
-      'Pavel (Enhanced)', // Если есть улучшенная чиерсия
-      'Yuri (Natural)', // Естественны�� вариант
+      'Pavel (Enhanced)', // Если есть улучшенная версия
+      'Yuri (Natural)', // Естественный вариант
       'Microsoft Pavel',
       'Pavel',
       'Yuri'
@@ -380,7 +380,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     )
 
     if (availableKeys.length > 0) {
-      console.log(`🔑 Доступно ElevenLabs ключей: ${availableKeys.length}`)
+      console.log(`🔑 Доступн�� ElevenLabs ключей: ${availableKeys.length}`)
       return availableKeys[0].key
     }
 
@@ -414,7 +414,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Увеличить счетчик использования ключа
+  // Увеличить счетчик использова��ия ключа
   const updateElevenLabsUsage = (apiKey: string, charactersUsed: number) => {
     const keyInfo = elevenLabsKeys.find(k => k.key === apiKey)
     if (keyInfo) {
@@ -576,7 +576,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           // Настрой��и для более естественного чивучания (менелю роботично)
           utterance.lang = 'ru-RU'
           utterance.rate = 1.0   // Нормальная скоро��ть (не замедленная)
-          utterance.pitch = 0.95 // Близко к естественному (не слишком низко)
+          utterance.pitch = 0.95 // Бл��зко к естественному (не слишком низко)
           utterance.volume = 0.8 // Комфортная громкость
 
           // Добавляем обрлюботчики событий
@@ -733,7 +733,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   }
 
   const showThinkingProcess = async (userMessage: string) => {
-    // Более умная генерация мыслей на основе анализа вопрос��
+    // Более умная генер��ция мыслей на основе анализа вопрос��
     const generateThinking = (message: string) => {
       const lowerMessage = message.toLowerCase()
       const words = lowerMessage.split(' ')
