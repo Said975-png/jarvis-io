@@ -133,26 +133,10 @@ export default function CodeProtection() {
       }
     }
 
-    // Блокируем открытие DevTools (только для десктопа)
+    // ВРЕМЕННО ОТКЛЮЧЕНА детекция DevTools по размеру окна
     const blockDevTools = () => {
-      // Проверяем размер окна
-      const checkDevTools = () => {
-        // Проверяем, что это не мобильное устройство
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                        window.innerWidth <= 768 ||
-                        ('ontouchstart' in window);
-
-        if (isMobile) return; // Не проверяем DevTools на мобильных
-
-        const threshold = 160
-        if (window.outerHeight - window.innerHeight > threshold ||
-            window.outerWidth - window.innerWidth > threshold) {
-          alert('Доступ к инструментам разработчика запрещен!')
-          window.location.href = 'about:blank'
-        }
-      }
-
-      setInterval(checkDevTools, 1000)
+      // Детекция по размеру окна отключена из-за ложных срабатываний
+      console.log('🛡️ CodeProtection: детекция DevTools по размеру отключена')
     }
 
     // Множественное применение защитных мер
