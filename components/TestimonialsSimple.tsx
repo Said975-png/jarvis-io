@@ -187,7 +187,7 @@ export default function TestimonialsSimple() {
           overflow: hidden;
           position: relative;
           border-radius: 20px;
-          padding-bottom: 100px;
+          padding: 20px 0 100px 0;
         }
 
         .testimonials-track-chatgpt {
