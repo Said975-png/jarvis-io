@@ -96,7 +96,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
               console.log('⏰ Очищен предыдущий таймер автоотправки')
             }
 
-            // Запускаем таймер автоотправки через 2 секунды после последних слов
+            // Запускаем таймер автоотправки через 2 секунды посл�� последних слов
             console.log('⏱️ Запускаем таймер автоотправки (2 сек)')
             const timer = setTimeout(() => {
               console.log('🚀 Время вышло! Автоматическая отправка сообщения')
@@ -151,7 +151,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           // Для других ошибок останавливаем
           setIsListening(false)
 
-          // Очищаем ��аймеры
+          // Очищаем ��а��меры
           if (autoSendTimer) {
             clearTimeout(autoSendTimer)
             setAutoSendTimer(null)
@@ -505,7 +505,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         audio.onerror = () => {
-          console.error('❌ Ошибка воспроизведения ElevenLabs ауди��')
+          console.error('❌ ��шибка воспроизведения ElevenLabs ауди��')
           URL.revokeObjectURL(audioUrl)
         }
 
@@ -604,7 +604,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           return
         }
 
-        // Если не удалось, пробуем следующи�� ключ
+        // Е��ли не удалось, пробуем следующи�� ключ
         retryCount++
         if (retryCount <= maxRetries) {
           const delay = Math.min(1000 * Math.pow(2, retryCount), 3000) // Exponential backoff до 3 сек
@@ -1154,44 +1154,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             </div>
           </div>
           <div className="header-actions">
-            <button
-              className={`voice-mode-btn ${voiceMode === 'voice' ? 'active' : ''}`}
-              onClick={toggleVoiceMode}
-              title={`Голосовой режим: ${voiceMode === 'voice' ? 'ВКЛ' : 'ВЫКЛ'}`}
-            >
-              {voiceMode === 'voice' ? (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="m19 10-2 2-2-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M5 10v2a7 7 0 0 0 14 0v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-              ) : (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M5 10v2a7 7 0 0 0 14 0v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  <path d="m17 14 2-2-2-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              )}
-            </button>
-            {voiceMode === 'voice' && (
-              <>
-                <button
-                  className="test-voice-btn"
-                  onClick={testVoice}
-                  title="Тест голоса"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <polygon points="11 5,6 9,2 9,2 15,6 15,11 19,11 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-              </>
-            )}
             <button className="clear-chat-btn" onClick={clearChat} title="Очистить чат">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1210,16 +1172,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         <div className="jarvis-chat-messages">
           {messages.map((message) => (
             <div key={message.id} className={`message ${message.isUser ? 'user-message' : 'bot-message'} ${message.isThinking ? 'thinking-message' : ''}`}>
-              {!message.isUser && (
-                <div className="message-avatar">
-                  <img
-                    src="https://cdn.builder.io/api/v1/image/assets%2F321030175d41423db42a978adc722c81%2F37b07a37d18e47b9a7c20f69c11e21f0?format=webp&width=800"
-                    alt="JARVIS"
-                    width="28"
-                    height="28"
-                  />
-                </div>
-              )}
               <div className="message-content">
                 <div
                   className={`message-text ${message.isThinking ? 'thinking-text' : ''}`}
@@ -1293,14 +1245,6 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           
           {isTyping && (
             <div className="message bot-message">
-              <div className="message-avatar">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2F321030175d41423db42a978adc722c81%2F37b07a37d18e47b9a7c20f69c11e21f0?format=webp&width=800"
-                  alt="JARVIS"
-                  width="28"
-                  height="28"
-                />
-              </div>
               <div className="message-content">
                 <div className="typing-indicator">
                   <span></span>
