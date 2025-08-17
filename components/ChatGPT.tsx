@@ -279,7 +279,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Извлечение тегов из текста
   const extractTags = (text: string): string[] => {
     const commonTags = [
-      'веб-разработка', 'дизай��', 'программирование', 'ai', 'технологии',
+      'веб-разработка', 'дизай��', 'программиров��ние', 'ai', 'технологии',
       'фронтенд', 'бэкенд', 'react', 'javascript', 'typescript', 'css',
       'html', 'api', 'база данных', 'сеть', 'безопасность', 'ui', 'ux'
     ]
@@ -312,7 +312,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   // Ф��нкция для остановки голосового ��вода
   const stopListening = () => {
     if (recognition && isListening) {
-      console.log('⏹�� Остановка голосового ввода')
+      console.log('⏹�� Остановка голосо��ого ввода')
       recognition.stop()
       setIsListening(false)
 
@@ -653,7 +653,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
           if (selectedVoice) {
             utterance.voice = selectedVoice
-            console.log('🎤 Голос для озвучки:', selectedVoice.name, selectedVoice.lang)
+            console.log('🎤 Г��лос для озвучки:', selectedVoice.name, selectedVoice.lang)
           } else {
             console.log('⚠️ Голос не найден, используем голос по умолчанию')
           }
@@ -1055,7 +1055,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         timestamp: new Date()
       }
 
-      // 🚀 ЗАПУСКАЕМ ГОЛОС СРАЗУ, БЕЗ ЗАДЕРЖЕК!
+      // 🚀 ЗАПУСКАЕМ ГОЛОС СРАЗУ, БЕЗ ЗАДЕ��ЖЕК!
       if (voiceMode === 'voice') {
         console.log('🎤 🚀 МГНОВЕННЫЙ запуск озвучивания (handleSendMessage):', response.substring(0, 50) + '...')
         // Запускаем озвучивание параллельно, не блокир��я UI
@@ -1332,7 +1332,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
                   className={`jarvis-mic-btn ${isListening ? 'listening' : ''}`}
                   onClick={isListening ? stopListening : startListening}
                   disabled={isTyping}
-                  title={isListening ? "Остановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (автоотправка через 2 сек после речи)"}
+                  title={isListening ? "Остановить запись (сообщение отправится автоматически через 2 сек после речи)" : "Голосовой ввод (ав��оотправка через 2 сек после речи)"}
                 >
                   {isListening ? (
                     <div className="mic-recording">
@@ -1590,10 +1590,10 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
         .message-text {
           background: transparent;
-          padding: 12px 0;
+          padding: 8px 0;
           border-radius: 0;
           color: #374151;
-          line-height: 1.5;
+          line-height: 1.4;
           font-size: 14px;
           word-break: normal;
           overflow-wrap: break-word;
@@ -1604,9 +1604,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         .user-message .message-text {
-          background: #2563eb;
-          color: #ffffff;
-          border: 1px solid #2563eb;
+          background: #e5e7eb;
+          color: #374151;
+          border: none;
+          border-radius: 18px;
+          padding: 10px 16px;
           white-space: pre-wrap;
         }
 
@@ -1621,9 +1623,11 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         .dark-theme .user-message .message-text {
-          background: #2563eb;
+          background: #4a5568;
           color: #ffffff;
-          border: 1px solid #2563eb;
+          border: none;
+          border-radius: 18px;
+          padding: 10px 16px;
         }
 
         .message-time {
