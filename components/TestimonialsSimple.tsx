@@ -160,6 +160,7 @@ export default function TestimonialsSimple() {
           margin: 0 auto;
           padding: 0 3rem;
           width: 100%;
+          overflow: visible;
         }
 
         .testimonials-header-chatgpt {
