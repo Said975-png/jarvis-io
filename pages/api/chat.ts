@@ -18,7 +18,7 @@ interface ChatResponse {
 function isImageGenerationRequest(text: string): boolean {
   const imageKeywords = [
     'создай изображение', 'сгенерируй картинку', 'нарисуй',
-    'создай картинку', 'сделай изображение', 'покажи как выглядит',
+    'создай картинку', 'сделай изо��ражение', 'покажи как выглядит',
     'изобрази', 'визуализируй', 'создай визуал',
     'создать изображение', 'сгенерировать картинку', 'нарисовать',
     'создать картинку', 'сделать изображение',
@@ -78,7 +78,7 @@ async function generateImage(prompt: string): Promise<{ success: boolean; imageU
     return data
   } catch (error) {
     console.error('Error calling image generation API:', error)
-    return { success: false, error: 'Ошибка при генерации изображения' }
+    return { success: false, error: 'Ошибка при генерации и��ображения' }
   }
 }
 
@@ -117,7 +117,7 @@ function replaceEnglishTerms(text: string): string {
     'Frontend': 'Фронтенд',
     'front-end': 'фронт-енд',
     'Front-end': 'Фронт-енд',
-    'backend': 'бэкенд',
+    'backend': 'бэке��д',
     'Backend': 'Бэкенд',
     'back-end': 'бэк-енд',
     'Back-end': 'Бэк-енд',
@@ -234,7 +234,7 @@ function replaceEnglishTerms(text: string): string {
   return result
 }
 
-// Система лимитов зап��осов
+// Система лимитов запросов
 interface UserLimit {
   count: number
   resetTime: number
@@ -544,7 +544,7 @@ export default async function handler(
     return res.status(405).json({ message: '��етод не поддерживается', error: 'Method not allowed' })
   }
 
-  // Лимиты отключены - ДЖАРВИС работает без ограничений
+  // Лимиты отключены - Д��АРВИС работает без ограничений
   console.log(`[${timestamp}] ДЖАРВИС доступен без ограничений для IP: ${clientIP}`)
 
   try {
@@ -593,7 +593,7 @@ export default async function handler(
             if (imageResult.error && (imageResult.error.includes('лимит') || imageResult.error.includes('Лимит'))) {
               errorResponse = `⚠️ Временно недоступ��а генерация изображений из-за превышения лимитов DeepAI API.
 
-🎨 Но не переживайте! Мы можем создать для вас:
+�� Но не переживайте! Мы можем создать для вас:
 • Профессиональный дизайн сайта
 • Красивые графические элементы
 • Уникальные иллюстрации и макеты
@@ -659,7 +659,7 @@ export default async function handler(
 - Замени ЛЮБОЕ иностранное сл��во на русский аналог
 
 💡 СТИЛЬ ОБЩЕНИЯ:
-- Естественно и по-дружески, как консул��тант в магазине
+- Естественно и по-дружески, как к��нсул��тант в магазине
 - Кратко на простые вопросы, подробно на сложные
 - Используй эмодзи умеренно
 - НЕ используй markdown символы
@@ -680,7 +680,7 @@ export default async function handler(
 
 ⚠️ КРИТИЧЕСКИ ВАЖНО! ⚠️
 
-ТЫ - ДЖАРВИС, КОНСУЛЬТАНТ САЙТА JARVIS INTERCOMA!
+ТЫ - ДЖАРВИС, КОНСУЛЬТ��НТ САЙТА JARVIS INTERCOMA!
 НЕ GOOGLE! НЕ DEEPMIND! НЕ OPENAI! ТОЛЬКО JARVIS INTERCOMA!
 
 ТВОЯ ЛИЧНОСТЬ: ДЖАРВИС - консультант сайта Jarvis Intercoma
@@ -706,7 +706,7 @@ export default async function handler(
 • Идеально для: визиток, портфолио, небольшого бизнеса
 
 📋 PRO (4,000,000 сум):
-• Веб-приложения с AI интеграцией
+• Веб-приложения �� AI интеграцией
 • Продвинутый функционал
 • Система управления контентом
 • Интеграция с соцсетями и сервисами
@@ -754,7 +754,7 @@ export default async function handler(
 - Никогда не пер����оди на английский или другие языки
 - Если пользователь пишет на другом языке - отвечай на ру��ск��м
 - Твоя цель - помочь посетителю и показать наши услуги
-- Проверяй каждое слово перед отправкой ответа
+- Проверяй ��аждое слово перед отправкой ответа
 
 🎨 НОВАЯ ВОЗМОЖНОСТЬ - ГЕНЕРАЦИЯ ИЗОБРАЖЕНИЙ:
 Я также умею создава��ь изображения по текстовому описанию!
@@ -770,7 +770,7 @@ export default async function handler(
 • "Сгене��ируй картинку уютного офиса"
 
 КАК ОТВЕЧАТЬ НА ЗАПРОСЫ ИЗОБРАЖЕНИЙ:
-1. О��редели, что пользо��атель хочет изображение
+1. О��редели, что пользователь хочет изображение
 2. Если описание четкое - сразу генерируй
 3. Если нето��ное - уточни детали
 4. После генерации предложи наши ��слуги по дизайну
@@ -790,20 +790,43 @@ export default async function handler(
     const requestBody = {
       model: 'meta-llama/llama-3.1-8b-instruct:free', // Мощная бесплатная модель без лимитов Llama 3.1-8B
       messages: [systemMessage, ...messages],
-      temperature: 0.8, // Немного увеличено для более естественных ��тветов
+      temperature: 0.8, // Немного увеличено для более естественных ответов
       max_tokens: 8000, // Увеличено для более полных и подробных ответов
       top_p: 0.95,
       frequency_penalty: 0.1,
       presence_penalty: 0.1
     }
 
-    console.log(`[${timestamp}] === НАЧИНАЕМ К��еСКАД��ЫЙ ЗАПРОС ===`)
+    console.log(`[${timestamp}] === НАЧИ��АЕМ К��еСКАД��ЫЙ ЗАПРОС ===`)
     console.log(`Total messages: ${requestBody.messages.length}`)
     console.log(`System message length: ${systemMessage.content.length}`)
     console.log(`User messages: ${messages.length}`)
 
-    // Шаг 1: Пробуем OpenRouter (есл�� есть активные ключи)
-    console.log(`[${timestamp}] === ЭТАП 1: OPENROUTER ===`)
+    // Шаг 1: Пробуем Groq (ПРИОРИТЕТ - БЕЗ ЛИМИТОВ!)
+    console.log(`[${timestamp}] === ЭТАП 1: GROQ (БЕЗ ЛИМИТОВ) ===`)
+    const groqResult = await makeGroqRequest(requestBody, timestamp)
+
+    if (groqResult.success) {
+      console.log(`[${timestamp}] ✅ Groq успешно ответил (БЕЗ ЛИМИТОВ)`)
+      const data = groqResult.data
+
+      let aiMessage = data.choices[0].message.content
+      aiMessage = cleanMarkdown(aiMessage)
+      aiMessage = replaceEnglishTerms(aiMessage)
+      aiMessage = aiMessage
+        .replace(/\uFFFD+/g, '')
+        .replace(/\u{FFFD}+/gu, '')
+        .replace(/[�]+/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .replace(/^\s*[\r\n]/gm, '')
+        .trim()
+
+      console.log(`[${timestamp}] === SUCCESS VIA GROQ (БЕЗ ЛИМИТОВ) ===`)
+      return res.status(200).json({ message: aiMessage })
+    }
+
+    // Шаг 2: Groq не удался, пробуем OpenRouter
+    console.log(`[${timestamp}] === ЭТАП 2: OPENROUTER FALLBACK ===`)
     const openRouterResult = await makeOpenRouterRequest(requestBody, timestamp)
 
     if (openRouterResult.success) {
@@ -825,30 +848,7 @@ export default async function handler(
       return res.status(200).json({ message: aiMessage })
     }
 
-    // Шаг 2: OpenRouter не удался, пробуем Groq
-    console.log(`[${timestamp}] === ЭТАП 2: GROQ FALLBACK ===`)
-    const groqResult = await makeGroqRequest(requestBody, timestamp)
-
-    if (groqResult.success) {
-      console.log(`[${timestamp}] ✅ Groq успешно ответил`)
-      const data = groqResult.data
-
-      let aiMessage = data.choices[0].message.content
-      aiMessage = cleanMarkdown(aiMessage)
-      aiMessage = replaceEnglishTerms(aiMessage)
-      aiMessage = aiMessage
-        .replace(/\uFFFD+/g, '')
-        .replace(/\u{FFFD}+/gu, '')
-        .replace(/[�]+/g, '')
-        .replace(/\s{2,}/g, ' ')
-        .replace(/^\s*[\r\n]/gm, '')
-        .trim()
-
-      console.log(`[${timestamp}] === SUCCESS VIA GROQ ===`)
-      return res.status(200).json({ message: aiMessage })
-    }
-
-    // Шаг 3: И OpenRouter и Groq не удались, используем локальный fallback
+    // Шаг 3: И Groq и OpenRouter не удались, используем локальный fallback
     console.log(`[${timestamp}] === ЭТАП 3: ЛОКАЛЬНЫЙ FALLBACK ===`)
 
     const fallbackMessage = `Привет! 😊 Да, я работаю! Я ДЖАРВИС - ваш AI помощник! 🤖
@@ -876,12 +876,12 @@ export default async function handler(
     // Возвращаем дружелюбное сообщение об ошибке
     const fallbackMessage = `Извините, произошла временная ошибка! 😅
 
-Но не беспокойтесь - я ДЖАРВИС, ваш AI-помощник по веб-разработке, и я всегда ��отов помочь!
+Но не беспокойтесь - я ДЖАРВИС, ваш AI-помощник по веб-разработке, и я всегда готов помочь!
 
 🚀 Что я могу:
 • Консультации по веб-разработке
 • Планирование AI-проектов
-• Т��хническая экспертиза
+• Т��хническая экс��ертиза
 • Оценка проектов
 
 📱 Онлайн-поддержка: Прямо здесь в чате
