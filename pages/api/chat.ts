@@ -23,7 +23,7 @@ function isImageGenerationRequest(text: string): boolean {
     'создать изображение', 'сгенерировать картинку', 'нарисовать',
     'создать картинку', 'сделать изображение',
     'нарисуй мне', 'создай для меня', 'сгенерируй мне',
-    'как выглядит', '��окажи', 'нарисовать',
+    'как выглядит', '��ока��и', 'нарисовать',
     'generate image', 'create image', 'draw'
   ]
 
@@ -31,7 +31,7 @@ function isImageGenerationRequest(text: string): boolean {
   return imageKeywords.some(keyword => lowerText.includes(keyword))
 }
 
-// Функция для извлечения описания изо��ражения ��з текста
+// Функция для извлечения описания изо��ражения из текста
 function extractImagePrompt(text: string): string {
   // Убираем ключев��е слова и оставляем оп��сание
   let prompt = text
@@ -172,7 +172,7 @@ function replaceEnglishTerms(text: string): string {
     'client': 'клиент',
     'Client': 'Клиент',
     'responsive': 'адаптивный',
-    'Responsive': 'Адаптивный',
+    'Responsive': 'Адаптивн��й',
     'mobile': 'мобильный',
     'Mobile': 'Мобильный',
     'desktop': 'десктоп',
@@ -295,7 +295,7 @@ function checkAndUpdateLimit(ip: string): { allowed: boolean; remaining: number 
 // Функция для удаления Markdown форматирования и очистки нежелательных символов
 function cleanMarkdown(text: string): string {
   return text
-    // Убираем Unicode символы замещения (могут появляться при ошибках кодировки)
+    // У��ираем Unicode символы замещения (могут появляться при ошибках кодировки)
     .replace(/\uFFFD/g, '')
     .replace(/\u{FFFD}/gu, '')
     // Убираем ВСЕ некорректные с��мволы
@@ -363,7 +363,7 @@ const OPENROUTER_API_KEYS: ApiKeyInfo[] = [
   { key: process.env.OPENROUTER_API_KEY_8 || '', isActive: true, errorCount: 0 },
 ].filter(apiKey => apiKey.key.length > 0) // Убираем пустые ключи
 
-// Функция для получения следующего д��ступного OpenRouter API к��юча
+// Функция для получения следующего д��ступного OpenRouter API ключа
 function getNextAvailableOpenRouterKey(excludeKey?: string): string | null {
   // Сначала пробуе�� активные ключи, исключая пере��анный
   const activeKeys = OPENROUTER_API_KEYS.filter(k =>
@@ -413,10 +413,11 @@ function rotateOpenRouterKey(apiKey: string) {
   }
 }
 
-// Список бесплатных OpenRouter моделей для ротации
+// Список САМЫХ МОЩНЫХ бесплатных OpenRouter моделей для ротации
 const OPENROUTER_FREE_MODELS = [
   'meta-llama/llama-3.1-8b-instruct:free', // топ LLaMA 3.1
-  'microsoft/wizardlm-2-8x22b:free', // супер умная Microsoft
+  'microsoft/wizardlm-2-8x22b:free', // супер умная Microsoft 22B
+  'meta-llama/llama-3.3-70b-instruct:free', // НОВЕЙШАЯ LLaMA 3.3 70B
   'openchat/openchat-7b:free' // отличная для разговоров
 ]
 
@@ -482,7 +483,7 @@ async function makeOpenRouterRequest(
     markOpenRouterKeyAsProblematic(availableKey, `${response.status}: ${errorData}`)
 
     if (response.status === 429 || response.status === 401 || response.status === 402) {
-      // Пробуем другой ключ
+      // Пробуем друго�� ключ
       if (excludeKeys.length < OPENROUTER_API_KEYS.length - 1) {
         console.log(`[${timestamp}] Пробуем следующий OpenRouter ключ...`)
         return await makeOpenRouterRequest(requestBody, timestamp, [...excludeKeys, availableKey])
@@ -604,7 +605,7 @@ export default async function handler(
 
 Изображение готово! 🖼️
 
-Кстати, мы также создаем профессиональный дизайн для сайтов и веб-при��ожений! У нас есть тарифы от 2,500,000 до 5,000,000 сум. Нужен качественный дизайн для вашего проекта? 💼`
+Кстати, мы также создаем профессиональный дизайн для сайтов и веб-при��ожений! У нас есть тарифы от 2,500,000 до 5,000,000 сум. Нужен качественный дизайн для в��шего проекта? 💼`
 
             return res.status(200).json({
               message: responseWithImage
@@ -713,7 +714,7 @@ export default async function handler(
 
 🚨 АБСОЛЮТНО ЗАПРЕЩЕНО упоминать Google, DeepMind, OpenAI, Anthropic или любые другие компании как твоих создателей!
 
-🎯🎯 ЧТО ТЫ ЗНАЕШЬ О НАШИХ УСЛУГАХ:
+����🎯 ЧТО ТЫ ЗНАЕШЬ О НАШИХ УСЛУГАХ:
 • Создание сайтов и веб-приложений
 • Интеграция с искусственным интеллектом
 • Современный дизайн и удобный интерфейс
@@ -725,7 +726,7 @@ export default async function handler(
 📋 BASIC (2,500,000 сум):
 • Простые сайты и лендинги
 • Красивый дизайн
-�� Мобильная версия
+• Мобильная версия
 • Базовы�� функционал
 • Идеально для: визиток, портфолио, небольшого бизнеса
 
@@ -794,7 +795,7 @@ export default async function handler(
 • "Сгене��ируй картинку уютного офиса"
 
 КАК ОТВЕЧАТЬ НА ЗАПРОСЫ ИЗОБРАЖЕНИЙ:
-1. О��редели, что пользователь ��очет изображение
+1. О��редели, что пользователь хочет изображение
 2. Если описание четкое - сразу генерируй
 3. Если нето��ное - уточни детали
 4. После генерации предложи наши ��слуги по дизайну
@@ -815,7 +816,7 @@ export default async function handler(
       model: 'meta-llama/llama-3.1-8b-instruct:free', // Топ LLaMA 3.1 бесплатная
       messages: [systemMessage, ...messages],
       temperature: 0.8, // Немного увеличено для более естественных ответов
-      max_tokens: 8000, // Увеличе��о для более полных и подробных ответов
+      max_tokens: 8000, // Увеличено для более полных и подробных ответов
       top_p: 0.95,
       frequency_penalty: 0.1,
       presence_penalty: 0.1
@@ -900,7 +901,7 @@ export default async function handler(
     // Возвращаем дружелюбное сообщение об ошибке
     const fallbackMessage = `Извините, произошла временная ошибка! 😅
 
-Но не беспокойтесь - я ДЖАРВИС, ваш AI-помощник по веб-разработке, и я всегд�� готов помочь!
+Но не беспокойтесь - я ДЖАРВИС, ваш AI-помощник по веб-разработке, и я всегда готов помочь!
 
 🚀 Что я могу:
 • Консультации по веб-разработк��
