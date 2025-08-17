@@ -23,7 +23,7 @@ function isImageGenerationRequest(text: string): boolean {
     'создать изображение', 'сгенерировать картинку', 'нарисовать',
     'создать картинку', 'сделать изображение',
     'нарисуй мне', 'создай для меня', 'сгенерируй мне',
-    'как выглядит', '��ока��и', 'нарисовать',
+    'как выглядит', '��окажи', 'нарисовать',
     'generate image', 'create image', 'draw'
   ]
 
@@ -36,7 +36,7 @@ function extractImagePrompt(text: string): string {
   // Убираем ключев��е слова и оставляем оп��сание
   let prompt = text
     .replace(/создай изображение/gi, '')
-    .replace(/сгенерируй картинку/gi, '')
+    .replace(/сгенерируй ��артинку/gi, '')
     .replace(/нарисуй/gi, '')
     .replace(/создай картинку/gi, '')
     .replace(/сделай изображение/gi, '')
@@ -172,7 +172,7 @@ function replaceEnglishTerms(text: string): string {
     'client': 'клиент',
     'Client': 'Клиент',
     'responsive': 'адаптивный',
-    'Responsive': 'Адаптивн��й',
+    'Responsive': 'Адаптивный',
     'mobile': 'мобильный',
     'Mobile': 'Мобильный',
     'desktop': 'десктоп',
@@ -188,7 +188,7 @@ function replaceEnglishTerms(text: string): string {
     'component': 'компонент',
     'Component': 'Компонент',
     'function': 'функция',
-    'Function': 'Функция',
+    'Function': 'Функ��ия',
     'method': 'метод',
     'Method': 'Метод',
     'class': 'класс',
@@ -271,7 +271,7 @@ function checkAndUpdateLimit(ip: string): { allowed: boolean; remaining: number 
 
   const userLimit = userLimits.get(ip)
 
-  // Если пользовател�� не найден или время сброса прошло
+  // Если пользовател�� не найден или в��емя сброса прошло
   if (!userLimit || now > userLimit.resetTime) {
     userLimits.set(ip, {
       count: 1,
@@ -295,7 +295,7 @@ function checkAndUpdateLimit(ip: string): { allowed: boolean; remaining: number 
 // Функция для удаления Markdown форматирования и очистки нежелательных символов
 function cleanMarkdown(text: string): string {
   return text
-    // У��ираем Unicode символы замещения (могут появляться при ошибках кодировки)
+    // Убираем Unicode символы замещения (могут появляться при ошибках кодировки)
     .replace(/\uFFFD/g, '')
     .replace(/\u{FFFD}/gu, '')
     // Убираем ВСЕ некорректные с��мволы
@@ -399,7 +399,7 @@ function markOpenRouterKeyAsProblematic(apiKey: string, error: string) {
     keyInfo.lastError = error
     if (keyInfo.errorCount >= 3) {
       keyInfo.isActive = false
-      console.log(`OpenRouter ключ ${apiKey.substring(0, 20)}... отмечен как неактивны�� посл�� ${keyInfo.errorCount} ошибок`)
+      console.log(`OpenRouter ключ ${apiKey.substring(0, 20)}... отмечен как неактивны�� посл�� ${keyInfo.errorCount} ошибо��`)
     }
   }
 }
@@ -483,7 +483,7 @@ async function makeOpenRouterRequest(
     markOpenRouterKeyAsProblematic(availableKey, `${response.status}: ${errorData}`)
 
     if (response.status === 429 || response.status === 401 || response.status === 402) {
-      // Пробуем друго�� ключ
+      // Пробуем другой ключ
       if (excludeKeys.length < OPENROUTER_API_KEYS.length - 1) {
         console.log(`[${timestamp}] Пробуем следующий OpenRouter ключ...`)
         return await makeOpenRouterRequest(requestBody, timestamp, [...excludeKeys, availableKey])
@@ -605,7 +605,7 @@ export default async function handler(
 
 Изображение готово! 🖼️
 
-Кстати, мы также создаем профессиональный дизайн для сайтов и веб-при��ожений! У нас есть тарифы от 2,500,000 до 5,000,000 сум. Нужен качественный дизайн для в��шего проекта? 💼`
+Кстати, мы также создаем профессиональный дизайн для сайтов и веб-при��ожений! У нас есть тарифы от 2,500,000 до 5,000,000 сум. Нужен качественный дизайн для вашего проекта? 💼`
 
             return res.status(200).json({
               message: responseWithImage
@@ -616,7 +616,7 @@ export default async function handler(
             let errorResponse = ''
 
             if (imageResult.error && (imageResult.error.includes('лимит') || imageResult.error.includes('Лимит'))) {
-              errorResponse = `⚠️ Временно недоступ��а генерация изображений из-за превышения лимитов DeepAI API.
+              errorResponse = `⚠️ Временно недоступ��а генерация изображений из-за прев��шения лимитов DeepAI API.
 
 🎨 Но не переживайте! Мы можем создать для вас:
 • Профессиональный дизайн сайта
@@ -639,7 +639,7 @@ export default async function handler(
             })
           }
         } catch (error) {
-          console.error(`[${timestamp}] 💥 Крит��ческая ошибка генерации изображения:`, error)
+          console.error(`[${timestamp}] 💥 Крит��ческая ошибка генерации изображ��ния:`, error)
 
           const criticalErrorResponse = `😔 Произошла техническая ошибка при создании изображения.
 
@@ -659,11 +659,11 @@ export default async function handler(
     console.log(`[${timestamp}] Available OpenRouter keys:`, OPENROUTER_API_KEYS.length)
     console.log(`[${timestamp}] Active OpenRouter keys:`, OPENROUTER_API_KEYS.filter(k => k.isActive).length)
     console.log(`[${timestamp}] Groq key available:`, !!groqApiKey)
-    console.log(`[${timestamp}] AI Strategy: Llama 3.1-70B (Groq БЕЗ ЛИМИТОВ) → OpenRouter (3 модели) → Fallback`)
+    console.log(`[${timestamp}] AI Strategy: Llama 3.3-70B (Groq БЕЗ ЛИМИТОВ) → OpenRouter (4 МОЩНЫЕ модели) → Fallback`)
     console.log(`[${timestamp}] Tokens limit: 4000 for detailed responses`)
     console.log(`[${timestamp}] Auto-switching between 8 OpenRouter keys enabled`)
 
-    // Добавляем системное с��общение для ДЖАРВИС
+    // Добавляем системное с��общение для Д��АРВИС
     const systemMessage: ChatMessage = {
       role: 'system',
       content: `Ты ДЖАРВИС - консультант сайта Jarvis Intercoma, который помогает по��етителям.
@@ -700,7 +700,7 @@ export default async function handler(
 О СЕБЕ И КОМПАНИИ:
 - Ты создан командой Jarvis Intercoma
 - НЕ уп��минай Google, OpenAI, DeepMind
-- Ты ��онсультант сайта, помогаешь выбрать услуги
+- Ты ��он��ультант сайта, помогаешь выбрать услуги
 - Твоя ��ель - помочь посетителю и показать наши преимущества
 
 ⚠️ КРИТИЧЕСКИ ВАЖНО! ⚠️
@@ -714,7 +714,7 @@ export default async function handler(
 
 🚨 АБСОЛЮТНО ЗАПРЕЩЕНО упоминать Google, DeepMind, OpenAI, Anthropic или любые другие компании как твоих создателей!
 
-����🎯 ЧТО ТЫ ЗНАЕШЬ О НАШИХ УСЛУГАХ:
+🎯🎯 ЧТО ТЫ ЗНАЕШЬ О НАШИХ УСЛУГАХ:
 • Создание сайтов и веб-приложений
 • Интеграция с искусственным интеллектом
 • Современный дизайн и удобный интерфейс
@@ -724,11 +724,11 @@ export default async function handler(
 ��� НАШИ ТАРИФЫ И УСЛУГИ:
 
 📋 BASIC (2,500,000 сум):
-• Простые сайты и лендинги
+• Простые сайты и лендинг��
 • Красивый дизайн
 • Мобильная версия
 • Базовы�� функционал
-• Идеально для: визиток, портфолио, небольшого бизнеса
+• Идеально для: визиток, портфолио, небольшого б��знеса
 
 📋 PRO (4,000,000 сум):
 • Веб-приложения с AI интеграцией
@@ -754,7 +754,7 @@ export default async function handler(
 🚨🤖 ОТВЕТЫ О СЕБЕ - СТРОГО ИСПОЛНЯТЬ! ������🚨
 
 ⛔ АБСОЛЮТН��Й ЗАПРЕТ ⛔
-НИКОГДА НЕ ГОВОРИ что тебя создали:
+��ИКОГДА НЕ ГОВОРИ что тебя создали:
 - Google
 - DeepMind
 - OpenAI
@@ -778,7 +778,7 @@ export default async function handler(
 - Отвечай ТОЛЬКО на русском языке
 - Никогда не пер����оди на английский или другие языки
 - Если пользователь пишет на другом языке - отвечай на ру��ск��м
-- Твоя цель - помочь посетителю и показать наши услуги
+- Твоя цель - помо��ь посетителю и показать наши услуги
 - Проверяй каждое слово перед отправкой ответа
 
 🎨 НОВАЯ ВОЗМОЖНОСТЬ - ГЕНЕРАЦИЯ ИЗОБРАЖЕНИЙ:
@@ -851,7 +851,7 @@ export default async function handler(
     }
 
     // Шаг 2: Groq не удался, пробуем OpenRouter
-    console.log(`[${timestamp}] === ЭТАП 2: OPENROUTER FALLBACK ===`)
+    console.log(`[${timestamp}] === ��ТАП 2: OPENROUTER FALLBACK ===`)
     const openRouterResult = await makeOpenRouterRequest(requestBody, timestamp)
 
     if (openRouterResult.success) {
