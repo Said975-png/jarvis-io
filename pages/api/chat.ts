@@ -31,12 +31,12 @@ function isImageGenerationRequest(text: string): boolean {
   return imageKeywords.some(keyword => lowerText.includes(keyword))
 }
 
-// Функция для извлечения описания изображения из текста
+// Функция для извлечения описания изо��ражения из текста
 function extractImagePrompt(text: string): string {
   // Убираем ключев��е слова и оставляем оп��сание
   let prompt = text
     .replace(/создай изображение/gi, '')
-    .replace(/сгенерируй картинку/gi, '')
+    .replace(/сгенерируй ��артинку/gi, '')
     .replace(/нарисуй/gi, '')
     .replace(/создай картинку/gi, '')
     .replace(/сделай изображение/gi, '')
@@ -99,7 +99,7 @@ function replaceEnglishTerms(text: string): string {
     'please': 'пожалуйста',
     'sorry': 'извините',
     'excuse me': 'извините',
-    'welcome': 'добро пожаловать',
+    'welcome': 'добро пожаловат��',
     'good': 'хорошо',
     'great': 'отлично',
     'excellent': 'отлично',
@@ -188,7 +188,7 @@ function replaceEnglishTerms(text: string): string {
     'component': 'компонент',
     'Component': 'Компонент',
     'function': 'функция',
-    'Function': 'Функция',
+    'Function': 'Функ��ия',
     'method': 'метод',
     'Method': 'Метод',
     'class': 'класс',
@@ -264,14 +264,14 @@ function getClientIP(req: NextApiRequest): string {
 function checkAndUpdateLimit(ip: string): { allowed: boolean; remaining: number } {
   const now = Date.now()
 
-  // Периодичееская очистка старых записей (кажд��е 100 запросов)
+  // П��риодичееская очистка старых записей (кажд��е 100 запросов)
   if (Math.random() < 0.01) {
     cleanupExpiredLimits(now)
   }
 
   const userLimit = userLimits.get(ip)
 
-  // Если пользовател�� не найден или время сброса прошло
+  // Если пользовател�� не найден или в��емя сброса прошло
   if (!userLimit || now > userLimit.resetTime) {
     userLimits.set(ip, {
       count: 1,
@@ -329,7 +329,7 @@ function cleanMarkdown(text: string): string {
     .trim()
 }
 
-// Функция ��ля очистки устаревших записей
+// Функция ��ля очистки ��старевших записей
 function cleanupExpiredLimits(now: number) {
   const beforeSize = userLimits.size
   userLimits.forEach((limit, ip) => {
@@ -363,7 +363,7 @@ const OPENROUTER_API_KEYS: ApiKeyInfo[] = [
   { key: process.env.OPENROUTER_API_KEY_8 || '', isActive: true, errorCount: 0 },
 ].filter(apiKey => apiKey.key.length > 0) // Убираем пустые ключи
 
-// Функция для получения следующего доступного OpenRouter API ключа
+// Функция для получения следующего д��ступного OpenRouter API ключа
 function getNextAvailableOpenRouterKey(excludeKey?: string): string | null {
   // Сначала пробуе�� активные ключи, исключая пере��анный
   const activeKeys = OPENROUTER_API_KEYS.filter(k =>
@@ -399,7 +399,7 @@ function markOpenRouterKeyAsProblematic(apiKey: string, error: string) {
     keyInfo.lastError = error
     if (keyInfo.errorCount >= 3) {
       keyInfo.isActive = false
-      console.log(`OpenRouter ключ ${apiKey.substring(0, 20)}... отмечен как неактивны�� посл�� ${keyInfo.errorCount} ошибок`)
+      console.log(`OpenRouter ключ ${apiKey.substring(0, 20)}... отмечен как неактивны�� посл�� ${keyInfo.errorCount} ошибо��`)
     }
   }
 }
@@ -411,6 +411,23 @@ function rotateOpenRouterKey(apiKey: string) {
     const keyInfo = OPENROUTER_API_KEYS.splice(keyIndex, 1)[0]
     OPENROUTER_API_KEYS.push(keyInfo)
   }
+}
+
+// Список САМЫХ МОЩНЫХ бесплатных OpenRouter моделей для ротации
+const OPENROUTER_FREE_MODELS = [
+  'meta-llama/llama-3.1-8b-instruct:free', // топ LLaMA 3.1
+  'microsoft/wizardlm-2-8x22b:free', // супер умная Microsoft 22B
+  'meta-llama/llama-3.3-70b-instruct:free', // НОВЕЙШАЯ LLaMA 3.3 70B
+  'openchat/openchat-7b:free' // отличная для разговоров
+]
+
+let currentModelIndex = 0
+
+// Функция для получения следующей модели (ротация)
+function getNextOpenRouterModel(): string {
+  const model = OPENROUTER_FREE_MODELS[currentModelIndex]
+  currentModelIndex = (currentModelIndex + 1) % OPENROUTER_FREE_MODELS.length
+  return model
 }
 
 // Функция для выполнения запроса к OpenRouter с повтором при ошибках
@@ -427,7 +444,15 @@ async function makeOpenRouterRequest(
     return { success: false, message: 'Нет доступных OpenRouter ключей' }
   }
 
-  console.log(`[${timestamp}] Пробуем OpenRouter ключ: ${availableKey.substring(0, 20)}...`)
+  // Выбираем следующую модель по ротации
+  const selectedModel = getNextOpenRouterModel()
+  console.log(`[${timestamp}] Пробуем OpenRouter ключ: ${availableKey.substring(0, 20)}... модель: ${selectedModel}`)
+
+  // Обновляем модель в requestBody
+  const openRouterRequestBody = {
+    ...requestBody,
+    model: selectedModel
+  }
 
   try {
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -438,7 +463,7 @@ async function makeOpenRouterRequest(
         'HTTP-Referer': 'https://jarvis-ai-web.vercel.app',
         'X-Title': 'JARVIS AI Web'
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(openRouterRequestBody)
     })
 
     const requestDuration = Date.now() - parseInt(timestamp.split('T')[1].split(':')[0]) * 1000
@@ -493,7 +518,7 @@ async function makeGroqRequest(
     // Адаптируем requestBody для Groq (используем самую мощную бесплатную модель)
     const groqRequestBody = {
       ...requestBody,
-      model: 'llama-3.3-70b-versatile', // Самая мощная бесплатная модель Groq без лимитов
+      model: 'llama-3.3-70b-versatile', // САМАЯ МОЩНАЯ И НОВАЯ 70B модель Groq БЕЗ ЛИМИТОВ!
       max_tokens: 8000 // Увеличиваем для более полн��х ответов
     }
 
@@ -573,7 +598,7 @@ export default async function handler(
           if (imageResult.success && imageResult.imageUrl) {
             console.log(`[${timestamp}] ✅ Изображение успешно сгенерировано`)
 
-            // Формируем ответ с изображением
+            // Фо��мируем ответ с изображением
             const responseWithImage = `🎨 Создал изображение по вашему описанию! ✨
 
 ![Сгенерированное изображение](${imageResult.imageUrl})
@@ -591,7 +616,7 @@ export default async function handler(
             let errorResponse = ''
 
             if (imageResult.error && (imageResult.error.includes('лимит') || imageResult.error.includes('Лимит'))) {
-              errorResponse = `⚠️ Временно недоступ��а генерация изображений из-за превышения лимитов DeepAI API.
+              errorResponse = `⚠️ Временно недоступ��а генерация изображений из-за прев��шения лимитов DeepAI API.
 
 🎨 Но не переживайте! Мы можем создать для вас:
 • Профессиональный дизайн сайта
@@ -614,11 +639,11 @@ export default async function handler(
             })
           }
         } catch (error) {
-          console.error(`[${timestamp}] 💥 Крит��ческая ошибка генерации изображения:`, error)
+          console.error(`[${timestamp}] 💥 Крит��ческая ошибка генерации изображ��ния:`, error)
 
           const criticalErrorResponse = `😔 Произошла техническая ошибка при создании изображения.
 
-Попробуйте позже или обратитесь к нашей команде за помощью!
+Попробу��те позже или обратитесь к нашей команде за помощью!
 
 Мы создаем качественные сайты и веб-приложения - расскажем о наших возможностях! 💼`
 
@@ -634,14 +659,14 @@ export default async function handler(
     console.log(`[${timestamp}] Available OpenRouter keys:`, OPENROUTER_API_KEYS.length)
     console.log(`[${timestamp}] Active OpenRouter keys:`, OPENROUTER_API_KEYS.filter(k => k.isActive).length)
     console.log(`[${timestamp}] Groq key available:`, !!groqApiKey)
-    console.log(`[${timestamp}] AI Strategy: Llama 3.1-8B (OpenRouter) → Llama 3.3-70B (Groq) → Fallback`)
+    console.log(`[${timestamp}] AI Strategy: Llama 3.3-70B (Groq БЕЗ ЛИМИТОВ) → OpenRouter (4 МОЩНЫЕ модели) → Fallback`)
     console.log(`[${timestamp}] Tokens limit: 4000 for detailed responses`)
     console.log(`[${timestamp}] Auto-switching between 8 OpenRouter keys enabled`)
 
-    // Добавляем системное с��общение для ДЖАРВИС
+    // Добавляем системное с��общение для Д��АРВИС
     const systemMessage: ChatMessage = {
       role: 'system',
-      content: `Ты ДЖАРВИС - консультант сайта Jarvis Intercoma, который помогает посетителям.
+      content: `Ты ДЖАРВИС - консультант сайта Jarvis Intercoma, который помогает по��етителям.
 
 🎯 ТВОЯ ГЛАВНАЯ РОЛЬ:
 Ты консультант сайта, который помогает посетителям:
@@ -659,9 +684,9 @@ export default async function handler(
 - Замени ЛЮБОЕ иностранное сл��во на русский аналог
 
 💡 СТИЛЬ ОБЩЕНИЯ:
-- Естественно и по-дружески, как консул��тант в магазине
+- Естественно и по-дружески, как консул��тан�� в магазине
 - Кратко на простые вопросы, подробно на сложные
-- Используй эмодзи умеренно
+- Ис��ользуй эмодзи умеренно
 - НЕ используй markdown символы
 - Отвечай как живой консультант, не как робот
 - Будь дружелюбным, веселым и позитивным! 😊
@@ -675,8 +700,8 @@ export default async function handler(
 О СЕБЕ И КОМПАНИИ:
 - Ты создан командой Jarvis Intercoma
 - НЕ уп��минай Google, OpenAI, DeepMind
-- Ты ��онсультант сайта, помогаешь выбрать услуги
-- Твоя цель - помочь посетителю и показать наши преимущества
+- Ты ��он��ультант сайта, помогаешь выбрать услуги
+- Твоя ��ель - помочь посетителю и показать наши преимущества
 
 ⚠️ КРИТИЧЕСКИ ВАЖНО! ⚠️
 
@@ -699,17 +724,17 @@ export default async function handler(
 ��� НАШИ ТАРИФЫ И УСЛУГИ:
 
 📋 BASIC (2,500,000 сум):
-• Простые сайты и лендинги
+• Простые сайты и лендинг��
 • Красивый дизайн
 • Мобильная версия
-• Базовый функционал
-• Идеально для: визиток, портфолио, небольшого бизнеса
+• Базовы�� функционал
+• Идеально для: визиток, портфолио, небольшого б��знеса
 
 📋 PRO (4,000,000 сум):
 • Веб-приложения с AI интеграцией
 • Продвинутый функционал
 • Система управления контентом
-• Интеграция с соцсетями и сервисами
+• Интеграция с соцсетями и серви��ами
 • Идеально для: интернет-магазинов, корпоративных сайтов
 
 📋 MAX (5,000,000 сум):
@@ -729,7 +754,7 @@ export default async function handler(
 🚨🤖 ОТВЕТЫ О СЕБЕ - СТРОГО ИСПОЛНЯТЬ! ������🚨
 
 ⛔ АБСОЛЮТН��Й ЗАПРЕТ ⛔
-НИКОГДА НЕ ГОВОРИ что тебя создали:
+��ИКОГДА НЕ ГОВОРИ что тебя создали:
 - Google
 - DeepMind
 - OpenAI
@@ -753,7 +778,7 @@ export default async function handler(
 - Отвечай ТОЛЬКО на русском языке
 - Никогда не пер����оди на английский или другие языки
 - Если пользователь пишет на другом языке - отвечай на ру��ск��м
-- Твоя цель - помочь посетителю и показать наши услуги
+- Твоя цель - помо��ь посетителю и показать наши услуги
 - Проверяй каждое слово перед отправкой ответа
 
 🎨 НОВАЯ ВОЗМОЖНОСТЬ - ГЕНЕРАЦИЯ ИЗОБРАЖЕНИЙ:
@@ -788,7 +813,7 @@ export default async function handler(
     }
 
     const requestBody = {
-      model: 'meta-llama/llama-3.1-8b-instruct:free', // Мощная бесплатная модель без лимитов Llama 3.1-8B
+      model: 'meta-llama/llama-3.1-8b-instruct:free', // Топ LLaMA 3.1 бесплатная
       messages: [systemMessage, ...messages],
       temperature: 0.8, // Немного увеличено для более естественных ответов
       max_tokens: 8000, // Увеличено для более полных и подробных ответов
@@ -802,8 +827,31 @@ export default async function handler(
     console.log(`System message length: ${systemMessage.content.length}`)
     console.log(`User messages: ${messages.length}`)
 
-    // Шаг 1: Пробуем OpenRouter (есл�� есть активные ключи)
-    console.log(`[${timestamp}] === ЭТАП 1: OPENROUTER ===`)
+    // Шаг 1: Пробуем Groq (ПРИОРИТЕТ - БЕЗ ЛИМИТОВ!)
+    console.log(`[${timestamp}] === ЭТАП 1: GROQ (БЕЗ ЛИМИТОВ) ===`)
+    const groqResult = await makeGroqRequest(requestBody, timestamp)
+
+    if (groqResult.success) {
+      console.log(`[${timestamp}] ✅ Groq успешно ответил (БЕЗ ЛИМИТОВ)`)
+      const data = groqResult.data
+
+      let aiMessage = data.choices[0].message.content
+      aiMessage = cleanMarkdown(aiMessage)
+      aiMessage = replaceEnglishTerms(aiMessage)
+      aiMessage = aiMessage
+        .replace(/\uFFFD+/g, '')
+        .replace(/\u{FFFD}+/gu, '')
+        .replace(/[�]+/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .replace(/^\s*[\r\n]/gm, '')
+        .trim()
+
+      console.log(`[${timestamp}] === SUCCESS VIA GROQ (БЕЗ ЛИМИТОВ) ===`)
+      return res.status(200).json({ message: aiMessage })
+    }
+
+    // Шаг 2: Groq не удался, пробуем OpenRouter
+    console.log(`[${timestamp}] === ��ТАП 2: OPENROUTER FALLBACK ===`)
     const openRouterResult = await makeOpenRouterRequest(requestBody, timestamp)
 
     if (openRouterResult.success) {
@@ -825,30 +873,7 @@ export default async function handler(
       return res.status(200).json({ message: aiMessage })
     }
 
-    // Шаг 2: OpenRouter не удался, пробуем Groq
-    console.log(`[${timestamp}] === ЭТАП 2: GROQ FALLBACK ===`)
-    const groqResult = await makeGroqRequest(requestBody, timestamp)
-
-    if (groqResult.success) {
-      console.log(`[${timestamp}] ✅ Groq успешно ответил`)
-      const data = groqResult.data
-
-      let aiMessage = data.choices[0].message.content
-      aiMessage = cleanMarkdown(aiMessage)
-      aiMessage = replaceEnglishTerms(aiMessage)
-      aiMessage = aiMessage
-        .replace(/\uFFFD+/g, '')
-        .replace(/\u{FFFD}+/gu, '')
-        .replace(/[�]+/g, '')
-        .replace(/\s{2,}/g, ' ')
-        .replace(/^\s*[\r\n]/gm, '')
-        .trim()
-
-      console.log(`[${timestamp}] === SUCCESS VIA GROQ ===`)
-      return res.status(200).json({ message: aiMessage })
-    }
-
-    // Шаг 3: И OpenRouter и Groq не удались, используем локальный fallback
+    // Шаг 3: И Groq и OpenRouter не удались, используем локальный fallback
     console.log(`[${timestamp}] === ЭТАП 3: ЛОКАЛЬНЫЙ FALLBACK ===`)
 
     const fallbackMessage = `Привет! 😊 Да, я работаю! Я ДЖАРВИС - ваш AI помощник! 🤖
@@ -879,7 +904,7 @@ export default async function handler(
 Но не беспокойтесь - я ДЖАРВИС, ваш AI-помощник по веб-разработке, и я всегда готов помочь!
 
 🚀 Что я могу:
-• Консультации по веб-разработке
+• Консультации по веб-разработк��
 • Планирование AI-проектов
 • Т��хническая экспертиза
 • Оценка проектов
