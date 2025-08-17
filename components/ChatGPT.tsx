@@ -99,7 +99,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             }
 
             // Запускаем таймер автоотправки через 2 секунды посл�� последних слов
-            console.log('⏱️ З��пускаем таймер автоотправки (2 сек)')
+            console.log('⏱️ Запускаем таймер автоотправки (2 сек)')
             const timer = setTimeout(() => {
               console.log('🚀 Время вышло! Автоматическая отправка сообщения')
               // Используем актуальный текст из ref
@@ -305,7 +305,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         setIsListening(false)
       }
     } else {
-      console.log('⚠️ Не удалось запустить: recognition не готов или уж�� слушает')
+      console.log('⚠️ Не удалось запустить: recognition не готов или уж�� слушае��')
     }
   }
 
@@ -421,7 +421,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return null
   }
 
-  // Отметить ключ как пробле��ный
+  // Отметить ключ как проблемный
   const markElevenLabsKeyAsProblematic = (apiKey: string, error: string) => {
     const keyInfo = elevenLabsKeys.find(k => k.key === apiKey)
     if (keyInfo) {
@@ -467,7 +467,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       }, 15000) // 15 секунд timeout
 
       // Используем качественный русский мужской голос без акц��нта (лучший для русского языка)
-      const voiceId = 'pNInz6obpgDQGcFmaJgB' // Adam (отличный английский голос, но хорошо произносит русский без акцента)
+      const voiceId = 'pNInz6obpgDQGcFmaJgB' // Adam (отличный английский голос, н�� хорошо произносит русский без акцента)
 
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
         method: 'POST',
@@ -538,7 +538,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         if (response.status === 401) {
           console.log('🔑 Н���верный ключ ElevenLabs, пробуем следующий...')
         } else if (response.status === 429) {
-          console.log('⏰ Лимит ElevenLabs ����ревышен, пробуем следующий ключ...')
+          console.log('⏰ Лимит ElevenLabs ��ревышен, пробуем следующий ключ...')
         }
 
         return false
@@ -571,7 +571,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const speakText = async (text: string) => {
     console.log('🎵 speakText вызвана. voiceMode:', voiceMode, 'text:', text.substring(0, 30) + '...')
     if (voiceMode !== 'voice') {
-      console.log('❌ Голосовой режим вык��ючен, пропускаем озвучивание')
+      console.log('❌ Голосовой режим выключен, пропускаем озвучивание')
       return
     }
 
@@ -846,7 +846,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   }
 
   const showThinkingProcess = async (userMessage: string) => {
-    // Более умная генерация мыслей на основе анали��а вопроса
+    // Более умная генерация мыслей на основе анализа вопроса
     const generateThinking = (message: string) => {
       const lowerMessage = message.toLowerCase()
       const words = lowerMessage.split(' ')
@@ -891,7 +891,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
       // Для остальных случаев
       return [
         'Обрабатываю запрос',
-        'Формирую наиболее полезный ��твет'
+        'Формирую наиболее полез��ый ��твет'
       ]
     }
 
@@ -975,7 +975,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const response = await generateJarvisResponse(userMessage, messages)
 
-      // Удаляем блок thinking перед показом ответа
+      // Удаляе�� блок thinking перед показом ответа
       setMessages(prev => prev.filter(msg => !msg.isThinking))
 
       const botMessage: Message = {
@@ -1060,7 +1060,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         console.log('🎤 🚀 МГНОВЕННЫЙ запуск озвучивания (handleSendMessage):', response.substring(0, 50) + '...')
         // Запускаем озвучивание параллельно, не блокир��я UI
         speakText(response).catch(error => {
-          console.error('Ошибка озву��ивания:', error)
+          console.error('Ошибка озвучивания:', error)
         })
       }
 
@@ -1124,7 +1124,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `✅ Фай�� "${file.name}" получен! К сожал��нилю, обралюотка фай��ов пока находится в разра��отке. Но вы можете описать содер��имое файла текстом, и я послюараю��ь помочь! 📝`,
+        text: `✅ Фай�� "${file.name}" получе��! К сожал��нилю, обралюотка фай��ов пока находится в разра��отке. Но вы можете описать содер��имое файла текстом, и я послюараю��ь помочь! 📝`,
         isUser: false,
         timestamp: new Date()
       }
@@ -1589,9 +1589,9 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         }
 
         .message-text {
-          background: #f7f7f8;
-          padding: 12px 16px;
-          border-radius: 18px;
+          background: transparent;
+          padding: 12px 0;
+          border-radius: 0;
           color: #374151;
           line-height: 1.5;
           font-size: 14px;
@@ -1600,7 +1600,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           white-space: pre-wrap;
           max-width: 100%;
           display: block;
-          border: 1px solid #e5e7eb;
+          border: none;
         }
 
         .user-message .message-text {
