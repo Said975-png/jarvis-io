@@ -31,7 +31,7 @@ function isImageGenerationRequest(text: string): boolean {
   return imageKeywords.some(keyword => lowerText.includes(keyword))
 }
 
-// Функция для извлечения описания изображения из текста
+// Функция для извлечения описания изо��ражения из текста
 function extractImagePrompt(text: string): string {
   // Убираем ключев��е слова и оставляем оп��сание
   let prompt = text
@@ -99,7 +99,7 @@ function replaceEnglishTerms(text: string): string {
     'please': 'пожалуйста',
     'sorry': 'извините',
     'excuse me': 'извините',
-    'welcome': 'добро пожаловать',
+    'welcome': 'добро пожаловат��',
     'good': 'хорошо',
     'great': 'отлично',
     'excellent': 'отлично',
@@ -264,7 +264,7 @@ function getClientIP(req: NextApiRequest): string {
 function checkAndUpdateLimit(ip: string): { allowed: boolean; remaining: number } {
   const now = Date.now()
 
-  // Периодичееская очистка старых записей (кажд��е 100 запросов)
+  // П��риодичееская очистка старых записей (кажд��е 100 запросов)
   if (Math.random() < 0.01) {
     cleanupExpiredLimits(now)
   }
@@ -329,7 +329,7 @@ function cleanMarkdown(text: string): string {
     .trim()
 }
 
-// Функция ��ля очистки устаревших записей
+// Функция ��ля очистки ��старевших записей
 function cleanupExpiredLimits(now: number) {
   const beforeSize = userLimits.size
   userLimits.forEach((limit, ip) => {
@@ -363,7 +363,7 @@ const OPENROUTER_API_KEYS: ApiKeyInfo[] = [
   { key: process.env.OPENROUTER_API_KEY_8 || '', isActive: true, errorCount: 0 },
 ].filter(apiKey => apiKey.key.length > 0) // Убираем пустые ключи
 
-// Функция для получения следующего доступного OpenRouter API ключа
+// Функция для получения следующего д��ступного OpenRouter API ключа
 function getNextAvailableOpenRouterKey(excludeKey?: string): string | null {
   // Сначала пробуе�� активные ключи, исключая пере��анный
   const activeKeys = OPENROUTER_API_KEYS.filter(k =>
@@ -413,6 +413,22 @@ function rotateOpenRouterKey(apiKey: string) {
   }
 }
 
+// Список бесплатных OpenRouter моделей для ротации
+const OPENROUTER_FREE_MODELS = [
+  'meta-llama/llama-3.1-8b-instruct:free', // топ LLaMA 3.1
+  'microsoft/wizardlm-2-8x22b:free', // супер умная Microsoft
+  'openchat/openchat-7b:free' // отличная для разговоров
+]
+
+let currentModelIndex = 0
+
+// Функция для получения следующей модели (ротация)
+function getNextOpenRouterModel(): string {
+  const model = OPENROUTER_FREE_MODELS[currentModelIndex]
+  currentModelIndex = (currentModelIndex + 1) % OPENROUTER_FREE_MODELS.length
+  return model
+}
+
 // Функция для выполнения запроса к OpenRouter с повтором при ошибках
 async function makeOpenRouterRequest(
   requestBody: any,
@@ -427,7 +443,15 @@ async function makeOpenRouterRequest(
     return { success: false, message: 'Нет доступных OpenRouter ключей' }
   }
 
-  console.log(`[${timestamp}] Пробуем OpenRouter ключ: ${availableKey.substring(0, 20)}...`)
+  // Выбираем следующую модель по ротации
+  const selectedModel = getNextOpenRouterModel()
+  console.log(`[${timestamp}] Пробуем OpenRouter ключ: ${availableKey.substring(0, 20)}... модель: ${selectedModel}`)
+
+  // Обновляем модель в requestBody
+  const openRouterRequestBody = {
+    ...requestBody,
+    model: selectedModel
+  }
 
   try {
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -438,7 +462,7 @@ async function makeOpenRouterRequest(
         'HTTP-Referer': 'https://jarvis-ai-web.vercel.app',
         'X-Title': 'JARVIS AI Web'
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(openRouterRequestBody)
     })
 
     const requestDuration = Date.now() - parseInt(timestamp.split('T')[1].split(':')[0]) * 1000
@@ -659,7 +683,7 @@ export default async function handler(
 - Замени ЛЮБОЕ иностранное сл��во на русский аналог
 
 💡 СТИЛЬ ОБЩЕНИЯ:
-- Естественно и по-дружески, как консул��тант в магазине
+- Естественно и по-дружески, как консул��тан�� в магазине
 - Кратко на простые вопросы, подробно на сложные
 - Ис��ользуй эмодзи умеренно
 - НЕ используй markdown символы
@@ -676,7 +700,7 @@ export default async function handler(
 - Ты создан командой Jarvis Intercoma
 - НЕ уп��минай Google, OpenAI, DeepMind
 - Ты ��онсультант сайта, помогаешь выбрать услуги
-- Твоя цель - помочь посетителю и показать наши преимущества
+- Твоя ��ель - помочь посетителю и показать наши преимущества
 
 ⚠️ КРИТИЧЕСКИ ВАЖНО! ⚠️
 
@@ -702,7 +726,7 @@ export default async function handler(
 • Простые сайты и лендинги
 • Красивый дизайн
 • Мобильная версия
-• Базовый функционал
+• Базовы�� функционал
 • Идеально для: визиток, портфолио, небольшого бизнеса
 
 📋 PRO (4,000,000 сум):
@@ -879,7 +903,7 @@ export default async function handler(
 Но не беспокойтесь - я ДЖАРВИС, ваш AI-помощник по веб-разработке, и я всегда готов помочь!
 
 🚀 Что я могу:
-• Консультации по веб-разработке
+• Консультации по веб-разработк��
 • Планирование AI-проектов
 • Т��хническая экспертиза
 • Оценка проектов
