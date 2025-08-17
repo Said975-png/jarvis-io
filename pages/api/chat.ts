@@ -493,7 +493,7 @@ async function makeGroqRequest(
     // Адаптируем requestBody для Groq (используем самую мощную бесплатную модель)
     const groqRequestBody = {
       ...requestBody,
-      model: 'llama-3.3-70b-versatile', // Самая мощная бесплатная модель Groq без лимитов
+      model: 'llama-3.1-70b-versatile', // Самая умная 70B модель Groq БЕЗ ЛИМИТОВ!
       max_tokens: 8000 // Увеличиваем для более полн��х ответов
     }
 
@@ -573,7 +573,7 @@ export default async function handler(
           if (imageResult.success && imageResult.imageUrl) {
             console.log(`[${timestamp}] ✅ Изображение успешно сгенерировано`)
 
-            // Формируем ответ с изображением
+            // Фо��мируем ответ с изображением
             const responseWithImage = `🎨 Создал изображение по вашему описанию! ✨
 
 ![Сгенерированное изображение](${imageResult.imageUrl})
@@ -618,7 +618,7 @@ export default async function handler(
 
           const criticalErrorResponse = `😔 Произошла техническая ошибка при создании изображения.
 
-Попробуйте позже или обратитесь к нашей команде за помощью!
+Попробу��те позже или обратитесь к нашей команде за помощью!
 
 Мы создаем качественные сайты и веб-приложения - расскажем о наших возможностях! 💼`
 
@@ -634,14 +634,14 @@ export default async function handler(
     console.log(`[${timestamp}] Available OpenRouter keys:`, OPENROUTER_API_KEYS.length)
     console.log(`[${timestamp}] Active OpenRouter keys:`, OPENROUTER_API_KEYS.filter(k => k.isActive).length)
     console.log(`[${timestamp}] Groq key available:`, !!groqApiKey)
-    console.log(`[${timestamp}] AI Strategy: Llama 3.1-8B (OpenRouter) → Llama 3.3-70B (Groq) → Fallback`)
+    console.log(`[${timestamp}] AI Strategy: Llama 3.1-70B (Groq БЕЗ ЛИМИТОВ) → OpenRouter (3 модели) → Fallback`)
     console.log(`[${timestamp}] Tokens limit: 4000 for detailed responses`)
     console.log(`[${timestamp}] Auto-switching between 8 OpenRouter keys enabled`)
 
     // Добавляем системное с��общение для ДЖАРВИС
     const systemMessage: ChatMessage = {
       role: 'system',
-      content: `Ты ДЖАРВИС - консультант сайта Jarvis Intercoma, который помогает посетителям.
+      content: `Ты ДЖАРВИС - консультант сайта Jarvis Intercoma, который помогает по��етителям.
 
 🎯 ТВОЯ ГЛАВНАЯ РОЛЬ:
 Ты консультант сайта, который помогает посетителям:
@@ -661,7 +661,7 @@ export default async function handler(
 💡 СТИЛЬ ОБЩЕНИЯ:
 - Естественно и по-дружески, как консул��тант в магазине
 - Кратко на простые вопросы, подробно на сложные
-- Используй эмодзи умеренно
+- Ис��ользуй эмодзи умеренно
 - НЕ используй markdown символы
 - Отвечай как живой консультант, не как робот
 - Будь дружелюбным, веселым и позитивным! 😊
@@ -709,7 +709,7 @@ export default async function handler(
 • Веб-приложения с AI интеграцией
 • Продвинутый функционал
 • Система управления контентом
-• Интеграция с соцсетями и сервисами
+• Интеграция с соцсетями и серви��ами
 • Идеально для: интернет-магазинов, корпоративных сайтов
 
 📋 MAX (5,000,000 сум):
@@ -788,7 +788,7 @@ export default async function handler(
     }
 
     const requestBody = {
-      model: 'meta-llama/llama-3.1-8b-instruct:free', // Мощная бесплатная модель без лимитов Llama 3.1-8B
+      model: 'meta-llama/llama-3.1-8b-instruct:free', // Топ LLaMA 3.1 бесплатная
       messages: [systemMessage, ...messages],
       temperature: 0.8, // Немного увеличено для более естественных ответов
       max_tokens: 8000, // Увеличено для более полных и подробных ответов
