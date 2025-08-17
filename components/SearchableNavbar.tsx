@@ -262,7 +262,13 @@ export default function SearchableNavbar() {
             <div className="cart-container-chatgpt">
               <button
                 className="cart-button-chatgpt"
-                onClick={() => setCartOpen(!cartOpen)}
+                onClick={() => {
+                  setCartOpen(!cartOpen)
+                  // Закрываем мобильное меню если оно открыто
+                  if (mobileMenuOpen) {
+                    setMobileMenuOpen(false)
+                  }
+                }}
                 aria-label="Корзина"
               >
                 <div className="cart-icon-wrapper-chatgpt">
