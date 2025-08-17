@@ -21,6 +21,8 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
   const [currentThinkingText, setCurrentThinkingText] = useState('')
   const [inputText, setInputText] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const [typingText, setTypingText] = useState('')
+  const [isDisplayingTyping, setIsDisplayingTyping] = useState(false)
   const [isUploadingFile, setIsUploadingFile] = useState(false)
   const [interactionIds, setInteractionIds] = useState<{[messageId: string]: string}>({})
 
@@ -76,7 +78,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             }
           }
 
-          // Показываем промежуточные результаты для лучшего UX (в реальном времени)
+          // Показываем промежуточные результаты для лучш��го UX (в реальном времени)
           if (interimTranscript) {
             console.log('🔄 Промежуточный текст:', interimTranscript)
             // Обновляем поле ввода только промежуточным текстом (заменяем, ��е добавляем)
@@ -192,7 +194,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           window.speechSynthesis.cancel()
         }
 
-        // Инициализируем г��лоса (некоторчие браузеры загружают их асинхронно)
+        // Инициали��ируем г��лоса (некоторчие браузеры загружают их асинхронно)
         const loadVoices = () => {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
@@ -286,7 +288,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return commonTags.filter(tag => lowerText.includes(tag))
   }
 
-  // Функ��ия для з��пуска голосового ввода
+  // ��унк��ия для з��пуска голосового ввода
   const startListening = () => {
     if (recognition && !isListening) {
       console.log('🎙️ ЗАПУСК голосового ввода с автоотправкой')
@@ -326,7 +328,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для получения лучшего мужского голоса
+  // Функция для получ��ния лучшего мужского голоса
   const getBestMaleVoice = () => {
     const voices = speechSynthesis.getVoices()
     let selectedVoice = null
@@ -478,7 +480,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           text: text,
           model_id: 'eleven_multilingual_v2', // Лучше для русского яз��ка
           voice_settings: {
-            stability: 0.95, // Максимальная стабильность для четкого русского произношения
+            stability: 0.95, // Максимальная стабильность для четк��го русского произношения
             similarity_boost: 0.90, // Улучшенная похожесть на естественный голос
             style: 0.05, // Минимальная эмоциональность для четкого произношения русского
             use_speaker_boost: true // Усиление для лучшего качества звука
@@ -831,7 +833,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isGreeting) {
         return [
-          'Пользователь поздоровался',
+          'Пользовате��ь поздоровался',
           'Отвечу дружелюбно и предложу помощь'
         ]
       }
