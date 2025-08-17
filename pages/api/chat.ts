@@ -123,7 +123,7 @@ function replaceEnglishTerms(text: string): string {
     'Back-end': 'Бэк-енд',
     'fullstack': 'фулстек',
     'Fullstack': 'Фулстек',
-    'full-stack': 'фул-стек',
+    'full-stack': 'фул-сте��',
     'Full-stack': 'Фул-стек',
 
     // API и технологии
@@ -413,7 +413,7 @@ function rotateOpenRouterKey(apiKey: string) {
   }
 }
 
-// Список бесплатных OpenRouter моделей для ротации
+// Список беспла��ных OpenRouter моделей для ротации
 const OPENROUTER_FREE_MODELS = [
   'meta-llama/llama-3.1-8b-instruct:free', // топ LLaMA 3.1
   'microsoft/wizardlm-2-8x22b:free', // супер умная Microsoft
@@ -786,7 +786,7 @@ export default async function handler(
 КЛЮЧЕВЫЕ СЛОВА для генерации изображений:
 • "создай изображение", "сгенерируй картинку", "нарисуй"
 • "создай картинку", "сделай изображение", "покажи как выглядит"
-• "изобрази", "визуализируй", "создай визуал"
+• "изоб��ази", "визуализируй", "создай визуал"
 
 ПРИМЕРЫ запросов:
 • "Создай изображение красивого заката над морем"
@@ -826,8 +826,31 @@ export default async function handler(
     console.log(`System message length: ${systemMessage.content.length}`)
     console.log(`User messages: ${messages.length}`)
 
-    // Шаг 1: Пробуем OpenRouter (есл�� есть активные ключи)
-    console.log(`[${timestamp}] === ЭТАП 1: OPENROUTER ===`)
+    // Шаг 1: Пробуем Groq (ПРИОРИТЕТ - БЕЗ ЛИМИТОВ!)
+    console.log(`[${timestamp}] === ЭТАП 1: GROQ (БЕЗ ЛИМИТОВ) ===`)
+    const groqResult = await makeGroqRequest(requestBody, timestamp)
+
+    if (groqResult.success) {
+      console.log(`[${timestamp}] ✅ Groq успешно ответил (БЕЗ ЛИМИТОВ)`)
+      const data = groqResult.data
+
+      let aiMessage = data.choices[0].message.content
+      aiMessage = cleanMarkdown(aiMessage)
+      aiMessage = replaceEnglishTerms(aiMessage)
+      aiMessage = aiMessage
+        .replace(/\uFFFD+/g, '')
+        .replace(/\u{FFFD}+/gu, '')
+        .replace(/[�]+/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .replace(/^\s*[\r\n]/gm, '')
+        .trim()
+
+      console.log(`[${timestamp}] === SUCCESS VIA GROQ (БЕЗ ЛИМИТОВ) ===`)
+      return res.status(200).json({ message: aiMessage })
+    }
+
+    // Шаг 2: Groq не удался, пробуем OpenRouter
+    console.log(`[${timestamp}] === ЭТАП 2: OPENROUTER FALLBACK ===`)
     const openRouterResult = await makeOpenRouterRequest(requestBody, timestamp)
 
     if (openRouterResult.success) {
@@ -846,29 +869,6 @@ export default async function handler(
         .trim()
 
       console.log(`[${timestamp}] === SUCCESS VIA OPENROUTER ===`)
-      return res.status(200).json({ message: aiMessage })
-    }
-
-    // Шаг 2: OpenRouter не удался, пробуем Groq
-    console.log(`[${timestamp}] === ЭТАП 2: GROQ FALLBACK ===`)
-    const groqResult = await makeGroqRequest(requestBody, timestamp)
-
-    if (groqResult.success) {
-      console.log(`[${timestamp}] ✅ Groq успешно ответил`)
-      const data = groqResult.data
-
-      let aiMessage = data.choices[0].message.content
-      aiMessage = cleanMarkdown(aiMessage)
-      aiMessage = replaceEnglishTerms(aiMessage)
-      aiMessage = aiMessage
-        .replace(/\uFFFD+/g, '')
-        .replace(/\u{FFFD}+/gu, '')
-        .replace(/[�]+/g, '')
-        .replace(/\s{2,}/g, ' ')
-        .replace(/^\s*[\r\n]/gm, '')
-        .trim()
-
-      console.log(`[${timestamp}] === SUCCESS VIA GROQ ===`)
       return res.status(200).json({ message: aiMessage })
     }
 
