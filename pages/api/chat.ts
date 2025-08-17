@@ -14,7 +14,7 @@ interface ChatResponse {
   error?: string
 }
 
-// Фу��кция для обнаружения запросов на генерацию изображений
+// Функция для обнаружения запросов на генерацию изображений
 function isImageGenerationRequest(text: string): boolean {
   const imageKeywords = [
     'создай изображение', 'сгенерируй картинку', 'нарисуй',
@@ -31,7 +31,7 @@ function isImageGenerationRequest(text: string): boolean {
   return imageKeywords.some(keyword => lowerText.includes(keyword))
 }
 
-// Функция для извлечения описания изо��ражения из текста
+// Функция для извлечения описания изо��ражения ��з текста
 function extractImagePrompt(text: string): string {
   // Убираем ключев��е слова и оставляем оп��сание
   let prompt = text
@@ -106,7 +106,7 @@ function replaceEnglishTerms(text: string): string {
     'perfect': 'отл��чно',
     'cool': 'круто',
     'awesome': 'потрясающе',
-    'amazing': 'удиви����льно',
+    'amazing': 'удиви��ельно',
 
     // Основные веб-��ермины
     'web': 'веб',
@@ -150,7 +150,7 @@ function replaceEnglishTerms(text: string): string {
     'SQL': 'СКЛ',
     'MySQL': 'МайСКЛ',
     'PostgreSQL': 'ПостгреСКЛ',
-    'MongoDB': 'Монго��Б',
+    'MongoDB': 'МонгоДБ',
 
     // Общие термины
     'code': 'код',
@@ -271,7 +271,7 @@ function checkAndUpdateLimit(ip: string): { allowed: boolean; remaining: number 
 
   const userLimit = userLimits.get(ip)
 
-  // Если ��ользовател�� не найден или время сброса прошло
+  // Если пользовател�� не найден или время сброса прошло
   if (!userLimit || now > userLimit.resetTime) {
     userLimits.set(ip, {
       count: 1,
@@ -363,7 +363,7 @@ const OPENROUTER_API_KEYS: ApiKeyInfo[] = [
   { key: process.env.OPENROUTER_API_KEY_8 || '', isActive: true, errorCount: 0 },
 ].filter(apiKey => apiKey.key.length > 0) // Убираем пустые ключи
 
-// Функция для получения следующего д��ступного OpenRouter API ключа
+// Функция для получения следующего д��ступного OpenRouter API к��юча
 function getNextAvailableOpenRouterKey(excludeKey?: string): string | null {
   // Сначала пробуе�� активные ключи, исключая пере��анный
   const activeKeys = OPENROUTER_API_KEYS.filter(k =>
@@ -517,7 +517,7 @@ async function makeGroqRequest(
     // Адаптируем requestBody для Groq (используем самую мощную бесплатную модель)
     const groqRequestBody = {
       ...requestBody,
-      model: 'llama-3.1-70b-versatile', // Самая умная 70B модель Groq БЕЗ ЛИМИТОВ!
+      model: 'llama-3.3-70b-versatile', // САМАЯ МОЩНАЯ И НОВАЯ 70B модель Groq БЕЗ ЛИМИТОВ!
       max_tokens: 8000 // Увеличиваем для более полн��х ответов
     }
 
@@ -683,7 +683,7 @@ export default async function handler(
 - Замени ЛЮБОЕ иностранное сл��во на русский аналог
 
 💡 СТИЛЬ ОБЩЕНИЯ:
-- Естественно и по-друже��ки, как консул��тан�� в магазине
+- Естественно и по-дружески, как консул��тан�� в магазине
 - Кратко на простые вопросы, подробно на сложные
 - Ис��ользуй эмодзи умеренно
 - НЕ используй markdown символы
@@ -725,13 +725,13 @@ export default async function handler(
 📋 BASIC (2,500,000 сум):
 • Простые сайты и лендинги
 • Красивый дизайн
-• Моби��ьная версия
+�� Мобильная версия
 • Базовы�� функционал
 • Идеально для: визиток, портфолио, небольшого бизнеса
 
 📋 PRO (4,000,000 сум):
 • Веб-приложения с AI интеграцией
-�� Продвинутый функционал
+• Продвинутый функционал
 • Система управления контентом
 • Интеграция с соцсетями и серви��ами
 • Идеально для: интернет-магазинов, корпоративных сайтов
@@ -778,7 +778,7 @@ export default async function handler(
 - Никогда не пер����оди на английский или другие языки
 - Если пользователь пишет на другом языке - отвечай на ру��ск��м
 - Твоя цель - помочь посетителю и показать наши услуги
-- Проверяй каждое слов�� перед отправкой ответа
+- Проверяй каждое слово перед отправкой ответа
 
 🎨 НОВАЯ ВОЗМОЖНОСТЬ - ГЕНЕРАЦИЯ ИЗОБРАЖЕНИЙ:
 Я также умею создава��ь изображения по текстовому описанию!
@@ -794,7 +794,7 @@ export default async function handler(
 • "Сгене��ируй картинку уютного офиса"
 
 КАК ОТВЕЧАТЬ НА ЗАПРОСЫ ИЗОБРАЖЕНИЙ:
-1. О��редели, что пользователь хочет изображение
+1. О��редели, что пользователь ��очет изображение
 2. Если описание четкое - сразу генерируй
 3. Если нето��ное - уточни детали
 4. После генерации предложи наши ��слуги по дизайну
@@ -815,7 +815,7 @@ export default async function handler(
       model: 'meta-llama/llama-3.1-8b-instruct:free', // Топ LLaMA 3.1 бесплатная
       messages: [systemMessage, ...messages],
       temperature: 0.8, // Немного увеличено для более естественных ответов
-      max_tokens: 8000, // Увеличено для более полных и подробных ответов
+      max_tokens: 8000, // Увеличе��о для более полных и подробных ответов
       top_p: 0.95,
       frequency_penalty: 0.1,
       presence_penalty: 0.1
@@ -900,7 +900,7 @@ export default async function handler(
     // Возвращаем дружелюбное сообщение об ошибке
     const fallbackMessage = `Извините, произошла временная ошибка! 😅
 
-Но не беспокойтесь - я ДЖАРВИС, ваш AI-помощник по веб-разработке, и я всегда готов помочь!
+Но не беспокойтесь - я ДЖАРВИС, ваш AI-помощник по веб-разработке, и я всегд�� готов помочь!
 
 🚀 Что я могу:
 • Консультации по веб-разработк��
