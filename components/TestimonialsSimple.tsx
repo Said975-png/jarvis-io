@@ -32,7 +32,7 @@ const testimonials = [
   {
     name: "Шарипов М.",
     location: "Бухара, Freelance",
-    text: "Решил попробовать Jarvis для создания сайта магазина бытовой техники. Результат впечатлил: бот быстро и точно помогает клиентам выбрать товар."
+    text: "Решил попробовать Jarvis для создания сайта м��газина бытовой техники. Результат впечатлил: бот быстро и точно помогает клиентам выбрать товар."
   },
   {
     name: "Васильева О.",
@@ -103,9 +103,9 @@ export default function TestimonialsSimple() {
       <style jsx>{`
         .testimonials-section-chatgpt {
           position: relative;
-          padding: 100px 0 0 0;
+          padding: 100px 0 120px 0;
           background: #ffffff;
-          overflow: hidden;
+          overflow: visible;
           margin: 0;
           border: none;
         }
