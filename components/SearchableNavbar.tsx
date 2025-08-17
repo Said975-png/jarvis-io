@@ -19,7 +19,7 @@ const searchData = [
   { title: 'Аналитика', description: 'Глубокий анализ пользовательского поведения и оптимизация конверсии', url: '/', section: 'Возможности' },
   { title: 'Basic план', description: 'Стартовое решение - идеально для небольших проектов и стартапов', url: '/', section: 'Тарифы' },
   { title: 'Pro план', description: 'Лучший выбор - лучший выбор для растущего бизнеса', url: '/', section: 'Тарифы' },
-  { title: 'Max план', description: 'Премиум решение - максимум возможностей для крупного бизнеса', url: '/', section: 'Тарифы' },
+  { title: 'Max план', description: 'Премиум ре��ение - максимум возможностей для крупного бизнеса', url: '/', section: 'Тарифы' },
   { title: 'Современный дизайн', description: 'Создание красивых и функциональных интерфейсов', url: '/', section: 'Функции' },
   { title: 'Высокая производительность', description: 'Оптимизация скорости и производительности веб-сайтов', url: '/', section: 'Функции' },
   { title: 'ИИ интеграция', description: 'Интеграция искусственного интеллекта в ваши проекты', url: '/', section: 'Функции' },
@@ -82,7 +82,7 @@ export default function SearchableNavbar() {
       setTimeout(() => {
         let targetElement: Element | null = null
         
-        // Определяем целевой элемент на основе секции
+        // Определяем целевой элемент на основе ��екции
         switch (item.section) {
           case 'Заголовки':
             targetElement = document.querySelector('.hero-section-chatgpt')
@@ -373,7 +373,13 @@ export default function SearchableNavbar() {
 
             <button
               className="mobile-menu-toggle-chatgpt"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => {
+                setMobileMenuOpen(!mobileMenuOpen)
+                // Закрываем корзину если она открыта
+                if (cartOpen) {
+                  setCartOpen(false)
+                }
+              }}
               aria-label="Открыть меню"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -627,7 +633,7 @@ export default function SearchableNavbar() {
           appearance: none !important;
         }
 
-        /* Дополнительные стили для убирания всех возможных рамок в темной теме */
+        /* Дополнительные стили для убирания всех ��озможных рамок в темной теме */
         body.dark-theme .navbar-chatgpt .search-input-chatgpt {
           background: transparent !important;
           border: none !important;
