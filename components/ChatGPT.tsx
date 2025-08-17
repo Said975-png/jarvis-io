@@ -78,7 +78,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
             }
           }
 
-          // Показываем промежуточные результаты для лучш��го UX (в реальном времени)
+          // Показываем промежуточные результаты для лучшего UX (в реальном времени)
           if (interimTranscript) {
             console.log('🔄 Промежуточный текст:', interimTranscript)
             // Обновляем поле ввода только промежуточным текстом (заменяем, ��е добавляем)
@@ -168,7 +168,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           console.log('🛑 Распознавание остановлено')
           setIsListening(false)
 
-          // Очищаем тай��еры при завершении
+          // Очища��м тай��еры при завершении
           if (autoSendTimer) {
             clearTimeout(autoSendTimer)
             setAutoSendTimer(null)
@@ -194,7 +194,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           window.speechSynthesis.cancel()
         }
 
-        // Инициали��ируем г��лоса (некоторчие браузеры загружают их асинхронно)
+        // Инициализируем г��лоса (некоторчие браузеры загружают их асинхронно)
         const loadVoices = () => {
           const voices = window.speechSynthesis.getVoices()
           const russianVoices = voices.filter(v => v.lang.includes('ru') || v.lang.includes('RU'))
@@ -288,7 +288,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     return commonTags.filter(tag => lowerText.includes(tag))
   }
 
-  // ��унк��ия для з��пуска голосового ввода
+  // Функ��ия для з��пуска голосового ввода
   const startListening = () => {
     if (recognition && !isListening) {
       console.log('🎙️ ЗАПУСК голосового ввода с автоотправкой')
@@ -328,7 +328,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }
 
-  // Функция для получ��ния лучшего мужского голоса
+  // Функция для получения лучшего мужского голоса
   const getBestMaleVoice = () => {
     const voices = speechSynthesis.getVoices()
     let selectedVoice = null
@@ -480,7 +480,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
           text: text,
           model_id: 'eleven_multilingual_v2', // Лучше для русского яз��ка
           voice_settings: {
-            stability: 0.95, // Максимальная стабильность для четк��го русского произношения
+            stability: 0.95, // Максимальная стабильность для четкого русского произношения
             similarity_boost: 0.90, // Улучшенная похожесть на естественный голос
             style: 0.05, // Минимальная эмоциональность для четкого произношения русского
             use_speaker_boost: true // Усиление для лучшего качества звука
@@ -752,6 +752,32 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
     }
   }, [])
 
+  // Функция печающего эффекта
+  const displayTextWithTypingEffect = async (message: Message, fullText: string) => {
+    setIsDisplayingTyping(true)
+    setTypingText('')
+
+    // Добавляем сообщение с пустым текстом
+    setMessages(prev => [...prev, { ...message, text: '' }])
+
+    // Печатаем по одному символу
+    for (let i = 0; i <= fullText.length; i++) {
+      const currentText = fullText.slice(0, i)
+      setTypingText(currentText)
+
+      // Обновляем сообщение
+      setMessages(prev => prev.map((msg, index) =>
+        index === prev.length - 1 ? { ...msg, text: currentText } : msg
+      ))
+
+      // Скорость печати
+      await new Promise(resolve => setTimeout(resolve, 20))
+    }
+
+    setIsDisplayingTyping(false)
+    setTypingText('')
+  }
+
   const generateJarvisResponse = async (userMessage: string, conversationHistory: Message[]): Promise<string> => {
     try {
       // Обычный чат-запрос
@@ -795,7 +821,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         return 'Извините, п��оизошла ошибка. Попробуйте перефо��мулировать вопрос. ����'
       }
 
-      return data.message || 'Извините, не могу ответить на это�� вопрос. Попробуйте спросить что-то другое! 🤷‍♂️'
+      return data.message || 'Извините, не могу ответить на это�� вопрос. Попробуйт�� спросить что-то другое! 🤷‍♂️'
 
     } catch (error) {
       console.error('Error generating response:', error)
@@ -833,7 +859,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isGreeting) {
         return [
-          'Пользовате��ь поздоровался',
+          'Пользователь поздоровался',
           'Отвечу дружелюбно и предложу помощь'
         ]
       }
@@ -856,7 +882,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
 
       if (isQuestion) {
         return [
-          'Анализирую суть вопроса',
+          'Анализирую с��ть вопроса',
           'Структурирую ответ для максимальной пользы',
           'Добавлю примеры и практические советы'
         ]
@@ -1045,7 +1071,7 @@ export default function ChatGPT({ isOpen, onClose }: ChatGPTProps) {
         console.log('🔇 Голосовой режим выключен')
       }
 
-      // Сохраняем взаимодействие для обучения
+      // Сохраняем взаимодей��твие для обучения
       await saveInteractionToLearning(userMessage, response, userMessageId)
 
     } catch (error) {
