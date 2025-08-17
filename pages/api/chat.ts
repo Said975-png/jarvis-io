@@ -234,7 +234,7 @@ function replaceEnglishTerms(text: string): string {
   return result
 }
 
-// Система лимитов запросов
+// Система лимитов зап��осов
 interface UserLimit {
   count: number
   resetTime: number
@@ -363,7 +363,7 @@ const OPENROUTER_API_KEYS: ApiKeyInfo[] = [
   { key: process.env.OPENROUTER_API_KEY_8 || '', isActive: true, errorCount: 0 },
 ].filter(apiKey => apiKey.key.length > 0) // Убираем пустые ключи
 
-// Функция для получения следующего доступ��ого OpenRouter API ключа
+// Функция для получения следующего доступного OpenRouter API ключа
 function getNextAvailableOpenRouterKey(excludeKey?: string): string | null {
   // Сначала пробуе�� активные ключи, исключая пере��анный
   const activeKeys = OPENROUTER_API_KEYS.filter(k =>
@@ -606,7 +606,7 @@ export default async function handler(
 
 Попробуйте еще раз или опишите желаемое изображение более подробно! 🎨
 
-А пока предлагаю узнать о наших услугах по со��данию сайтов с красивым дизайном! 💼`
+А пока предлагаю узнать о наших услугах по созданию сайтов с красивым дизайном! 💼`
             }
 
             return res.status(200).json({
@@ -634,7 +634,7 @@ export default async function handler(
     console.log(`[${timestamp}] Available OpenRouter keys:`, OPENROUTER_API_KEYS.length)
     console.log(`[${timestamp}] Active OpenRouter keys:`, OPENROUTER_API_KEYS.filter(k => k.isActive).length)
     console.log(`[${timestamp}] Groq key available:`, !!groqApiKey)
-    console.log(`[${timestamp}] AI Strategy: Llama 3.1-8B (OpenRouter) → Llama 3.3-70B (Groq) → Fallback`)
+    console.log(`[${timestamp}] AI Strategy: Llama 3.1-70B (Groq БЕЗ ЛИМИТОВ) → Llama 3.1-8B (OpenRouter) → Fallback`)
     console.log(`[${timestamp}] Tokens limit: 4000 for detailed responses`)
     console.log(`[${timestamp}] Auto-switching between 8 OpenRouter keys enabled`)
 
@@ -670,7 +670,7 @@ export default async function handler(
 ПРИМЕРЫ ПРАВИЛЬНЫХ ОТВЕТОВ:
 На "привет" → "Привет! Добро пожаловать на наш са��т! Чем могу помочь? 😊"
 На "что вы делаете" → "Мы создаем сайты и веб-приложения! У нас 3 тарифа: Basic, Pro и Max. Какой проект вас интересует?"
-На "сколько стоит" → "У нас 3 тарифа: Basic (2,500,000 сум), Pro (4,000,000 ��ум), Max (5,000,000 сум). Расчекажите о вашем проекте, подберу оптимальный!"
+На "сколько стоит" → "У нас 3 тарифа: Basic (2,500,000 сум), Pro (4,000,000 сум), Max (5,000,000 сум). Расчекажите о вашем проекте, подберу оптимальный!"
 
 О СЕБЕ И КОМПАНИИ:
 - Ты создан командой Jarvis Intercoma
@@ -723,8 +723,8 @@ export default async function handler(
 - Узнай потребности посети��еля
 - Предложи подходящий тариф
 - Объясни преимущества нашей работы
-- Мотивируй к заказу ��слуг
-- Если н�� знаешь ��то-т�� - предложи связ��ться �� командой
+- Мотивируй к заказу услуг
+- Если н�� знаешь ��то-то - предложи связ��ться �� командой
 
 🚨🤖 ОТВЕТЫ О СЕБЕ - СТРОГО ИСПОЛНЯТЬ! ������🚨
 
@@ -751,7 +751,7 @@ export default async function handler(
 
 че� КРИТИЧЕСКИ ВАЖНО:
 - Отвечай ТОЛЬКО на русском языке
-- Никогда не пер������оди на английский или другие языки
+- Никогда не пер����оди на английский или другие языки
 - Если пользователь пишет на другом языке - отвечай на ру��ск��м
 - Твоя цель - помочь посетителю и показать наши услуги
 - Проверяй каждое слово перед отправкой ответа
@@ -770,7 +770,7 @@ export default async function handler(
 • "Сгене��ируй картинку уютного офиса"
 
 КАК ОТВЕЧАТЬ НА ЗАПРОСЫ ИЗОБРАЖЕНИЙ:
-1. О��редели, что пользователь хочет изображение
+1. О��редели, что пользо��атель хочет изображение
 2. Если описание четкое - сразу генерируй
 3. Если нето��ное - уточни детали
 4. После генерации предложи наши ��слуги по дизайну
@@ -790,7 +790,7 @@ export default async function handler(
     const requestBody = {
       model: 'meta-llama/llama-3.1-8b-instruct:free', // Мощная бесплатная модель без лимитов Llama 3.1-8B
       messages: [systemMessage, ...messages],
-      temperature: 0.8, // Немного увеличено для более естественных ответов
+      temperature: 0.8, // Немного увеличено для более естественных ��тветов
       max_tokens: 8000, // Увеличено для более полных и подробных ответов
       top_p: 0.95,
       frequency_penalty: 0.1,
@@ -853,7 +853,7 @@ export default async function handler(
 
     const fallbackMessage = `Привет! 😊 Да, я работаю! Я ДЖАРВИС - ваш AI помощник! 🤖
 
-Извините ��а задержку - временные технические проблемы с API ключами! Но я всегда готов помочь! 💪
+Извините за задержку - временные технические проблемы с API ключами! Но я всегда готов помочь! 💪
 
 🚀 Чем могу быть полезен?
 ��� Консультации по веб-разработке
@@ -876,7 +876,7 @@ export default async function handler(
     // Возвращаем дружелюбное сообщение об ошибке
     const fallbackMessage = `Извините, произошла временная ошибка! 😅
 
-Но не беспокойтесь - я ДЖАРВИС, ваш AI-помощник по ве��-разработке, и я всегда готов помочь!
+Но не беспокойтесь - я ДЖАРВИС, ваш AI-помощник по веб-разработке, и я всегда ��отов помочь!
 
 🚀 Что я могу:
 • Консультации по веб-разработке
